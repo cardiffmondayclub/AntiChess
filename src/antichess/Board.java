@@ -13,7 +13,7 @@ public class Board {
    }
 
    // POO
-   // Something new to test with
+   //Something to test poo with
    // Nice to see you too John
    // SMEG
    
