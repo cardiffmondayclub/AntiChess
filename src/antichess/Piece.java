@@ -11,7 +11,9 @@ public abstract class Piece {
    }
 
    public abstract boolean isMoveValid(int newX, int newY);
-   public abstract boolean isMoveCapture(int newX, int newY);
+   public boolean isMoveCapture(int newX, int newY) {
+      return false;
+   }
    public abstract boolean isPlayersPiece(int posX, int posY);
    public abstract int[][] possibleMoves();
 }
