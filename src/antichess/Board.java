@@ -11,11 +11,6 @@ public class Board {
    public void possibleMoves() {
       //do something
    }
-
-   // POO
-   //Something to test poo with
-   // Nice to see you too John
-   // SMEG
    
    public boolean isWon() {
       return true;
