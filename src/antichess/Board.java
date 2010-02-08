@@ -5,7 +5,7 @@ public class Board {
    private Piece[][] squares;
 
    public Board() {
-      //initialise board
+      //initialises the board
       squares = new Piece[8][8];
       //squares[0][0] = Rook(0,0,'w');
       //squares[1][0] = Knight(0,1,'w');
