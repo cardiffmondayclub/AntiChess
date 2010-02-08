@@ -14,6 +14,7 @@ public class Board {
 
    // POO
    // Nice to see you too John
+   // SMEG
    
    public boolean isWon() {
       return true;
