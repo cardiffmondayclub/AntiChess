@@ -11,5 +11,9 @@ public class Board {
    public void possibleMoves() {
       //do something
    }
+   
+   public boolean isWon() {
+      return true;
+   }
 
 }
