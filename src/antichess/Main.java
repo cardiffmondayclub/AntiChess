@@ -9,10 +9,12 @@ public class Main {
       char colour = selectColour();
       Board currentBoard = new Board();
       boolean captureRequired = false;
-      Move nextMove;
-      nextMove = new Move(0, 0, 0, 0);
+      Move nextMove = null;
 
-      //Connect to a server used colour to determine which port to use.
+      //Connect to a server using the colour to determine which port to use.
+		//The connection will need to be stored somewhere.
+		//Send and receive might need separate connections.
+		//I'll look into this. MCS
 
       currentBoard.drawBoard();
 
@@ -115,6 +117,11 @@ public class Main {
          System.out.println("You have lost!");
          return false;
       }
+
+		//Obviously this needs to separate out the bits of the string and
+		//convert to integers.
+		move = new Move(0,0,0,0);
+
       return true;
    }
 }
