@@ -1,19 +1,24 @@
 package antichess;
 
-
 public abstract class Piece {
    private int xPosition;
    private int yPosition;
+   private char colour;
 
-   public Piece(int posX, int posY) {
+   public Piece(int posX, int posY, char newColour) {
       xPosition = posX;
       yPosition = posY;
+      colour = newColour;
    }
 
-   public abstract boolean isMoveValid(int newX, int newY);
-   public boolean isMoveCapture(int newX, int newY) {
-      return false;
+   public char pieceColour() {
+      return colour;
    }
-   public abstract boolean isPlayersPiece(int posX, int posY);
-   public abstract int[][] possibleMoves();
+
+   public boolean isPlayersPiece(char playerColour) {
+      return playerColour == colour;
+   }
+
+   public abstract boolean isMoveValid(Board board, int newX, int newY);
+   public abstract boolean isCapturePossible(Board board);
 }
