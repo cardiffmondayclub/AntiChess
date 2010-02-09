@@ -6,7 +6,7 @@ public class Main {
 
    public static void main(String[] args) {
       
-      char colour = selectColour();
+      char playerColour = selectColour();
       Board currentBoard = new Board();
       boolean captureRequired = false;
       Move nextMove = null;
@@ -19,10 +19,11 @@ public class Main {
       currentBoard.drawBoard();
 
       //Take special action if the player is white.
-      if (colour == 'w') {
+      //Basically just get a valid move, then make it and send to the server.
+      if (playerColour == 'w') {
          while (true) {
             nextMove = getInput();
-            if (currentBoard.isMoveValid(colour, nextMove) == true) {
+            if (currentBoard.isMoveValid(playerColour, nextMove) == true) {
                break;
             }
          }
@@ -43,11 +44,11 @@ public class Main {
 
          currentBoard.drawBoard();
 
-         captureRequired = currentBoard.isCapturePossible(colour);
+         captureRequired = currentBoard.isCapturePossible(playerColour);
 
          while (true) {
             nextMove = getInput();
-            if (currentBoard.isMoveValid(colour, nextMove)) {
+            if (currentBoard.isMoveValid(playerColour, nextMove)) {
                if (captureRequired) {
                   if (currentBoard.isMoveCapture(nextMove)) {
                      break;
@@ -67,6 +68,9 @@ public class Main {
    }
 
    public static char selectColour() {
+      /* Loops infinitely until either 'b' or 'w' is entered and then
+       * returns whichever letter was entered
+       */
       while (true) {
          System.out.println("Select your colour, 'b' for black or 'w' for white");
          Scanner in = new Scanner(System.in);
