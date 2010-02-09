@@ -5,17 +5,24 @@ import java.util.Scanner;
 public class Main {
 
    public static void main(String[] args) {
-      
+
+      //Allows the user to select a colour and stores it as either 'b' or 'w'.
       char playerColour = selectColour();
+
+      //Intialises a new board and stores a reference to it in currentBoard.
       Board currentBoard = new Board();
+
+      //Declares the boolean that is used to track if a capture is required.
       boolean captureRequired = false;
       Move nextMove = null;
 
+      //TO DO
       //Connect to a server using the colour to determine which port to use.
-		//The connection will need to be stored somewhere.
-		//Send and receive might need separate connections.
-		//I'll look into this. MCS
+      //The connection will need to be stored somewhere.
+      //Send and receive might need separate connections.
+      //I'll look into this. MCS
 
+      //Draws the initial board.
       currentBoard.drawBoard();
 
       //Take special action if the player is white.
@@ -31,21 +38,31 @@ public class Main {
          sendMove(nextMove);
       }
 
+      /* This is the main loop. It looks inifinte but actually if the
+       * receiveMove() function returns false the loop will exit. The
+       * idea is that the server will send back a special message when
+       * either player has won.
+       */
       while (true) { //The main loop
 
-         /*This passes the nextMove object to the receiveMode function
-          * if receiveMove returns false the game is over and if it returns true
-          * a move has been received.
-          */
+         //Receives the next move from the server.
          if (receiveMove(nextMove) == false) {
             break;
          }
+
+         //Make the move received from the server.
          currentBoard.makeMove(nextMove);
 
+         //Draw the new board.
          currentBoard.drawBoard();
 
+         //Check if a capture is required in the next move.
          captureRequired = currentBoard.isCapturePossible(playerColour);
 
+         /* This loop keeps requesting input from the player until they return a
+          * valid input (it also checks if the move is a capture if that is
+          * required.
+          */
          while (true) {
             nextMove = getInput();
             if (currentBoard.isMoveValid(playerColour, nextMove)) {
@@ -59,10 +76,13 @@ public class Main {
             }
          }
 
+         //Make the move specified by the player.
          currentBoard.makeMove(nextMove);
 
+         //Draw the new board.
          currentBoard.drawBoard();
 
+         //Send the move to the server.
          sendMove(nextMove);
       }
    }
@@ -87,19 +107,22 @@ public class Main {
       Scanner in = new Scanner(System.in);
       System.out.println("Please enter your next move");
       String move = in.nextLine();
-      //This is more complex than my brain can deal with right now.
-      //Anyone want to do it?
+      //TO DO.
+      //This should take the string called "move", separate the characters
+      //and convert to the appropriate integers, then return a new Move class
+      //with the correct values.
       return new Move(0, 0, 0, 0);
    }
 
    public static void sendMove(Move move) {
-      //Code to send the move to the server.
+      //Sends the move to the server.
       String toServer;
       toServer = Integer.toString(move.oldX);
       toServer += Integer.toString(move.oldY);
       toServer += Integer.toString(move.newX);
       toServer += Integer.toString(move.newY);
 
+      //TO DO
       //Now send the string toServer to the server. The server will probably
       //have to be passed to the function.
    }
@@ -109,8 +132,8 @@ public class Main {
       //false if there isn't. The move object should be used to store the
       //received move. The server will probably have to be passed to the
       //function.
-
       String fromServer = "1020";
+      //TO DO
       //Oviously this is just an example. We need to implement actually
       //receiving from the server.
 
@@ -122,9 +145,10 @@ public class Main {
          return false;
       }
 
-		//Obviously this needs to separate out the bits of the string and
-		//convert to integers.
-		move = new Move(0,0,0,0);
+      //TO DO
+      //This needs to separate out the bits of the string and
+      //convert to integers.
+      move = new Move(0, 0, 0, 0);
 
       return true;
    }
