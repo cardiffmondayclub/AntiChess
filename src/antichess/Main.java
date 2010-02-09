@@ -12,8 +12,6 @@ public class Main {
       //Intialises a new board and stores a reference to it in currentBoard.
       Board currentBoard = new Board();
 
-      //Declares the boolean that is used to track if a capture is required.
-      boolean captureRequired = false;
       Move nextMove = null;
 
       //TO DO
@@ -28,23 +26,13 @@ public class Main {
       //Take special action if the player is white.
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
-         while (true) {
-            nextMove = getInput();
-            if (currentBoard.isMoveValid(playerColour, nextMove) == true) {
-               break;
-            }
-         }
+         nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
+         currentBoard.drawBoard();
          sendMove(nextMove);
       }
 
-      /* This is the main loop. It looks inifinte but actually if the
-       * receiveMove() function returns false the loop will exit. The
-       * idea is that the server will send back a special message when
-       * either player has won.
-       */
-      while (true) { //The main loop
-
+      while (true) {
          //Receives the next move from the server.
          if (receiveMove(nextMove) == false) {
             break;
@@ -56,25 +44,8 @@ public class Main {
          //Draw the new board.
          currentBoard.drawBoard();
 
-         //Check if a capture is required in the next move.
-         captureRequired = currentBoard.isCapturePossible(playerColour);
-
-         /* This loop keeps requesting input from the player until they return a
-          * valid input (it also checks if the move is a capture if that is
-          * required.
-          */
-         while (true) {
-            nextMove = getInput();
-            if (currentBoard.isMoveValid(playerColour, nextMove)) {
-               if (captureRequired) {
-                  if (currentBoard.isMoveCapture(nextMove)) {
-                     break;
-                  }
-               } else {
-                  break;
-               }
-            }
-         }
+         //Get the next move from the player.
+         nextMove = getMove(currentBoard, playerColour);
 
          //Make the move specified by the player.
          currentBoard.makeMove(nextMove);
@@ -103,6 +74,24 @@ public class Main {
       }
    }
 
+   public static Move getMove(Board currentBoard, char playerColour) {
+      //Check if a capture is required in the next move.
+      boolean captureRequired = currentBoard.isCapturePossible(playerColour);
+
+      while (true) {
+         Move nextMove = getInput();
+         if (currentBoard.isMoveValid(playerColour, nextMove)) {
+            if (captureRequired) {
+               if (currentBoard.isMoveCapture(nextMove)) {
+                  return nextMove;
+               }
+            } else {
+               return nextMove;
+            }
+         }
+      }
+   }
+
    public static Move getInput() {
       Scanner in = new Scanner(System.in);
       System.out.println("Please enter your next move");
@@ -111,7 +100,8 @@ public class Main {
       //This should take the string called "move", separate the characters
       //and convert to the appropriate integers, then return a new Move class
       //with the correct values.
-      return new Move(0, 0, 0, 0);
+      //e.g a4b5 should convert to Move(0, 3, 1, 4)
+      return new Move(0, 0, 1, 1);
    }
 
    public static void sendMove(Move move) {
@@ -143,13 +133,15 @@ public class Main {
       } else if (fromServer.equals("Loss")) {
          System.out.println("You have lost!");
          return false;
+      } else if (fromServer.equals("Stale")) {
+         System.out.println("Stalemate");
+         return false;
+      } else {
+         //TO DO
+         //This needs to separate out the bits of the string and
+         //convert to integers.
+         move = new Move(0, 0, 1, 1);
+         return true;
       }
-
-      //TO DO
-      //This needs to separate out the bits of the string and
-      //convert to integers.
-      move = new Move(0, 0, 0, 0);
-
-      return true;
    }
 }

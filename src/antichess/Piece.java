@@ -1,9 +1,9 @@
 package antichess;
 
 public abstract class Piece {
-   private int xPosition;
-   private int yPosition;
-   private char colour;
+   protected int xPosition;
+   protected int yPosition;
+   protected char colour;
 
    public Piece(int posX, int posY, char newColour) {
       xPosition = posX;

@@ -5,49 +5,48 @@ public class Board {
    private Piece[][] squares;
 
    public Board() {
-      //Initialises the board. The code is commented out until the pieces
-      //are implemented.
+      //Initialises the board.
       squares = new Piece[8][8];
-      //squares[0][0] = Rook(0,0,'w');
-      //squares[1][0] = Knight(0,1,'w');
-      //squares[2][0] = Bishop(0,2,'w');
-      //squares[3][0] = King(0,3,'w');
-      //squares[4][0] = Queen(0,4,'w');
-      //squares[5][0] = Bishop(0,5,'w');
-      //squares[6][0] = Knight(0,6,'w');
-      //suqares[7][0] = Rook(0,7,'w');
-      //for (int i = 0; i < 8; i++) {
-      //    squares[i][1] = Pawn(i,1,'w');
-      //    squares[i][6] = Pawn(i,1,'b');
-      //}
+      squares[0][0] = new Rook(0,0,'w');
+      squares[1][0] = new Knight(0,1,'w');
+      squares[2][0] = new Bishop(0,2,'w');
+      squares[3][0] = new King(0,3,'w');
+      squares[4][0] = new Queen(0,4,'w');
+      squares[5][0] = new Bishop(0,5,'w');
+      squares[6][0] = new Knight(0,6,'w');
+      squares[7][0] = new Rook(0,7,'w');
       for (int i = 0; i < 8; i++) {
-         for (int j = 0; i < 8; i++) {
+          squares[i][1] = new Pawn(i,1,'w');
+          squares[i][6] = new Pawn(i,1,'b');
+      }
+      for (int i = 0; i < 8; i++) {
+         for (int j = 2; i < 6; i++) {
             squares[i][j] = null;
          }
       }
-      //squares[0][7] = Rook(0,0,'b');
-      //squares[1][7] = Knight(0,1,'b');
-      //squares[2][7] = Bishop(0,2,'b');
-      //squares[3][7] = King(0,3,'b');
-      //squares[4][7] = Queen(0,4,'b');
-      //squares[5][7] = Bishop(0,5,'b');
-      //squares[6][7] = Knight(0,6,'b');
-      //suqares[7][7] = Rook(0,7,'b');
+      squares[0][7] = new Rook(0,0,'b');
+      squares[1][7] = new Knight(0,1,'b');
+      squares[2][7] = new Bishop(0,2,'b');
+      squares[3][7] = new King(0,3,'b');
+      squares[4][7] = new Queen(0,4,'b');
+      squares[5][7] = new Bishop(0,5,'b');
+      squares[6][7] = new Knight(0,6,'b');
+      squares[7][7] = new Rook(0,7,'b');
    }
 
    public void drawBoard() {
-      for (int i = 0; i < 8; i++) {
-         System.out.format("%d",i+1);
-         for (int j = 0; j < 8; j++) {
-            if (squares[i][j] != null) {
-               System.out.print(squares[i][j].getAppearance());
+      for (int row = 7; row >= 0; row--) {
+         System.out.format("%d ",row+1);
+         for (int col = 0; col < 8; col++) {
+            if (squares[col][row] != null) {
+               System.out.print(squares[col][row].getAppearance() + " ");
             } else {
-               System.out.print(" ");
+               System.out.print("  ");
             }
          }
          System.out.println();
       }
-      System.out.println(" abcdefgh");
+      System.out.println("  a b c d e f g h ");
    }
 
    public boolean isPathClear(Move move) {
@@ -69,7 +68,8 @@ public class Board {
       }
 
       //check the destination piece (if any) doesn't belong to the player
-      if (squares[move.newX][move.newY].isPlayersPiece(playerColour)) {
+      if (squares[move.newX][move.newY] != null &&
+              squares[move.newX][move.newY].isPlayersPiece(playerColour)) {
          return false;
       }
 
@@ -106,7 +106,7 @@ public class Board {
 
       for (int i = 0; i < 8; i++) {
          for (int j = 0; j < 8; j++) {
-            if (squares[i][j].isPlayersPiece(playerColour)) {
+            if (squares[i][j] != null && squares[i][j].isPlayersPiece(playerColour)) {
                if (squares[i][j].isCapturePossible(this)) {
                   return true;
                }
