@@ -108,6 +108,17 @@ public class Board {
    public boolean isStaleMate() {
       //Apart from the whole bishops on different colour squares I'm not sure
       //what needs checking.
+
+      /* (JC) - I think the best way to implement this is to handle each
+       * different scenario of remaining pieces that would cause a stalemate
+       * one by one.  For instance:
+       * 1. Each player has one bishop remaining and the bishop is sitting on
+       *    a square that is different in colour than the square occupied by the
+       *    opposing bishop.
+       *
+       *   --- we can continue adding scenarios to this list, and then code each
+       *   one as an if statement.
+      */
       return false;
    }
 }
