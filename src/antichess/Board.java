@@ -10,8 +10,8 @@ public class Board {
       squares[0][0] = new Rook(0,0,'w');
       squares[1][0] = new Knight(0,1,'w');
       squares[2][0] = new Bishop(0,2,'w');
-      squares[3][0] = new King(0,3,'w');
-      squares[4][0] = new Queen(0,4,'w');
+      squares[3][0] = new Queen(0,3,'w');
+      squares[4][0] = new King(0,4,'w');
       squares[5][0] = new Bishop(0,5,'w');
       squares[6][0] = new Knight(0,6,'w');
       squares[7][0] = new Rook(0,7,'w');
@@ -27,8 +27,8 @@ public class Board {
       squares[0][7] = new Rook(0,0,'b');
       squares[1][7] = new Knight(0,1,'b');
       squares[2][7] = new Bishop(0,2,'b');
-      squares[3][7] = new King(0,3,'b');
-      squares[4][7] = new Queen(0,4,'b');
+      squares[3][7] = new Queen(0,3,'b');
+      squares[4][7] = new King(0,4,'b');
       squares[5][7] = new Bishop(0,5,'b');
       squares[6][7] = new Knight(0,6,'b');
       squares[7][7] = new Rook(0,7,'b');
