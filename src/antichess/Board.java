@@ -62,7 +62,6 @@ public class Board {
 
       if (xDelta != 0 && yDelta != 0 && absXDelta != absYDelta) {
          //Not a valid path
-         System.out.println("Path is no straight/diagonal");
          return false;
       } else {
          //Path is at least straight or diagonal
@@ -70,7 +69,6 @@ public class Board {
          int yIncrement = (move.newY - move.oldY) / steps;
          for (int step = 1; step < steps ; step++) {
             if (squares[move.oldX + step * xIncrement][move.oldY + step * yIncrement] != null) {
-               System.out.format("Problem on step = %d\n",step);
                return false;
             }
          }
