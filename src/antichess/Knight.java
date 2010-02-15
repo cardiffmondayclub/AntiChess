@@ -18,8 +18,8 @@ public class Knight extends Piece {
        int y = newY;
        // use xPosition and yPosition
 
-       int xDiff = Math.abs(x - newX);  // number of squares moved in x
-       int yDiff = Math.abs(y - newY);  // number of squares moved in y
+       int xDiff = Math.abs(xPosition - newX);  // number of squares moved in x
+       int yDiff = Math.abs(yPosition - newY);  // number of squares moved in y
 
        /* if number of squares moved in x and y totals 3, and squares 
           moved in x direc is either 1 or 2, then return true */
