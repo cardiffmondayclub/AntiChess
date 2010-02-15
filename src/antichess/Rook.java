@@ -22,7 +22,7 @@ public class Rook extends Piece {
        int xDiff = Math.abs(oldX - newX);  // number of squares moved in x
        int yDiff = Math.abs(oldY - newY);  // number of squares moved in y
 
-       if(xDiff == 0 || yDiff == 0)
+       if( (xDiff == 0 || yDiff == 0) && board.isPathClear(move) )
        {
            return true;
        }
