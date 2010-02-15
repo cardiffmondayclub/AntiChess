@@ -74,6 +74,11 @@ public class Board {
    }
 
    public boolean isMoveValid(char playerColour, Move move) {
+      //check destination isn't the same as origin
+      if (move.newX == move.oldX && move.newY == move.oldY) {
+         return false;
+      }
+
       //check if the piece exists
       if (squares[move.oldX][move.oldY] == null) {
          return false;
