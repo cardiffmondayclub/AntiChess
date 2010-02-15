@@ -26,15 +26,7 @@ public class Main {
       //Take special action if the player is white.
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
-         currentBoard.makeMove(new Move(0,1,0,2));
          currentBoard.drawBoard();
-
-         if (currentBoard.isPathClear(new Move(3,1,7,2))) {
-            System.out.println("Path is clear");
-         } else {
-            System.out.println("Path is not clear");
-         }
-
          nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
          currentBoard.drawBoard();
