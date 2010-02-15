@@ -83,6 +83,9 @@ public class Main {
    }
 
    public static Move getMove(Board currentBoard, char playerColour) {
+      // Crude code that prints whose go it is
+      System.out.print(playerColour + ": ");
+
       //Check if a capture is required in the next move.
       boolean captureRequired = currentBoard.isCapturePossible(playerColour);
 
