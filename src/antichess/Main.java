@@ -26,7 +26,6 @@ public class Main {
       //Take special action if the player is white.
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
-         currentBoard.drawBoard();
          nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
          currentBoard.drawBoard();
@@ -35,15 +34,23 @@ public class Main {
 
       while (true) {
          //Receives the next move from the server.
-         if (receiveMove(nextMove) == false) {
-            break;
-         }
+         //if (receiveMove(nextMove) == false) {
+         //   break;
+         //}
 
          //Make the move received from the server.
-         currentBoard.makeMove(nextMove);
+         //currentBoard.makeMove(nextMove);
 
          //Draw the new board.
-         currentBoard.drawBoard();
+         //currentBoard.drawBoard();
+
+         //TEMP
+         //Changes the players colour to allow for crude two player
+         if (playerColour == 'b') {
+            playerColour = 'w';
+         } else {
+            playerColour = 'b';
+         }
 
          //Get the next move from the player.
          nextMove = getMove(currentBoard, playerColour);
