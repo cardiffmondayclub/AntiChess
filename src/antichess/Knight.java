@@ -14,7 +14,24 @@ public class Knight extends Piece {
    }
 
    public boolean isMoveValid(Board board, int newX, int newY) {
-      return true;
+       int x = newX;
+       int y = newY;
+       // use xPosition and yPosition
+
+       int xDiff = Math.abs(xPosition - newX);  // number of squares moved in x
+       int yDiff = Math.abs(yPosition - newY);  // number of squares moved in y
+
+       /* if number of squares moved in x and y totals 3, and squares 
+          moved in x direc is either 1 or 2, then return true */
+       if ( (xDiff + yDiff == 3) && ((xDiff == 1) || (xDiff == 2)) )
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
+
    }
 
    public boolean isCapturePossible(Board board) {
