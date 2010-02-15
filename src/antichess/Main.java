@@ -101,7 +101,19 @@ public class Main {
       //and convert to the appropriate integers, then return a new Move class
       //with the correct values.
       //e.g a4b5 should convert to Move(0, 3, 1, 4)
-      return new Move(0, 0, 1, 1);
+            
+     char move1 =  move.charAt(0);
+     char move2 =  move.charAt(1);
+     char move3 =  move.charAt(2);
+     char move4 =  move.charAt(3);
+     
+     int intInput1 = (int)move1-97;
+     int intInput2 = (int)move2-49;
+     int intInput3 = (int)move3-97;
+     int intInput4 = (int)move4-49;
+           
+      
+      return new Move(intInput1, intInput2, intInput3, intInput4);
    }
 
    public static void sendMove(Move move) {
