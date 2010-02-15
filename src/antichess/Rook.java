@@ -14,7 +14,23 @@ public class Rook extends Piece {
    }
 
    public boolean isMoveValid(Board board, Move move) {
-      return true;
+       int newX = move.newX;
+       int newY = move.newY;
+       int oldX = move.oldX;
+       int oldY = move.oldY;
+
+       int xDiff = Math.abs(oldX - newX);  // number of squares moved in x
+       int yDiff = Math.abs(oldY - newY);  // number of squares moved in y
+
+       if( (xDiff == 0 || yDiff == 0) && board.isPathClear(move) )
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
+       
    }
 
    public boolean isCapturePossible(Board board) {
