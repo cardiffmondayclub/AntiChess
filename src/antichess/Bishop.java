@@ -13,7 +13,7 @@ public class Bishop extends Piece {
       }
    }
 
-   public boolean isMoveValid(Board board, int newX, int newY) {
+   public boolean isMoveValid(Board board, Move move) {
       return true;
    }
 

@@ -1,4 +1,4 @@
-package antichess;
+    package antichess;
 
 public abstract class Piece {
    protected int xPosition;
@@ -33,7 +33,7 @@ public abstract class Piece {
 
    //Checks if a move is valid. I'm hoping the Board.isPathClear() function
    //could be used here.
-   public abstract boolean isMoveValid(Board board, int newX, int newY);
+   public abstract boolean isMoveValid(Board board, Move move);
 
    //Checks if the piece can capture. Not sure how best to implement this.
    //The prototype has the board passed to the method in case that is useful

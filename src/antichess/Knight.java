@@ -13,13 +13,14 @@ public class Knight extends Piece {
       }
    }
 
-   public boolean isMoveValid(Board board, int newX, int newY) {
-       int x = newX;
-       int y = newY;
-       // use xPosition and yPosition
+   public boolean isMoveValid(Board board, Move move) {
+       int newX = move.newX;
+       int newY = move.newY;
+       int oldX = move.oldX;
+       int oldY = move.oldY;
 
-       int xDiff = Math.abs(xPosition - newX);  // number of squares moved in x
-       int yDiff = Math.abs(yPosition - newY);  // number of squares moved in y
+       int xDiff = Math.abs(oldX - newX);  // number of squares moved in x
+       int yDiff = Math.abs(oldY - newY);  // number of squares moved in y
 
        /* if number of squares moved in x and y totals 3, and squares 
           moved in x direc is either 1 or 2, then return true */

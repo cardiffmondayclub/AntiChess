@@ -91,7 +91,7 @@ public class Board {
       }
 
       //check if the move is valid
-      return squares[move.oldX][move.oldY].isMoveValid(this, move.newX, move.newY);
+      return squares[move.oldX][move.oldY].isMoveValid(this, move);
    }
 
    public boolean isMoveCapture(Move move) {
