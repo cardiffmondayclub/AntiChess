@@ -108,7 +108,7 @@ public class Board {
       //If there is no piece in the new square then it can't be a capture
       //otherwise it is capture (or not valid for some reason which should be
       //dealt with by isMoveValid() ).
-      return (squares[move.newX][move.newY] == null);
+      return (squares[move.newX][move.newY] != null);
    }
 
    public void makeMove(Move move) {
