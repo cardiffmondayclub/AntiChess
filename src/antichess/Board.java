@@ -48,6 +48,9 @@ public class Board {
       }
       System.out.println("  a b c d e f g h ");
       System.out.println();
+      //if (isPathClear(new Move(5,0,2,3))) {
+      //   System.out.println("Bishop is clear");
+      //}
    }
 
    public boolean isPathClear(Move move) {
@@ -59,13 +62,15 @@ public class Board {
 
       if (xDelta != 0 && yDelta != 0 && absXDelta != absYDelta) {
          //Not a valid path
+         System.out.println("Path is no straight/diagonal");
          return false;
       } else {
          //Path is at least straight or diagonal
          int xIncrement = (move.newX - move.oldX) / steps;
-         int yIncrement = (move.newX - move.oldY) / steps;
+         int yIncrement = (move.newY - move.oldY) / steps;
          for (int step = 1; step < steps ; step++) {
             if (squares[move.oldX + step * xIncrement][move.oldY + step * yIncrement] != null) {
+               System.out.format("Problem on step = %d\n",step);
                return false;
             }
          }
@@ -103,7 +108,7 @@ public class Board {
       //If there is no piece in the new square then it can't be a capture
       //otherwise it is capture (or not valid for some reason which should be
       //dealt with by isMoveValid() ).
-      return (squares[move.newX][move.newY] == null);
+      return (squares[move.newX][move.newY] != null);
    }
 
    public void makeMove(Move move) {

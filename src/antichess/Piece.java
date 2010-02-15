@@ -1,6 +1,7 @@
-    package antichess;
+package antichess;
 
 public abstract class Piece {
+
    protected int xPosition;
    protected int yPosition;
    protected char colour;
@@ -38,5 +39,16 @@ public abstract class Piece {
    //Checks if the piece can capture. Not sure how best to implement this.
    //The prototype has the board passed to the method in case that is useful
    //but feel free to rewrite.
-   public abstract boolean isCapturePossible(Board board);
+   public boolean isCapturePossible(Board board) {
+      for (int col = 0; col < 8; col++) {
+         for (int row = 0; row < 8; row++) {
+            if (board.isMoveValid(colour, new Move(xPosition, yPosition, col, row))) {
+               if (board.isMoveCapture(new Move(xPosition, yPosition, col, row))) {
+                  return true;
+               }
+            }
+         }
+      }
+      return false;
+   }
 }

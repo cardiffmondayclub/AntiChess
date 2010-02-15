@@ -33,7 +33,7 @@ public class Rook extends Piece {
        
    }
 
-   public boolean isCapturePossible(Board board) {
-      return true;
-   }
+//   public boolean isCapturePossible(Board board) {
+//      return true;
+//   }
 }
