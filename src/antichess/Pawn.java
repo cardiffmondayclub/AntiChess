@@ -17,7 +17,7 @@ public class Pawn extends Piece {
       return true;
    }
 
-   public boolean isCapturePossible(Board board) {
-      return true;
-   }
+//   public boolean isCapturePossible(Board board) {
+//      return true;
+//   }
 }
