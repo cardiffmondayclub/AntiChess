@@ -96,9 +96,18 @@ public class Main {
                if (currentBoard.isMoveCapture(nextMove)) {
                   return nextMove;
                }
-            } else {
+               else {
+                  System.out.println("You are able capture therefore you must.");
+               }
+
+            }
+            else {
                return nextMove;
             }
+         }
+         else
+         {
+             System.out.println("This move is not valid.");
          }
       }
    }
