@@ -1,8 +1,12 @@
 package antichess;
 
 import java.util.Scanner;
+import java.awt.event.*;
 
 public class Main {
+
+    // MA - new variable to set frame size of the board
+   private static final int FRAME_SIZE = 800;
 
    public static void main(String[] args) {
 
@@ -10,7 +14,8 @@ public class Main {
       char playerColour = selectColour();
 
       //Intialises a new board and stores a reference to it in currentBoard.
-      Board currentBoard = new Board();
+      //MA - added parameter frame_size because the board is now drawn in a frame as well
+      final Board currentBoard = new Board(FRAME_SIZE);
 
       Move nextMove = null;
 
@@ -23,12 +28,35 @@ public class Main {
       //Draws the initial board.
       currentBoard.drawBoard();
 
+      // MA - this piece of code initialises a frame to display the board 
+      // I've left the initial drawBoard() method in and just added this as a visual aid for now
+      // because you can't use it to make a move, it just shows the current board for now
+    
+        currentBoard.addWindowListener(new WindowAdapter()
+   	{
+            @Override
+    		public void windowClosing(WindowEvent we)
+     		{
+                  currentBoard.setVisible(false);
+      		}
+	});
+
+	currentBoard.setSize(FRAME_SIZE, FRAME_SIZE);
+     	currentBoard.setVisible(true);
+
+
+
       //Take special action if the player is white.
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
          nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
          currentBoard.drawBoard();
+
+         // MA - Repaints the board after first move
+         currentBoard.repaint();
+   	 currentBoard.setVisible(true);
+
          sendMove(nextMove);
       }
 
@@ -61,6 +89,10 @@ public class Main {
          //Draw the new board.
          currentBoard.drawBoard();
 
+         // MA - Repaints the board after  each move
+         currentBoard.repaint();
+   	 currentBoard.setVisible(true);
+        
          //Send the move to the server.
          sendMove(nextMove);
       }

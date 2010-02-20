@@ -1,11 +1,18 @@
 package antichess;
 
-public class Board {
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.Font.*;
+
+public class Board extends Frame {
 
    private Piece[][] squares;
+   private double squareSize;
 
-   public Board() {
-      //Initialises the board.
+   public Board(double FRAME_SIZE) {
+       //MA - set square size
+      squareSize = FRAME_SIZE / 10;
+       //Initialises the board.
       squares = new Piece[8][8];
       squares[0][0] = new Rook(0, 0, 'w');
       squares[1][0] = new Knight(1, 0, 'w');
@@ -49,6 +56,52 @@ public class Board {
       System.out.println("  a b c d e f g h ");
       System.out.println();
    }
+
+    // MA - this paint method draws the board in a frame and uses the getAppearance method to show
+    // where each piece is on the board as a red character for now so it can be seen on both the
+    // white and black squares - TODO - change appearance of each piece to an image (possibly)
+    
+    @Override
+    public void paint( Graphics g )
+    {
+        Graphics2D ga = (Graphics2D)g;       
+        for ( int i = 7; i >= 0; i-- )
+        {
+            for ( int j = 7; j >= 0; j-- )
+            {
+                double leftEdge = squareSize * (i + 1);
+                double topEdge = squareSize * (8 - j);
+                Shape square = new Rectangle2D.Double( leftEdge, topEdge, squareSize, squareSize );
+
+                if ( (i + j) % 2 == 0 )     //I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
+                {
+                    ga.setColor( Color.white );
+                    ga.fill( square );                    
+                }
+                else
+                {
+                    ga.setPaint( Color.black );
+                    ga.fill( square );                    
+                }
+                if (squares[i][j] != null)
+                {
+                    char[] appearance = { squares[i][j].getAppearance() };
+                    //MA - Change font size and colour depending on piece colour
+                    if (squares[i][j].colour == 'w')
+                    {                        
+                        ga.setColor(Color.red);
+                        ga.setFont( new Font("ComicSansMS", Font.BOLD, 24) );                        
+                    }
+                    else
+                    {
+                        ga.setColor(Color.blue);
+                        ga.setFont( new Font("ComicSansMS", Font.ITALIC, 24) );                        
+                    }
+                    ga.drawChars(appearance, 0, 1, (int)leftEdge + 35, (int)topEdge + 45);
+                }
+            }
+        }
+    }
 
    public boolean isPathClear(Move move) {
       int xDelta = move.newX - move.oldX;
