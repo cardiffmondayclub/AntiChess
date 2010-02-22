@@ -3,7 +3,11 @@ package antichess;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.Font.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.*;
+import java.io.*;
 
 public class Board extends Frame {
 
@@ -11,15 +15,16 @@ public class Board extends Frame {
    private double squareSize;
    private ArrayList validMoves;
    private ArrayList validCaptures;
-
+   private BufferedImage wTile;
+   private BufferedImage bTile;
 
    public Board(double FRAME_SIZE) {
-       // initialise the array lists
-       validMoves = new ArrayList();
-       validCaptures = new ArrayList();
-       //MA - set square size
+      // initialise the array lists
+      validMoves = new ArrayList();
+      validCaptures = new ArrayList();
+      //MA - set square size
       squareSize = FRAME_SIZE / 10;
-       //Initialises the board.
+      //Initialises the board.
       squares = new Piece[8][8];
       squares[0][0] = new Rook(0, 0, 'w');
       squares[1][0] = new Knight(1, 0, 'w');
@@ -46,6 +51,17 @@ public class Board extends Frame {
       squares[5][7] = new Bishop(5, 7, 'b');
       squares[6][7] = new Knight(6, 7, 'b');
       squares[7][7] = new Rook(7, 7, 'b');
+
+      try {
+         wTile = ImageIO.read(new File("./images/tile_white.png"));
+      } catch (IOException ioe) {
+         System.exit(-1);
+      }
+      try {
+         wTile = ImageIO.read(new File("./images/tile_black.png"));
+      } catch (IOException ioe) {
+         System.exit(-1);
+      }
    }
 
    public void drawBoard() {
@@ -64,51 +80,31 @@ public class Board extends Frame {
       System.out.println();
    }
 
-    // MA - this paint method draws the board in a frame and uses the getAppearance method to show
-    // where each piece is on the board as a red character for now so it can be seen on both the
-    // white and black squares - TODO - change appearance of each piece to an image (possibly)
+   // MA - this paint method draws the board in a frame and uses the getAppearance method to show
+   // where each piece is on the board as a red character for now so it can be seen on both the
+   // white and black squares - TODO - change appearance of each piece to an image (possibly)
+   @Override
+   public void paint(Graphics g) {
+      Graphics2D ga = (Graphics2D) g;
+      for (int i = 7; i >= 0; i--) {
+         for (int j = 7; j >= 0; j--) {
+            double leftEdge = squareSize * (i + 1);
+            double topEdge = squareSize * (8 - j);
 
-    @Override
-    public void paint( Graphics g )
-    {
-        Graphics2D ga = (Graphics2D)g;
-        for ( int i = 7; i >= 0; i-- )
-        {
-            for ( int j = 7; j >= 0; j-- )
+            if ((i + j) % 2 == 1) //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
             {
-                double leftEdge = squareSize * (i + 1);
-                double topEdge = squareSize * (8 - j);
-                Shape square = new Rectangle2D.Double( leftEdge, topEdge, squareSize, squareSize );
+               ga.drawImage(wTile, null, (int) leftEdge, (int) topEdge);
 
-                if ( (i + j) % 2 == 1 )     //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
-                {
-                    ga.setColor( Color.white );
-                    ga.fill( square );
-                }
-                else
-                {
-                    ga.setPaint( Color.black );
-                    ga.fill( square );
-                }
-                if (squares[i][j] != null)
-                {
-                    char[] appearance = { squares[i][j].getAppearance() };
-                    //MA - Change font size and colour depending on piece colour
-                    if (squares[i][j].colour == 'w')
-                    {
-                        ga.setColor(Color.red);
-                        ga.setFont( new Font("ComicSansMS", Font.BOLD, 24) );
-                    }
-                    else
-                    {
-                        ga.setColor(Color.blue);
-                        ga.setFont( new Font("ComicSansMS", Font.ITALIC, 24) );
-                    }
-                    ga.drawChars(appearance, 0, 1, (int)leftEdge + 25, (int)topEdge + 35);
-                }
+            } else {
+               ga.drawImage(bTile, null, (int) leftEdge, (int) topEdge);
             }
-        }
-    }
+
+            if (squares[i][j] != null) {
+               ga.drawImage(squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
+            }
+         }
+      }
+   }
 
    public boolean isPathClear(Move move) {
       int xDelta = move.newX - move.oldX;
@@ -124,7 +120,7 @@ public class Board extends Frame {
          //Path is at least straight or diagonal
          int xIncrement = (move.newX - move.oldX) / steps;
          int yIncrement = (move.newY - move.oldY) / steps;
-         for (int step = 1; step < steps ; step++) {
+         for (int step = 1; step < steps; step++) {
             if (squares[move.oldX + step * xIncrement][move.oldY + step * yIncrement] != null) {
                return false;
             }
@@ -150,8 +146,8 @@ public class Board extends Frame {
       }
 
       //check the destination piece (if any) doesn't belong to the player
-      if (squares[move.newX][move.newY] != null &&
-              squares[move.newX][move.newY].isPlayersPiece(playerColour)) {
+      if (squares[move.newX][move.newY] != null
+              && squares[move.newX][move.newY].isPlayersPiece(playerColour)) {
          return false;
       }
 
@@ -180,41 +176,41 @@ public class Board extends Frame {
    }
 
    public boolean isCapturePossible(char playerColour) {
-       // check if any captures are listed in capture list
-       return (validCaptures.size() > 0);
+      // check if any captures are listed in capture list
+      return (validCaptures.size() > 0);
    }
 
    public void generateMoves(char playerColour) {
-       // reset the ArrayLists
-       validMoves.clear();
-       validCaptures.clear();
+      // reset the ArrayLists
+      validMoves.clear();
+      validCaptures.clear();
 
-       // create tempMove that holds each test move
-       Move testMove;
+      // create tempMove that holds each test move
+      Move testMove;
 
-       // iterate over all moves
-       for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
-           for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
-               for (int destCol = 0; destCol < 8; destCol++) {
-                   for (int destRow = 0; destRow <8; destRow++) {
-                       // initialise testMove
-                       testMove = new Move(sourceCol, sourceRow, destCol, destRow);
+      // iterate over all moves
+      for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
+         for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
+            for (int destCol = 0; destCol < 8; destCol++) {
+               for (int destRow = 0; destRow < 8; destRow++) {
+                  // initialise testMove
+                  testMove = new Move(sourceCol, sourceRow, destCol, destRow);
 
-                       // check move validity
-                       if (this.isMoveValid(playerColour, testMove)) {
-                           // if valid add to valid move list
-                           validMoves.add(testMove);
+                  // check move validity
+                  if (this.isMoveValid(playerColour, testMove)) {
+                     // if valid add to valid move list
+                     validMoves.add(testMove);
 
-                           // check if test move is capture
-                           if (this.isMoveCapture(testMove)) {
-                               validCaptures.add(testMove);
-                           }
-                       }
+                     // check if test move is capture
+                     if (this.isMoveCapture(testMove)) {
+                        validCaptures.add(testMove);
+                     }
+                  }
 
-                   }
                }
-           }
-       }
+            }
+         }
+      }
    }
 
    public char isWon() {
@@ -262,26 +258,31 @@ public class Board extends Frame {
    }
 
    public boolean canMove() {
-       return (validMoves.size() > 0);
+      return (validMoves.size() > 0);
    }
 
    public int isFinished(char playerColour) {
-       int previousMoves = validMoves.size();
+      int previousMoves = validMoves.size();
 
-       if (playerColour == 'b') {
-           this.generateMoves('w');
-       }
-       else if (playerColour == 'w') {
-           this.generateMoves('b');
-       }
-       if (validMoves.size() + previousMoves == 0) {
-           return 1;
-       }
+      if (playerColour == 'b') {
+         this.generateMoves('w');
+      } else if (playerColour == 'w') {
+         this.generateMoves('b');
+      }
+      if (validMoves.size() + previousMoves == 0) {
+         return 1;
+      }
 
-       if (this.isStaleMate()) return 2;
-       if (this.isWon() == 'w') return 3;
-       if (this.isWon() == 'b') return 4;
-       return 0;
+      if (this.isStaleMate()) {
+         return 2;
+      }
+      if (this.isWon() == 'w') {
+         return 3;
+      }
+      if (this.isWon() == 'b') {
+         return 4;
+      }
+      return 0;
 
    }
 }
