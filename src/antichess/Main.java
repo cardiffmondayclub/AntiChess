@@ -93,6 +93,10 @@ public class Main {
              case 4:    System.out.println("Black wins!");
              default:
          }
+
+         // if player cant move then continue to next loop
+         if (!currentBoard.canMove()) continue;
+         
          //Get the next move from the player.
          nextMove = getMove(currentBoard, playerColour);
 

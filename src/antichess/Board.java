@@ -11,22 +11,24 @@ public class Board extends Frame {
    private double squareSize;
    private ArrayList validMoves;
    private ArrayList validCaptures;
+   private ArrayList remainingPieces;
 
 
    public Board(double FRAME_SIZE) {
        // initialise the array lists
        validMoves = new ArrayList();
        validCaptures = new ArrayList();
+       remainingPieces = new ArrayList();
        //MA - set square size
       squareSize = FRAME_SIZE / 10;
        //Initialises the board.
       squares = new Piece[8][8];
       squares[0][0] = new Rook(0, 0, 'w');
       squares[1][0] = new Knight(1, 0, 'w');
-      squares[2][0] = new Bishop(2, 0, 'w');
+      squares[2][0] = new Bishop(2, 0, 'w', 'b');
       squares[3][0] = new Queen(3, 0, 'w');
       squares[4][0] = new King(4, 0, 'w');
-      squares[5][0] = new Bishop(5, 0, 'w');
+      squares[5][0] = new Bishop(5, 0, 'w', 'w');
       squares[6][0] = new Knight(6, 0, 'w');
       squares[7][0] = new Rook(7, 0, 'w');
       for (int i = 0; i < 8; i++) {
@@ -40,10 +42,10 @@ public class Board extends Frame {
       }
       squares[0][7] = new Rook(0, 7, 'b');
       squares[1][7] = new Knight(1, 7, 'b');
-      squares[2][7] = new Bishop(2, 7, 'b');
+      squares[2][7] = new Bishop(2, 7, 'b', 'w');
       squares[3][7] = new Queen(3, 7, 'b');
       squares[4][7] = new King(4, 7, 'b');
-      squares[5][7] = new Bishop(5, 7, 'b');
+      squares[5][7] = new Bishop(5, 7, 'b', 'b');
       squares[6][7] = new Knight(6, 7, 'b');
       squares[7][7] = new Rook(7, 7, 'b');
    }
@@ -195,6 +197,8 @@ public class Board extends Frame {
        // iterate over all moves
        for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
            for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
+               remainingPieces.add(squares[sourceCol][sourceRow]);
+
                for (int destCol = 0; destCol < 8; destCol++) {
                    for (int destRow = 0; destRow <8; destRow++) {
                        // initialise testMove
@@ -258,6 +262,72 @@ public class Board extends Frame {
        *   --- we can continue adding scenarios to this list, and then code each
        *   one as an if statement.
        */
+
+       int bPawns = 0, bRooks = 0, bKnights = 0, 
+               bBishopBlack = 0, bBishopWhite = 0, bQueens = 0, bKings = 0;
+       int wPawns = 0, wRooks = 0, wKnights = 0,
+               wBishopBlack = 0, wBishopWhite = 0, wQueens = 0, wKings = 0;
+
+       for(int i = 0; i < remainingPieces.size(); i++)
+       {
+            if(((Piece)remainingPieces.get(i)).pieceColour() == 'w'
+                    && remainingPieces.get(i) instanceof Piece) {
+                if(remainingPieces.get(i) instanceof Pawn ) {
+                   wPawns++;
+                }
+                else if(remainingPieces.get(i) instanceof Rook) {
+                   wRooks++;
+                }
+                else if(remainingPieces.get(i) instanceof Knight) {
+                   wKnights++;
+                }
+                else if(remainingPieces.get(i) instanceof Queen) {
+                   wQueens++;
+                }
+                else if(remainingPieces.get(i) instanceof King) {
+                   wKings++;
+                }
+                else if(remainingPieces.get(i) instanceof Bishop) {
+                   if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'w') {
+                      wBishopWhite++;
+                   }
+                   else if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'b') {
+                      wBishopBlack++;
+                   }
+                }
+            }
+            else if(((Piece)remainingPieces.get(i)).pieceColour() == 'b'
+                    && remainingPieces.get(i) instanceof Piece) {
+                if(remainingPieces.get(i) instanceof Pawn ) {
+                   bPawns++;
+                }
+                else if(remainingPieces.get(i) instanceof Rook) {
+                   bRooks++;
+                }
+                else if(remainingPieces.get(i) instanceof Knight) {
+                   bKnights++;
+                }
+                else if(remainingPieces.get(i) instanceof Queen) {
+                   bQueens++;
+                }
+                else if(remainingPieces.get(i) instanceof King) {
+                   bKings++;
+                }
+                else if(remainingPieces.get(i) instanceof Bishop) {
+                   if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'w') {
+                      bBishopWhite++;
+                   }
+                   else if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'b') {
+                      bBishopBlack++;
+                   }
+                }
+            }
+       }
+
+       // test for opposite bishops remaining
+       if (remainingPieces.size() == 2 && (bBishopBlack + wBishopWhite == 2 || wBishopBlack + bBishopWhite == 2) ) {
+          return true;
+       }
       return false;
    }
 

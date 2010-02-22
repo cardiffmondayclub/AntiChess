@@ -1,8 +1,15 @@
 package antichess;
 
 public class Bishop extends Piece {
-   public Bishop(int posX, int posY, char newColour) {
+   private char squareColour;
+   
+   public Bishop(int posX, int posY, char newColour, char squareC) {
       super(posX, posY, newColour);
+      squareColour = squareC;
+   }
+
+   public char getSquareColour() {
+      return squareColour;
    }
 
    public char getAppearance() {
