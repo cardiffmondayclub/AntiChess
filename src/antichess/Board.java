@@ -229,7 +229,7 @@ public class Board extends Frame {
       int blackCount = 0;
       for (int i = 0; i < 8; i++) {
          for (int j = 0; j < 8; j++) {
-            if (squares[i][j] == null) {
+            if (squares[i][j] != null) {
                if (squares[i][j].pieceColour() == 'w') {
                   whiteCount++;
                } else {
