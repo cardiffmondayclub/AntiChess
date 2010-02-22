@@ -58,7 +58,7 @@ public class Board extends Frame {
          System.exit(-1);
       }
       try {
-         wTile = ImageIO.read(new File("./images/tile_black.png"));
+         bTile = ImageIO.read(new File("./images/tile_black.png"));
       } catch (IOException ioe) {
          System.exit(-1);
       }
