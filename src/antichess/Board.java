@@ -3,11 +3,15 @@ package antichess;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.Font.*;
+import java.util.ArrayList;
 
 public class Board extends Frame {
 
    private Piece[][] squares;
    private double squareSize;
+   private ArrayList validMoves;
+   private ArrayList validCaptures;
+
 
    public Board(double FRAME_SIZE) {
        //MA - set square size
@@ -173,22 +177,41 @@ public class Board extends Frame {
    }
 
    public boolean isCapturePossible(char playerColour) {
-      //TO DO
-      //Bit of a placeholder.
-      //Currently loops over all squares, checks if it belongs to the player
-      //and checks if so checks if the piece can capture. Obviously if any piece
-      //can capture the answer is true so it can return straight away.
+       // check if any captures are listed in capture list
+       return (validCaptures.size() > 0);
+   }
 
-      for (int col = 0; col < 8; col++) {
-         for (int row = 0; row < 8; row++) {
-            if (squares[col][row] != null && squares[col][row].isPlayersPiece(playerColour)) {
-               if (squares[col][row].isCapturePossible(this)) {
-                  return true;
+   public void generateMoves(char playerColour) {
+       // reset the ArrayLists
+       validMoves.clear();
+       validCaptures.clear();
+
+       // create tempMove that holds each test move
+       Move testMove;
+
+       // iterate over all moves
+       for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
+           for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
+               for (int destCol = 0; destCol < 8; destCol++) {
+                   for (int destRow = 0; destRow <8; destRow++) {
+                       // initialise testMove
+                       testMove = new Move(sourceCol, sourceRow, destCol, destRow);
+                       
+                       // check move validity
+                       if (this.isMoveValid(playerColour, testMove)) {
+                           // if valid add to valid move list
+                           validMoves.add(testMove);
+                           
+                           // check if test move is capture
+                           if (this.isMoveCapture(testMove)) {
+                               validCaptures.add(testMove);
+                           }
+                       }
+
+                   }
                }
-            }
-         }
-      }
-      return false;
+           }
+       }
    }
 
    public char isWon() {

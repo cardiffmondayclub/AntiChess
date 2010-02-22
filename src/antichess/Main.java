@@ -49,6 +49,8 @@ public class Main {
       //Take special action if the player is white.
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
+         // store valid moves and captures
+         currentBoard.generateMoves(playerColour);
          nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
          currentBoard.drawBoard();
@@ -79,6 +81,9 @@ public class Main {
          } else {
             playerColour = 'b';
          }
+         
+         // store valid moves and captures
+         currentBoard.generateMoves(playerColour);
 
          //Get the next move from the player.
          nextMove = getMove(currentBoard, playerColour);
