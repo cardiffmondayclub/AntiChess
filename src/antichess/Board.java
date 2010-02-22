@@ -73,7 +73,7 @@ public class Board extends Frame {
                 double topEdge = squareSize * (8 - j);
                 Shape square = new Rectangle2D.Double( leftEdge, topEdge, squareSize, squareSize );
 
-                if ( (i + j) % 2 == 0 )     //I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
+                if ( (i + j) % 2 == 1 )     //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
                 {
                     ga.setColor( Color.white );
                     ga.fill( square );                    
