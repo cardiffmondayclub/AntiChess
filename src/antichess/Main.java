@@ -111,12 +111,16 @@ public class Main {
          switch (end) {
             case 1:
                System.out.println("Neither of you can move so its stalemate!");
+               break;
             case 2:
                System.out.println("Neither of you can win so its stalemate!");
+               break;
             case 3:
                System.out.println("White wins!");
+               break;
             case 4:
                System.out.println("Black wins!");
+               break;
             default:
          }
       }
