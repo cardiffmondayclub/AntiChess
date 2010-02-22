@@ -248,6 +248,7 @@ public class Board extends Frame {
    }
 
    public boolean isStaleMate() {
+      return false;
       //TO DO
       //Apart from the whole bishops on different colour squares I'm not sure
       //what needs checking.
@@ -263,72 +264,72 @@ public class Board extends Frame {
        *   one as an if statement.
        */
 
-       int bPawns = 0, bRooks = 0, bKnights = 0, 
-               bBishopBlack = 0, bBishopWhite = 0, bQueens = 0, bKings = 0;
-       int wPawns = 0, wRooks = 0, wKnights = 0,
-               wBishopBlack = 0, wBishopWhite = 0, wQueens = 0, wKings = 0;
-
-       for(int i = 0; i < remainingPieces.size(); i++)
-       {
-            if(((Piece)remainingPieces.get(i)).pieceColour() == 'w'
-                    && remainingPieces.get(i) instanceof Piece) {
-                if(remainingPieces.get(i) instanceof Pawn ) {
-                   wPawns++;
-                }
-                else if(remainingPieces.get(i) instanceof Rook) {
-                   wRooks++;
-                }
-                else if(remainingPieces.get(i) instanceof Knight) {
-                   wKnights++;
-                }
-                else if(remainingPieces.get(i) instanceof Queen) {
-                   wQueens++;
-                }
-                else if(remainingPieces.get(i) instanceof King) {
-                   wKings++;
-                }
-                else if(remainingPieces.get(i) instanceof Bishop) {
-                   if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'w') {
-                      wBishopWhite++;
-                   }
-                   else if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'b') {
-                      wBishopBlack++;
-                   }
-                }
-            }
-            else if(((Piece)remainingPieces.get(i)).pieceColour() == 'b'
-                    && remainingPieces.get(i) instanceof Piece) {
-                if(remainingPieces.get(i) instanceof Pawn ) {
-                   bPawns++;
-                }
-                else if(remainingPieces.get(i) instanceof Rook) {
-                   bRooks++;
-                }
-                else if(remainingPieces.get(i) instanceof Knight) {
-                   bKnights++;
-                }
-                else if(remainingPieces.get(i) instanceof Queen) {
-                   bQueens++;
-                }
-                else if(remainingPieces.get(i) instanceof King) {
-                   bKings++;
-                }
-                else if(remainingPieces.get(i) instanceof Bishop) {
-                   if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'w') {
-                      bBishopWhite++;
-                   }
-                   else if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'b') {
-                      bBishopBlack++;
-                   }
-                }
-            }
-       }
-
-       // test for opposite bishops remaining
-       if (remainingPieces.size() == 2 && (bBishopBlack + wBishopWhite == 2 || wBishopBlack + bBishopWhite == 2) ) {
-          return true;
-       }
-      return false;
+//       int bPawns = 0, bRooks = 0, bKnights = 0,
+//               bBishopBlack = 0, bBishopWhite = 0, bQueens = 0, bKings = 0;
+//       int wPawns = 0, wRooks = 0, wKnights = 0,
+//               wBishopBlack = 0, wBishopWhite = 0, wQueens = 0, wKings = 0;
+//
+//       for(int i = 0; i < remainingPieces.size(); i++)
+//       {
+//            if(((Piece)remainingPieces.get(i)).pieceColour() == 'w'
+//                    && remainingPieces.get(i) instanceof Piece) {
+//                if(remainingPieces.get(i) instanceof Pawn ) {
+//                   wPawns++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Rook) {
+//                   wRooks++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Knight) {
+//                   wKnights++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Queen) {
+//                   wQueens++;
+//                }
+//                else if(remainingPieces.get(i) instanceof King) {
+//                   wKings++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Bishop) {
+//                   if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'w') {
+//                      wBishopWhite++;
+//                   }
+//                   else if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'b') {
+//                      wBishopBlack++;
+//                   }
+//                }
+//            }
+//            else if(((Piece)remainingPieces.get(i)).pieceColour() == 'b'
+//                    && remainingPieces.get(i) instanceof Piece) {
+//                if(remainingPieces.get(i) instanceof Pawn ) {
+//                   bPawns++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Rook) {
+//                   bRooks++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Knight) {
+//                   bKnights++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Queen) {
+//                   bQueens++;
+//                }
+//                else if(remainingPieces.get(i) instanceof King) {
+//                   bKings++;
+//                }
+//                else if(remainingPieces.get(i) instanceof Bishop) {
+//                   if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'w') {
+//                      bBishopWhite++;
+//                   }
+//                   else if( ((Bishop)remainingPieces.get(i)).getSquareColour() == 'b') {
+//                      bBishopBlack++;
+//                   }
+//                }
+//            }
+//       }
+//
+//       // test for opposite bishops remaining
+//       if (remainingPieces.size() == 2 && (bBishopBlack + wBishopWhite == 2 || wBishopBlack + bBishopWhite == 2) ) {
+//          return true;
+//       }
+//      return false;
    }
 
    public boolean canMove() {
