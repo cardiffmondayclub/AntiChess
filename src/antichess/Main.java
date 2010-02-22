@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class Main {
 
     // MA - new variable to set frame size of the board
-   private static final int FRAME_SIZE = 800;
+   private static final int FRAME_SIZE = 600;
 
    public static void main(String[] args) {
 

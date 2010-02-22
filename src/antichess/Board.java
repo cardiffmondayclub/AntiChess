@@ -97,7 +97,7 @@ public class Board extends Frame {
                         ga.setColor(Color.blue);
                         ga.setFont( new Font("ComicSansMS", Font.ITALIC, 24) );                        
                     }
-                    ga.drawChars(appearance, 0, 1, (int)leftEdge + 35, (int)topEdge + 45);
+                    ga.drawChars(appearance, 0, 1, (int)leftEdge + 25, (int)topEdge + 35);
                 }
             }
         }
