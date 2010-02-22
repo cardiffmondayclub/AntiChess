@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public class Main {
 
-    // MA - new variable to set frame size of the board
+   // MA - new variable to set frame size of the board
    private static final int FRAME_SIZE = 600;
 
    public static void main(String[] args) {
@@ -32,17 +32,16 @@ public class Main {
       // I've left the initial drawBoard() method in and just added this as a visual aid for now
       // because you can't use it to make a move, it just shows the current board for now
 
-        currentBoard.addWindowListener(new WindowAdapter()
-   	{
-            @Override
-    		public void windowClosing(WindowEvent we)
-     		{
-                  currentBoard.setVisible(false);
-      		}
-	});
+      currentBoard.addWindowListener(new WindowAdapter() {
 
-	currentBoard.setSize(FRAME_SIZE, FRAME_SIZE);
-     	currentBoard.setVisible(true);
+         @Override
+         public void windowClosing(WindowEvent we) {
+            currentBoard.setVisible(false);
+         }
+      });
+
+      currentBoard.setSize(FRAME_SIZE, FRAME_SIZE);
+      currentBoard.setVisible(true);
 
 
 
@@ -56,9 +55,11 @@ public class Main {
          currentBoard.makeMove(nextMove);
          currentBoard.drawBoard();
 
+         int end = currentBoard.isFinished(playerColour);
+
          // MA - Repaints the board after first move
          currentBoard.repaint();
-   	 currentBoard.setVisible(true);
+         currentBoard.setVisible(true);
 
          sendMove(nextMove);
       }
@@ -84,19 +85,11 @@ public class Main {
          }
 
 
-         int end = currentBoard.isFinished(playerColour);
-
-         switch(end) {
-             case 1:    System.out.println("Neither of you can move so its stalemate!");
-             case 2:    System.out.println("Neither of you can win so its stalemate!");
-             case 3:    System.out.println("White wins!");
-             case 4:    System.out.println("Black wins!");
-             default:
+         // if player cant move then continue to next loop
+         if (!currentBoard.canMove()) {
+            continue;
          }
 
-         // if player cant move then continue to next loop
-         if (!currentBoard.canMove()) continue;
-         
          //Get the next move from the player.
          nextMove = getMove(currentBoard, playerColour);
 
@@ -108,10 +101,24 @@ public class Main {
 
          // MA - Repaints the board after  each move
          currentBoard.repaint();
-   	 currentBoard.setVisible(true);
+         currentBoard.setVisible(true);
 
          //Send the move to the server.
          sendMove(nextMove);
+         
+         int end = currentBoard.isFinished(playerColour);
+
+         switch (end) {
+            case 1:
+               System.out.println("Neither of you can move so its stalemate!");
+            case 2:
+               System.out.println("Neither of you can win so its stalemate!");
+            case 3:
+               System.out.println("White wins!");
+            case 4:
+               System.out.println("Black wins!");
+            default:
+         }
       }
    }
 
@@ -144,19 +151,29 @@ public class Main {
             if (captureRequired) {
                if (currentBoard.isMoveCapture(nextMove)) {
                   return nextMove;
-               }
-               else {
+               } else {
                   System.out.println("You are able capture therefore you must.");
+                  for (int i = 0; i < currentBoard.validCaptures.size(); i++) {
+                     System.out.print(((Move) currentBoard.validCaptures.get(i)).oldX + 1);
+                     System.out.print(((Move) currentBoard.validCaptures.get(i)).oldY + 1);
+                     System.out.print(((Move) currentBoard.validCaptures.get(i)).newX + 1);
+                     System.out.print(((Move) currentBoard.validCaptures.get(i)).newY + 1);
+                     System.out.println();
+                  }
                }
 
-            }
-            else {
+            } else {
                return nextMove;
             }
-         }
-         else
-         {
-             System.out.println("This move is not valid.");
+         } else {
+            System.out.println("This move is not valid.");
+            for (int i = 0; i < currentBoard.validMoves.size(); i++) {
+               System.out.print(((Move) currentBoard.validMoves.get(i)).oldX + 1);
+               System.out.print(((Move) currentBoard.validMoves.get(i)).oldY + 1);
+               System.out.print(((Move) currentBoard.validMoves.get(i)).newX + 1);
+               System.out.print(((Move) currentBoard.validMoves.get(i)).newY + 1);
+               System.out.println();
+            }
          }
       }
    }
@@ -171,15 +188,15 @@ public class Main {
       //with the correct values.
       //e.g a4b5 should convert to Move(0, 3, 1, 4)
 
-     char move1 =  move.charAt(0);
-     char move2 =  move.charAt(1);
-     char move3 =  move.charAt(2);
-     char move4 =  move.charAt(3);
+      char move1 = move.charAt(0);
+      char move2 = move.charAt(1);
+      char move3 = move.charAt(2);
+      char move4 = move.charAt(3);
 
-     int intInput1 = (int)move1-97;
-     int intInput2 = (int)move2-49;
-     int intInput3 = (int)move3-97;
-     int intInput4 = (int)move4-49;
+      int intInput1 = (int) move1 - 97;
+      int intInput2 = (int) move2 - 49;
+      int intInput3 = (int) move3 - 97;
+      int intInput4 = (int) move4 - 49;
 
 
       return new Move(intInput1, intInput2, intInput3, intInput4);

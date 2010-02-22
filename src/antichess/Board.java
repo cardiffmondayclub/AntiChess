@@ -13,8 +13,8 @@ public class Board extends Frame {
 
    private Piece[][] squares;
    private double squareSize;
-   private ArrayList validMoves;
-   private ArrayList validCaptures;
+   public ArrayList validMoves;
+   public ArrayList validCaptures;
    private ArrayList remainingPieces;
 
    private BufferedImage wTile;
