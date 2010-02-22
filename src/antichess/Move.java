@@ -1,6 +1,7 @@
 package antichess;
 
 public class Move {
+
    int oldX;
    int oldY;
    int newX;

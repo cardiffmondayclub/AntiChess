@@ -38,19 +38,4 @@ public abstract class Piece {
    //could be used here.
    public abstract boolean isMoveValid(Board board, Move move);
 
-   //Checks if the piece can capture. Not sure how best to implement this.
-   //The prototype has the board passed to the method in case that is useful
-   //but feel free to rewrite.
-   public boolean isCapturePossible(Board board) {
-      for (int col = 0; col < 8; col++) {
-         for (int row = 0; row < 8; row++) {
-            if (board.isMoveValid(colour, new Move(xPosition, yPosition, col, row))) {
-               if (board.isMoveCapture(new Move(xPosition, yPosition, col, row))) {
-                  return true;
-               }
-            }
-         }
-      }
-      return false;
-   }
 }

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Knight extends Piece {
+
    public Knight(int posX, int posY, char newColour) {
       super(posX, posY, newColour);
    }
@@ -20,52 +21,48 @@ public class Knight extends Piece {
       }
    }
 
-    public BufferedImage getImage() {
-        if (this.colour == 'b') {
-            try {
-                img = ImageIO.read(new File("./images/Black_knight.png"));
+   public BufferedImage getImage() {
+      if (this.colour == 'b') {
+         try {
+            img = ImageIO.read(new File("./images/Black_knight.png"));
 
-            } catch (IOException ex) {
-                Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
-                img = null;
-            }
+         } catch (IOException ex) {
+            Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
+            img = null;
+         }
 
-        } else {
-            try {
-                img = ImageIO.read(new File("./images/White_knight.png"));
+      } else {
+         try {
+            img = ImageIO.read(new File("./images/White_knight.png"));
 
-            } catch (IOException ex) {
-                Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
-                img = null;
-            }
-        }
-        return img;
+         } catch (IOException ex) {
+            Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
+            img = null;
+         }
+      }
+      return img;
 
-
-    }
-
-   public boolean isMoveValid(Board board, Move move) {
-       int newX = move.newX;
-       int newY = move.newY;
-       int oldX = move.oldX;
-       int oldY = move.oldY;
-
-       int xDiff = Math.abs(oldX - newX);  // number of squares moved in x
-       int yDiff = Math.abs(oldY - newY);  // number of squares moved in y
-
-       /* if number of squares moved in x and y totals 3, and squares 
-          moved in x direc is either 1 or 2, then return true */
-       if ( (xDiff + yDiff == 3) && ((xDiff == 1) || (xDiff == 2)) )
-       {
-           return true;
-       }
-       else
-       {
-           return false;
-       }
 
    }
 
+   public boolean isMoveValid(Board board, Move move) {
+      int newX = move.newX;
+      int newY = move.newY;
+      int oldX = move.oldX;
+      int oldY = move.oldY;
+
+      int xDiff = Math.abs(oldX - newX);  // number of squares moved in x
+      int yDiff = Math.abs(oldY - newY);  // number of squares moved in y
+
+      /* if number of squares moved in x and y totals 3, and squares
+      moved in x direc is either 1 or 2, then return true */
+      if ((xDiff + yDiff == 3) && ((xDiff == 1) || (xDiff == 2))) {
+         return true;
+      } else {
+         return false;
+      }
+
+   }
 //   public boolean isCapturePossible(Board board) {
 //      return true;
 //   }
