@@ -50,7 +50,8 @@ public class Main {
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
          // store valid moves and captures
-         currentBoard.generateMoves(playerColour);
+
+
          nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
          currentBoard.drawBoard();
@@ -82,9 +83,16 @@ public class Main {
             playerColour = 'b';
          }
          
-         // store valid moves and captures
-         currentBoard.generateMoves(playerColour);
 
+         int end = currentBoard.isFinished(playerColour);
+
+         switch(end) {
+             case 1:    System.out.println("Neither of you can move so its stalemate!");
+             case 2:    System.out.println("Neither of you can win so its stalemate!");
+             case 3:    System.out.println("White wins!");
+             case 4:    System.out.println("Black wins!");
+             default:
+         }
          //Get the next move from the player.
          nextMove = getMove(currentBoard, playerColour);
 

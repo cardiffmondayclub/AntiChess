@@ -260,4 +260,28 @@ public class Board extends Frame {
        */
       return false;
    }
+
+   public boolean canMove() {
+       return (validMoves.size() > 0);
+   }
+
+   public int isFinished(char playerColour) {
+       int previousMoves = validMoves.size();
+
+       if (playerColour == 'b') {
+           this.generateMoves('w');
+       }
+       else if (playerColour == 'w') {
+           this.generateMoves('b');
+       }
+       if (validMoves.size() + previousMoves == 0) {
+           return 1;
+       }
+
+       if (this.isStaleMate()) return 2;
+       if (this.isWon() == 'w') return 3;
+       if (this.isWon() == 'b') return 4;
+       return 0;
+
+   }
 }
