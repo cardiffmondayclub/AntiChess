@@ -67,11 +67,11 @@ public class Board extends Frame {
     // MA - this paint method draws the board in a frame and uses the getAppearance method to show
     // where each piece is on the board as a red character for now so it can be seen on both the
     // white and black squares - TODO - change appearance of each piece to an image (possibly)
-    
+
     @Override
     public void paint( Graphics g )
     {
-        Graphics2D ga = (Graphics2D)g;       
+        Graphics2D ga = (Graphics2D)g;
         for ( int i = 7; i >= 0; i-- )
         {
             for ( int j = 7; j >= 0; j-- )
@@ -83,26 +83,26 @@ public class Board extends Frame {
                 if ( (i + j) % 2 == 1 )     //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
                 {
                     ga.setColor( Color.white );
-                    ga.fill( square );                    
+                    ga.fill( square );
                 }
                 else
                 {
                     ga.setPaint( Color.black );
-                    ga.fill( square );                    
+                    ga.fill( square );
                 }
                 if (squares[i][j] != null)
                 {
                     char[] appearance = { squares[i][j].getAppearance() };
                     //MA - Change font size and colour depending on piece colour
                     if (squares[i][j].colour == 'w')
-                    {                        
+                    {
                         ga.setColor(Color.red);
-                        ga.setFont( new Font("ComicSansMS", Font.BOLD, 24) );                        
+                        ga.setFont( new Font("ComicSansMS", Font.BOLD, 24) );
                     }
                     else
                     {
                         ga.setColor(Color.blue);
-                        ga.setFont( new Font("ComicSansMS", Font.ITALIC, 24) );                        
+                        ga.setFont( new Font("ComicSansMS", Font.ITALIC, 24) );
                     }
                     ga.drawChars(appearance, 0, 1, (int)leftEdge + 25, (int)topEdge + 35);
                 }
@@ -199,12 +199,12 @@ public class Board extends Frame {
                    for (int destRow = 0; destRow <8; destRow++) {
                        // initialise testMove
                        testMove = new Move(sourceCol, sourceRow, destCol, destRow);
-                       
+
                        // check move validity
                        if (this.isMoveValid(playerColour, testMove)) {
                            // if valid add to valid move list
                            validMoves.add(testMove);
-                           
+
                            // check if test move is capture
                            if (this.isMoveCapture(testMove)) {
                                validCaptures.add(testMove);
@@ -259,5 +259,29 @@ public class Board extends Frame {
        *   one as an if statement.
        */
       return false;
+   }
+
+   public boolean canMove() {
+       return (validMoves.size() > 0);
+   }
+
+   public int isFinished(char playerColour) {
+       int previousMoves = validMoves.size();
+
+       if (playerColour == 'b') {
+           this.generateMoves('w');
+       }
+       else if (playerColour == 'w') {
+           this.generateMoves('b');
+       }
+       if (validMoves.size() + previousMoves == 0) {
+           return 1;
+       }
+
+       if (this.isStaleMate()) return 2;
+       if (this.isWon() == 'w') return 3;
+       if (this.isWon() == 'b') return 4;
+       return 0;
+
    }
 }
