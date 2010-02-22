@@ -23,7 +23,7 @@ public class Main {
       //Connect to a server using the colour to determine which port to use.
       //The connection will need to be stored somewhere.
       //Send and receive might need separate connections.
-      //I'll look into this. MCS
+      //I'll look into this. MCS.
 
       //Draws the initial board.
       currentBoard.drawBoard();
