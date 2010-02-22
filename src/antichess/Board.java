@@ -14,6 +14,9 @@ public class Board extends Frame {
 
 
    public Board(double FRAME_SIZE) {
+       // initialise the array lists
+       validMoves = new ArrayList();
+       validCaptures = new ArrayList();
        //MA - set square size
       squareSize = FRAME_SIZE / 10;
        //Initialises the board.
