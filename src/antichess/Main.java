@@ -46,8 +46,6 @@ public class Main {
       currentBoard.setSize(FRAME_SIZE, FRAME_SIZE);
       currentBoard.setVisible(true);
 
-
-
       //Take special action if the player is white.
       //Basically just get a valid move, then make it and send to the server.
       if (playerColour == 'w') {
