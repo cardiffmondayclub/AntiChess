@@ -138,26 +138,6 @@ public class Board extends Frame{
       }
    }
 
-   public void makePiece(int column, int row, int pieceName, char playerColour)
-   {
-      switch (pieceName) {
-         case PAWN: squares[column][row] = new Pawn(column, row, playerColour);
-            break;
-         case KNIGHT: squares[column][row] = new Knight(column, row, playerColour);
-            break;
-         case BISHOP: squares[column][row] = new Bishop(column, row, playerColour);
-            break;
-         case ROOK: squares[column][row] = new Rook(column, row, playerColour);
-            break;
-         case QUEEN: squares[column][row] = new Queen(column, row, playerColour);
-            break;
-         case KING: squares[column][row] = new King(column, row, playerColour);
-            break;
-         default : squares[column][row] = null;
-            break;
-      }
-   }
-
    public Board(double frameSize, int testNumber)
    {
       this(frameSize);  // Inherit code from first Board constructor
@@ -177,6 +157,26 @@ public class Board extends Frame{
          squares[0][5] = new Pawn(0,5,'w');
          squares[0][6] = new Pawn(0,6,'b');
          squares[7][3] = new Pawn(7,3, 'w');
+      }
+   }
+
+   public void makePiece(int column, int row, int pieceName, char playerColour)
+   {
+      switch (pieceName) {
+         case PAWN: squares[column][row] = new Pawn(column, row, playerColour);
+            break;
+         case KNIGHT: squares[column][row] = new Knight(column, row, playerColour);
+            break;
+         case BISHOP: squares[column][row] = new Bishop(column, row, playerColour);
+            break;
+         case ROOK: squares[column][row] = new Rook(column, row, playerColour);
+            break;
+         case QUEEN: squares[column][row] = new Queen(column, row, playerColour);
+            break;
+         case KING: squares[column][row] = new King(column, row, playerColour);
+            break;
+         default : squares[column][row] = null;
+            break;
       }
    }
 
