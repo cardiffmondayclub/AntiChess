@@ -177,6 +177,13 @@ public class Board extends Frame {
 
       //Updates the Piece instances position values
       squares[move.newX][move.newY].setPosition(move.newX, move.newY);
+
+      //Crude first draft of pawn promotion code
+      //Assumes the player wants a queen
+      if ((move.newY == 7 || move.newX == 0) && squares[move.newX][move.newY] instanceof Pawn) {
+         char colour = squares[move.newX][move.newY].pieceColour();
+         squares[move.newX][move.newX] = new Queen(move.newX, move.newY, colour);
+      }
    }
 
    public boolean isCapturePossible(char playerColour) {
