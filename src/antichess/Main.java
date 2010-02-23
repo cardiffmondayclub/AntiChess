@@ -7,10 +7,7 @@ public class Main {
 
    // MA - new variable to set frame size of the board
    private static final int FRAME_SIZE = 600;
-   private static final int LOCKED_STALEMATE = 1;
-   private static final int DERIVED_STALEMATE = 2;
-   private static final int WHITE_WINS = 3;
-   private static final int BLACK_WINS = 4;
+
 
    public static void main(String[] args) {
 
@@ -114,16 +111,16 @@ public class Main {
          int end = currentBoard.isFinished(playerColour);
 
          switch (end) {
-            case LOCKED_STALEMATE:
+            case Board.LOCKED_STALEMATE:
                System.out.println("Neither of you can move so its stalemate!");
                break;
-            case DERIVED_STALEMATE:
+            case Board.DERIVED_STALEMATE:
                System.out.println("Neither of you can win so its stalemate!");
                break;
-            case WHITE_WINS:
+            case Board.WHITE_WINS:
                System.out.println("White wins!");
                break;
-            case BLACK_WINS:
+            case Board.BLACK_WINS:
                System.out.println("Black wins!");
                break;
             default:
