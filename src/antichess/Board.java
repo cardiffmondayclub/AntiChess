@@ -89,8 +89,8 @@ public class Board extends Frame{
       addMouseListener(listener);
 
       // initialise the array lists
-      validMoves = new ArrayList();
-      validCaptures = new ArrayList();
+      validMoves = new ArrayList<Move>();
+      validCaptures = new ArrayList<Move>();
       remainingPieces = new ArrayList();
       //MA - set square size
 
@@ -138,30 +138,39 @@ public class Board extends Frame{
       }
    }
 
-   public Board(double frameSize, int testNumber)
-   {
+   public Board(double frameSize, int testNumber)  {
       this(frameSize);  // Inherit code from first Board constructor
 
+      // wipe board
       for(int col = 0; col < 8; col++) {
          for(int row = 0; row < 8; row++) {
             squares[col][row] = null;
          }
-      }
-      if(testNumber == 1) // Test for locked stalemate
+      }      boolean squaresSameColour = true;
+
+      switch(testNumber)
       {
-         squares[0][1] = new Pawn(0,1,'w');
-         squares[0][3] = new Pawn(0,3,'b');
-      }
-      if(testNumber == 2) // Test for locked for one player
-      {
-         squares[0][5] = new Pawn(0,5,'w');
-         squares[0][6] = new Pawn(0,6,'b');
-         squares[7][3] = new Pawn(7,3, 'w');
+         case 1:  // Test for locked stalemate
+                  makePiece(0, 1, PAWN, 'w');
+                  makePiece(0, 3, PAWN, 'b');
+                  break;
+         case 2:  // Test for lock for one player
+                  makePiece(0, 5, PAWN, 'w');
+                  makePiece(0, 6, PAWN, 'b');
+                  makePiece(7, 3, PAWN, 'w');
+                  break;
+         case 3:  // Test for lock with contrasting bishops remaining
+                  makePiece(0, 3, PAWN, 'w');
+                  makePiece(0, 5, PAWN, 'b');
+                  makePiece(2, 3, PAWN, 'w');
+                  makePiece(2, 4, PAWN, 'b');
+                  makePiece(1, 0, BISHOP, 'w');
+                  makePiece(7, 7, BISHOP, 'b');
+                  break;
       }
    }
 
-   public void makePiece(int column, int row, int pieceName, char playerColour)
-   {
+   public void makePiece(int column, int row, int pieceName, char playerColour) {
       switch (pieceName) {
          case PAWN: squares[column][row] = new Pawn(column, row, playerColour);
             break;
@@ -307,6 +316,7 @@ public class Board extends Frame{
       // reset the ArrayLists
       validMoves.clear();
       validCaptures.clear();
+      remainingPieces.clear();
 
       // create tempMove that holds each test move
       Move testMove;
@@ -314,8 +324,12 @@ public class Board extends Frame{
       // iterate over all moves
       for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
          for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
-            remainingPieces.add(squares[sourceCol][sourceRow]);
 
+            if(squares[sourceCol][sourceRow] != null) {
+               if(squares[sourceCol][sourceRow].pieceColour() == playerColour) {
+                  remainingPieces.add(squares[sourceCol][sourceRow]);
+               }
+            }
             for (int destCol = 0; destCol < 8; destCol++) {
                for (int destRow = 0; destRow < 8; destRow++) {
                   // initialise testMove
@@ -365,7 +379,86 @@ public class Board extends Frame{
    }
 
    public boolean isStaleMate() {
-      return false;
+      boolean singleStartSquare = true;
+      boolean freeBishop = true;
+      char whiteBishopColour = '0';
+      char blackBishopColour = '0';
+
+
+      int bBishopX = 0, bBishopY = 0, wBishopX = 0, wBishopY = 0;
+
+      // do tests for both players
+      for(int i = 0; i < 2; i++)
+      {
+         char playerColour = 'w';
+         if (i == 1) playerColour = 'b';
+
+         generateMoves(playerColour);
+         if(this.validMoves.size() <= 0) continue;
+
+
+         int firstX = ((Move)(this.validMoves.get(0))).oldX;
+         int firstY = ((Move)(this.validMoves.get(0))).oldY;
+
+         // check that player can only move one piece
+         for(int j = 1; j < this.validMoves.size(); j++)
+         {
+            int nextX = ((Move)(this.validMoves.get(j))).oldX;
+            int nextY = ((Move)(this.validMoves.get(j))).oldY;
+            if( nextX != firstX || nextY != firstY) singleStartSquare = false;
+         }
+
+
+         // check that all the player's pieces are on the same coloured squares
+         char prevSquareColour = ((Piece)(this.remainingPieces.get(0))).getSquareColour();
+
+         for(int j = 1; j < this.remainingPieces.size(); j++)
+         {
+            char nextSquareColour = ((Piece)(this.remainingPieces.get(j))).getSquareColour();
+
+            if( nextSquareColour != prevSquareColour ) return false;
+
+            prevSquareColour = nextSquareColour;
+         }
+
+         // check whether movable piece is a bishop
+         if(!(squares[firstX][firstY] instanceof Bishop)) freeBishop = false;
+
+         // Clumsy bit of code that checks that the bishops aren't blocking the pawns
+         if(playerColour == 'b' && firstY > 0 &&
+                 squares[firstX][firstY-1] instanceof Pawn && squares[firstX][firstY-1].pieceColour() == 'w') {
+            return false;
+         }
+         if(playerColour == 'w' && firstY < 7 &&
+                 squares[firstX][firstY+1] instanceof Pawn && squares[firstX][firstY+1].pieceColour() == 'b') {
+            return false;
+         }
+
+         /* If either player can move more than one piece, or the piece
+             they can move isn't a bishop then return false */
+         if(singleStartSquare == false || freeBishop == false) return false;
+
+         if(playerColour == 'w')
+         {
+            wBishopX = firstX;
+            wBishopY = firstY;
+            whiteBishopColour = squares[wBishopX][wBishopY].getSquareColour();
+         }
+         else if(playerColour == 'b')
+         {
+            bBishopX = firstX;
+            bBishopY = firstY;
+            blackBishopColour = squares[bBishopX][bBishopY].getSquareColour();
+         }
+      }
+
+      // return false if the opposing bishops are on the same colour square
+      if(whiteBishopColour != '0' && blackBishopColour != '0') {
+         if(whiteBishopColour == blackBishopColour) return false;
+      }
+      
+
+      return true;
    }
 
    public boolean canMove() {

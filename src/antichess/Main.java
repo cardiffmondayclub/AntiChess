@@ -29,7 +29,7 @@ public class Main {
       //I'll look into this. MCS.
 
       //Draws the initial board.
-      currentBoard.drawBoard();
+      //currentBoard.drawBoard();
 
       // MA - this piece of code initialises a frame to display the board
       // I've left the initial drawBoard() method in and just added this as a visual aid for now
@@ -54,7 +54,7 @@ public class Main {
 
          nextMove = getMove(currentBoard, playerColour);
          currentBoard.makeMove(nextMove);
-         currentBoard.drawBoard();
+         // currentBoard.drawBoard();
 
          int end = currentBoard.isFinished(playerColour);
 
@@ -86,7 +86,7 @@ public class Main {
             playerColour = 'b';
          }
 
-
+         currentBoard.generateMoves(playerColour);
          // if player cant move then continue to next loop
          if (currentBoard.canMove()) {
 
@@ -98,7 +98,7 @@ public class Main {
             currentBoard.makeMove(nextMove);
 
             //Draw the new board.
-            currentBoard.drawBoard();
+            // currentBoard.drawBoard();
 
             // MA - Repaints the board after  each move
             currentBoard.repaint();
