@@ -234,7 +234,7 @@ public class Board extends Frame{
       //Assumes the player wants a queen
       if ((move.newY == 7 || move.newY == 0) && squares[move.newX][move.newY] instanceof Pawn) {
          char colour = squares[move.newX][move.newY].pieceColour();
-         squares[move.newX][move.newX] = new Queen(move.newX, move.newY, colour);
+         squares[move.newX][move.newY] = new Queen(move.newX, move.newY, colour);
       }
    }
 
