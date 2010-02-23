@@ -3,7 +3,7 @@ package antichess;
 import java.util.Scanner;
 import java.awt.event.*;
 
-public class Main {
+public class Main{
 
    // MA - new variable to set frame size of the board
    private static final int FRAME_SIZE = 600;
@@ -182,7 +182,7 @@ public class Main {
       }
    }
 
-   public static Move getInput(Board currentBoard) {
+   public static Move getInput(Board currentBoard){
       /* Manual Input version
       Scanner in = new Scanner(System.in);
       System.out.println("Please enter your next move");
@@ -205,8 +205,12 @@ public class Main {
 
       return new Move(intInput1, intInput2, intInput3, intInput4);
       */
-
-      return currentBoard.getMove();
+      try {
+         return currentBoard.getMove();
+      } catch (InterruptedException e) {
+         System.exit(-1);
+         return null;
+      }
    }
 
    public static void sendMove(Move move) {
