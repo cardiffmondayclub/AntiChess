@@ -150,7 +150,7 @@ public class Main {
       boolean captureRequired = currentBoard.isCapturePossible(playerColour);
 
       while (true) {
-         Move nextMove = getInput();
+         Move nextMove = getInput(currentBoard);
          if (currentBoard.isMoveValid(playerColour, nextMove)) {
             if (captureRequired) {
                if (currentBoard.isMoveCapture(nextMove)) {
@@ -182,7 +182,8 @@ public class Main {
       }
    }
 
-   public static Move getInput() {
+   public static Move getInput(Board currentBoard) {
+      /* Manual Input version
       Scanner in = new Scanner(System.in);
       System.out.println("Please enter your next move");
       String move = in.nextLine();
@@ -202,8 +203,10 @@ public class Main {
       int intInput3 = (int) move3 - 97;
       int intInput4 = (int) move4 - 49;
 
-
       return new Move(intInput1, intInput2, intInput3, intInput4);
+      */
+
+      return currentBoard.getMove();
    }
 
    public static void sendMove(Move move) {

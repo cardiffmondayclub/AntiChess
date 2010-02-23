@@ -9,18 +9,71 @@ import java.util.ArrayList;
 import javax.imageio.*;
 import java.io.*;
 
-public class Board extends Frame {
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class Board extends Frame{
 
    private Piece[][] squares;
    private double squareSize;
    public ArrayList validMoves;
    public ArrayList validCaptures;
    private ArrayList remainingPieces;
-
    private BufferedImage wTile;
    private BufferedImage bTile;
 
+   //Testing mouse clicking stuff
+   public Move mouseClick;
+   private int firstX;
+   private int firstY;
+   private boolean secondClick;
+   private boolean returnMove;
+
+   public Move getMove() throws InterruptedException {
+      while (true) {
+         if (returnMove == true) {
+            //System.out.println("ready to return");
+            break;
+         }
+         Thread.sleep(200);
+      }
+      returnMove = false;
+      return mouseClick;
+   }
+
+   //Testing mouse clicking stuff. MCS
+   private class MouseClickListener extends MouseAdapter {
+
+      public void mouseClicked(MouseEvent event) {
+         int x = event.getX()/60-1;
+         int y = 9 - event.getY()/60-1;
+         System.out.println(x);
+         System.out.println(y);
+
+         if (secondClick == true) {
+            //do stuff if it is the second click
+            //System.out.println("Working on the second click");
+            secondClick = false;
+            mouseClick = new Move(firstX, firstY, x, y);
+            returnMove = true;
+            //System.out.println("mouseClick should now be non null");
+         } else {
+            //do stuff if it is the first click
+            firstX = x;
+            firstY = y;
+            secondClick = true;
+         }
+      }
+   }
+
    public Board(double FRAME_SIZE) {
+      //Testing mouse clicking stuff. MCS
+      mouseClick = null;
+      secondClick = false;
+      returnMove = false;
+      MouseClickListener listener = new MouseClickListener();
+      addMouseListener(listener);
+
       // initialise the array lists
       validMoves = new ArrayList();
       validCaptures = new ArrayList();
@@ -150,8 +203,7 @@ public class Board extends Frame {
       }
 
       //check the destination piece (if any) doesn't belong to the player
-      if (squares[move.newX][move.newY] != null
-              && squares[move.newX][move.newY].isPlayersPiece(playerColour)) {
+      if (squares[move.newX][move.newY] != null && squares[move.newX][move.newY].isPlayersPiece(playerColour)) {
          return false;
       }
 
@@ -193,40 +245,39 @@ public class Board extends Frame {
 
    public void generateMoves(char playerColour) {
 
-       // reset the ArrayLists
-       validMoves.clear();
-       validCaptures.clear();
+      // reset the ArrayLists
+      validMoves.clear();
+      validCaptures.clear();
 
-       // create tempMove that holds each test move
-       Move testMove;
+      // create tempMove that holds each test move
+      Move testMove;
 
-       // iterate over all moves
-       for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
-           for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
-               remainingPieces.add(squares[sourceCol][sourceRow]);
+      // iterate over all moves
+      for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
+         for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
+            remainingPieces.add(squares[sourceCol][sourceRow]);
 
-               for (int destCol = 0; destCol < 8; destCol++) {
-                   for (int destRow = 0; destRow <8; destRow++) {
-                       // initialise testMove
-                       testMove = new Move(sourceCol, sourceRow, destCol, destRow);
-                       
-                       // check move validity
-                       if (this.isMoveValid(playerColour, testMove)) {
-                           // if valid add to valid move list
-                           validMoves.add(testMove);
-                           
-                           // check if test move is capture
-                           if (this.isMoveCapture(testMove)) {
-                               validCaptures.add(testMove);
-                           }
-                       }
+            for (int destCol = 0; destCol < 8; destCol++) {
+               for (int destRow = 0; destRow < 8; destRow++) {
+                  // initialise testMove
+                  testMove = new Move(sourceCol, sourceRow, destCol, destRow);
 
-                   }
+                  // check move validity
+                  if (this.isMoveValid(playerColour, testMove)) {
+                     // if valid add to valid move list
+                     validMoves.add(testMove);
+
+                     // check if test move is capture
+                     if (this.isMoveCapture(testMove)) {
+                        validCaptures.add(testMove);
+                     }
+                  }
+
                }
             }
          }
       }
- 
+   }
 
    public char isWon() {
       //Horribly crude function to check if there are zero black or zero white
