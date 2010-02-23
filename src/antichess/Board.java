@@ -29,6 +29,12 @@ public class Board extends Frame{
    private boolean secondClick;
    private boolean returnMove;
 
+   // End-game cases
+   public static final int LOCKED_STALEMATE = 1;
+   public static final int DERIVED_STALEMATE = 2;
+   public static final int WHITE_WINS = 3;
+   public static final int BLACK_WINS = 4;
+
    public Move getMove() throws InterruptedException {
       while (true) {
          if (returnMove == true) {
@@ -322,17 +328,17 @@ public class Board extends Frame{
          this.generateMoves('b');
       }
       if (validMoves.size() + previousMoves == 0) {
-         return 1;
+         return LOCKED_STALEMATE;
       }
 
       if (this.isStaleMate()) {
-         return 2;
+         return DERIVED_STALEMATE;
       }
       if (this.isWon() == 'w') {
-         return 3;
+         return WHITE_WINS;
       }
       if (this.isWon() == 'b') {
-         return 4;
+         return BLACK_WINS;
       }
       return 0;
 

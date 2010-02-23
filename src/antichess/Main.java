@@ -3,10 +3,13 @@ package antichess;
 import java.util.Scanner;
 import java.awt.event.*;
 
-public class Main{
+public class Main {
 
    // MA - new variable to set frame size of the board
    private static final int FRAME_SIZE = 600;
+
+   private static boolean gameRunning = true;
+
 
    public static void main(String[] args) {
 
@@ -64,7 +67,8 @@ public class Main{
          sendMove(nextMove);
       }
 
-      while (true) {
+
+      while (gameRunning) {
          //Receives the next move from the server.
          //if (receiveMove(nextMove) == false) {
          //   break;
@@ -86,40 +90,45 @@ public class Main{
 
 
          // if player cant move then continue to next loop
-         if (!currentBoard.canMove()) {
-            continue;
+         if (currentBoard.canMove()) {
+
+
+            //Get the next move from the player.
+            nextMove = getMove(currentBoard, playerColour);
+
+            //Make the move specified by the player.
+            currentBoard.makeMove(nextMove);
+
+            //Draw the new board.
+            currentBoard.drawBoard();
+
+            // MA - Repaints the board after  each move
+            currentBoard.repaint();
+            currentBoard.setVisible(true);
+
+            //Send the move to the server.
+            sendMove(nextMove);
+
          }
 
-         //Get the next move from the player.
-         nextMove = getMove(currentBoard, playerColour);
-
-         //Make the move specified by the player.
-         currentBoard.makeMove(nextMove);
-
-         //Draw the new board.
-         currentBoard.drawBoard();
-
-         // MA - Repaints the board after  each move
-         currentBoard.repaint();
-         currentBoard.setVisible(true);
-
-         //Send the move to the server.
-         sendMove(nextMove);
-         
          int end = currentBoard.isFinished(playerColour);
 
          switch (end) {
-            case 1:
+            case Board.LOCKED_STALEMATE:
                System.out.println("Neither of you can move so its stalemate!");
+               gameRunning = false;
                break;
-            case 2:
+            case Board.DERIVED_STALEMATE:
                System.out.println("Neither of you can win so its stalemate!");
+               gameRunning = false;
                break;
-            case 3:
+            case Board.WHITE_WINS:
                System.out.println("White wins!");
+               gameRunning = false;
                break;
-            case 4:
+            case Board.BLACK_WINS:
                System.out.println("Black wins!");
+               gameRunning = false;
                break;
             default:
          }
@@ -182,7 +191,7 @@ public class Main{
       }
    }
 
-   public static Move getInput(Board currentBoard){
+   public static Move getInput(Board currentBoard) {
       /* Manual Input version
       Scanner in = new Scanner(System.in);
       System.out.println("Please enter your next move");
@@ -204,7 +213,7 @@ public class Main{
       int intInput4 = (int) move4 - 49;
 
       return new Move(intInput1, intInput2, intInput3, intInput4);
-      */
+       */
       try {
          return currentBoard.getMove();
       } catch (InterruptedException e) {
@@ -221,9 +230,9 @@ public class Main{
       toServer += Integer.toString(move.newX);
       toServer += Integer.toString(move.newY);
 
-      //TO DO
-      //Now send the string toServer to the server. The server will probably
-      //have to be passed to the function.
+   //TO DO
+   //Now send the string toServer to the server. The server will probably
+   //have to be passed to the function.
    }
 
    public static boolean receiveMove(Move move) {
