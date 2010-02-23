@@ -35,7 +35,7 @@ public class Board extends Frame{
             //System.out.println("ready to return");
             break;
          }
-         Thread.sleep(200);
+         Thread.sleep(50);
       }
       returnMove = false;
       return mouseClick;
@@ -47,8 +47,8 @@ public class Board extends Frame{
       public void mouseClicked(MouseEvent event) {
          int x = event.getX()/60-1;
          int y = 9 - event.getY()/60-1;
-         System.out.println(x);
-         System.out.println(y);
+         //System.out.println(x);
+         //System.out.println(y);
 
          if (secondClick == true) {
             //do stuff if it is the second click
@@ -232,7 +232,7 @@ public class Board extends Frame{
 
       //Crude first draft of pawn promotion code
       //Assumes the player wants a queen
-      if ((move.newY == 7 || move.newX == 0) && squares[move.newX][move.newY] instanceof Pawn) {
+      if ((move.newY == 7 || move.newY == 0) && squares[move.newX][move.newY] instanceof Pawn) {
          char colour = squares[move.newX][move.newY].pieceColour();
          squares[move.newX][move.newX] = new Queen(move.newX, move.newY, colour);
       }
