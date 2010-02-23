@@ -35,6 +35,14 @@ public class Board extends Frame{
    public static final int WHITE_WINS = 3;
    public static final int BLACK_WINS = 4;
 
+   // Ints that represent pieces
+   private static final int PAWN = 1;
+   private static final int KNIGHT = 2;
+   private static final int BISHOP = 3;
+   private static final int ROOK = 4;
+   private static final int QUEEN = 5;
+   private static final int KING = 6;
+
    public Move getMove() throws InterruptedException {
       while (true) {
          if (returnMove == true) {
@@ -89,31 +97,34 @@ public class Board extends Frame{
       squareSize = FRAME_SIZE / 10;
       //Initialises the board.
       squares = new Piece[8][8];
-      squares[0][0] = new Rook(0, 0, 'w');
-      squares[1][0] = new Knight(1, 0, 'w');
-      squares[2][0] = new Bishop(2, 0, 'w', 'b');
-      squares[3][0] = new Queen(3, 0, 'w');
-      squares[4][0] = new King(4, 0, 'w');
-      squares[5][0] = new Bishop(5, 0, 'w', 'w');
-      squares[6][0] = new Knight(6, 0, 'w');
-      squares[7][0] = new Rook(7, 0, 'w');
+
+      makePiece(0, 0, ROOK, 'w');
+      makePiece(1, 0, KNIGHT, 'w');
+      makePiece(2, 0, BISHOP, 'w');
+      makePiece(3, 0, QUEEN, 'w');
+      makePiece(4, 0, KING, 'w');
+      makePiece(5, 0, BISHOP, 'w');
+      makePiece(6, 0, KNIGHT, 'w');
+      makePiece(7, 0, ROOK, 'w');
+
       for (int i = 0; i < 8; i++) {
-         squares[i][1] = new Pawn(i, 1, 'w');
-         squares[i][6] = new Pawn(i, 6, 'b');
+         makePiece(i, 1, PAWN, 'w' );
+         makePiece(i, 6, PAWN, 'b' );
       }
       for (int i = 0; i < 8; i++) {
          for (int j = 2; i < 6; i++) {
             squares[i][j] = null;
          }
       }
-      squares[0][7] = new Rook(0, 7, 'b');
-      squares[1][7] = new Knight(1, 7, 'b');
-      squares[2][7] = new Bishop(2, 7, 'b', 'w');
-      squares[3][7] = new Queen(3, 7, 'b');
-      squares[4][7] = new King(4, 7, 'b');
-      squares[5][7] = new Bishop(5, 7, 'b', 'b');
-      squares[6][7] = new Knight(6, 7, 'b');
-      squares[7][7] = new Rook(7, 7, 'b');
+
+      makePiece(0, 7, ROOK, 'b');
+      makePiece(1, 7, KNIGHT, 'b');
+      makePiece(2, 7, BISHOP, 'b');
+      makePiece(3, 7, QUEEN, 'b');
+      makePiece(4, 7, KING, 'b');
+      makePiece(5, 7, BISHOP, 'b');
+      makePiece(6, 7, KNIGHT, 'b');
+      makePiece(7, 7, ROOK, 'b');
 
       try {
          wTile = ImageIO.read(new File("./images/tile_white.png"));
@@ -124,6 +135,48 @@ public class Board extends Frame{
          bTile = ImageIO.read(new File("./images/tile_black.png"));
       } catch (IOException ioe) {
          System.exit(-1);
+      }
+   }
+
+   public void makePiece(int column, int row, int pieceName, char playerColour)
+   {
+      switch (pieceName) {
+         case PAWN: squares[column][row] = new Pawn(column, row, playerColour);
+            break;
+         case KNIGHT: squares[column][row] = new Knight(column, row, playerColour);
+            break;
+         case BISHOP: squares[column][row] = new Bishop(column, row, playerColour);
+            break;
+         case ROOK: squares[column][row] = new Rook(column, row, playerColour);
+            break;
+         case QUEEN: squares[column][row] = new Queen(column, row, playerColour);
+            break;
+         case KING: squares[column][row] = new King(column, row, playerColour);
+            break;
+         default : squares[column][row] = null;
+            break;
+      }
+   }
+
+   public Board(double frameSize, int testNumber)
+   {
+      this(frameSize);  // Inherit code from first Board constructor
+
+      for(int col = 0; col < 8; col++) {
+         for(int row = 0; row < 8; row++) {
+            squares[col][row] = null;
+         }
+      }
+      if(testNumber == 1) // Test for locked stalemate
+      {
+         squares[0][1] = new Pawn(0,1,'w');
+         squares[0][3] = new Pawn(0,3,'b');
+      }
+      if(testNumber == 2) // Test for locked for one player
+      {
+         squares[0][5] = new Pawn(0,5,'w');
+         squares[0][6] = new Pawn(0,6,'b');
+         squares[7][3] = new Pawn(7,3, 'w');
       }
    }
 

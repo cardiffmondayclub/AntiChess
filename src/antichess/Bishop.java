@@ -11,9 +11,8 @@ public class Bishop extends Piece {
 
    private char squareColour;
    
-   public Bishop(int posX, int posY, char newColour, char squareC) {
+   public Bishop(int posX, int posY, char newColour) {
       super(posX, posY, newColour);
-      squareColour = squareC;
    }
 
    public char getSquareColour() {
