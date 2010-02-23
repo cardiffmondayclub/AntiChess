@@ -171,13 +171,13 @@ public class Main{
             }
          } else {
             System.out.println("This move is not valid.");
-            for (int i = 0; i < currentBoard.validMoves.size(); i++) {
-               System.out.print(((Move) currentBoard.validMoves.get(i)).oldX + 1);
-               System.out.print(((Move) currentBoard.validMoves.get(i)).oldY + 1);
-               System.out.print(((Move) currentBoard.validMoves.get(i)).newX + 1);
-               System.out.print(((Move) currentBoard.validMoves.get(i)).newY + 1);
-               System.out.println();
-            }
+//            for (int i = 0; i < currentBoard.validMoves.size(); i++) {
+//               System.out.print(((Move) currentBoard.validMoves.get(i)).oldX + 1);
+//               System.out.print(((Move) currentBoard.validMoves.get(i)).oldY + 1);
+//               System.out.print(((Move) currentBoard.validMoves.get(i)).newX + 1);
+//               System.out.print(((Move) currentBoard.validMoves.get(i)).newY + 1);
+//               System.out.println();
+//            }
          }
       }
    }
