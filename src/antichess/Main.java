@@ -8,6 +8,8 @@ public class Main {
    // MA - new variable to set frame size of the board
    private static final int FRAME_SIZE = 600;
 
+   private static boolean gameRunning = true;
+
 
    public static void main(String[] args) {
 
@@ -65,7 +67,8 @@ public class Main {
          sendMove(nextMove);
       }
 
-      while (true) {
+
+      while (gameRunning) {
          //Receives the next move from the server.
          //if (receiveMove(nextMove) == false) {
          //   break;
@@ -113,15 +116,19 @@ public class Main {
          switch (end) {
             case Board.LOCKED_STALEMATE:
                System.out.println("Neither of you can move so its stalemate!");
+               gameRunning = false;
                break;
             case Board.DERIVED_STALEMATE:
                System.out.println("Neither of you can win so its stalemate!");
+               gameRunning = false;
                break;
             case Board.WHITE_WINS:
                System.out.println("White wins!");
+               gameRunning = false;
                break;
             case Board.BLACK_WINS:
                System.out.println("Black wins!");
+               gameRunning = false;
                break;
             default:
          }
