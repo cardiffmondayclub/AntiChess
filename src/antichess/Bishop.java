@@ -8,15 +8,9 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Bishop extends Piece {
-
-   private char squareColour;
    
    public Bishop(int posX, int posY, char newColour) {
       super(posX, posY, newColour);
-   }
-
-   public char getSquareColour() {
-      return squareColour;
    }
 
    public char getAppearance() {

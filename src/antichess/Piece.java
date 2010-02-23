@@ -6,6 +6,7 @@ public abstract class Piece {
    protected int yPosition;
    protected char colour;
    protected BufferedImage img;
+   private char squareColour;
 
    public Piece(int posX, int posY, char newColour) {
       xPosition = posX;
@@ -26,6 +27,19 @@ public abstract class Piece {
    public boolean isPlayersPiece(char playerColour) {
       //Pretty self explanatory.
       return playerColour == colour;
+   }
+
+   // Returns the colour of the square that the piece is on
+   public char getSquareColour() {
+      if ((this.xPosition + this.yPosition) % 2 == 1)
+      {
+           squareColour = 'w';
+      }
+      else
+      {
+           squareColour = 'b';
+      }
+      return squareColour;
    }
 
    //The idea is to return a character that can be used by the current
