@@ -22,6 +22,9 @@ public abstract class Piece
 		yPosition = posY;
 		colour = newColour;
 
+		//This centralises the image loading and ensures it only happens once on
+		//creation of the piece. If we rename the image files we could make this
+		//even more concise but I'm not sure if it's worth it. MCS
 		String tempColour;
 		if (this.colour == 'b') {
 			tempColour = "Black";
