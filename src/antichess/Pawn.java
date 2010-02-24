@@ -49,50 +49,31 @@ public class Pawn extends Piece
 		if (this.colour == 'w' && oldY == 1) {
 			if (yDiff <= 2 && yDiff > 0 && xDiff == 0 && board.isPathClear(move)) {
 				return true;
-
-
 			} else {
 				return false;
-
-
 			}
 		} else if (this.colour == 'b' && oldY == 6) {
 			if (yDiff >= -2 && yDiff < 0 && xDiff == 0 && board.isPathClear(move)) {
 				return true;
-
-
 			} else {
 				return false;
-
-
 			}
 		} // other case
 		else if (this.colour == 'w') {
 			if (xDiff == 0 && yDiff == 1) {
 				return true;
-
-
 			} else {
 				return false;
-
-
 			}
 		} else if (this.colour == 'b') {
 			if (xDiff == 0 && yDiff == -1) {
 				return true;
-
-
 			} else {
 				return false;
-
-
 			}
 		}
 
 		return true;
 
 	}
-//   public boolean isCapturePossible(Board board) {
-//      return true;
-//   }
 }

@@ -32,7 +32,4 @@ public class Knight extends Piece {
       }
 
    }
-//   public boolean isCapturePossible(Board board) {
-//      return true;
-//   }
 }

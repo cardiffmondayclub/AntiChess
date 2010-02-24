@@ -29,7 +29,4 @@ public class King extends Piece {
          return true;
       }
    }
-//   public boolean isCapturePossible(Board board) {
-//      return true;
-//   }
 }

@@ -35,7 +35,4 @@ public class Bishop extends Piece {
 
 
    }
-//   public boolean isCapturePossible(Board board) {
-//      return true;
-//   }
 }
