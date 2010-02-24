@@ -1,16 +1,9 @@
 package antichess;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-
 public class Bishop extends Piece {
    
    public Bishop(int posX, int posY, char newColour) {
-      super(posX, posY, newColour);
+      super(posX, posY, newColour, "bishop");
    }
 
    public char getAppearance() {
@@ -19,30 +12,6 @@ public class Bishop extends Piece {
       } else {
          return 'B';
       }
-   }
-
-   public BufferedImage getImage() {
-      if (this.colour == 'b') {
-         try {
-            img = ImageIO.read(new File("./images/Black_bishop.png"));
-
-         } catch (IOException ex) {
-            Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
-            img = null;
-         }
-
-      } else {
-         try {
-            img = ImageIO.read(new File("./images/White_bishop.png"));
-
-         } catch (IOException ex) {
-            Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
-            img = null;
-         }
-      }
-      return img;
-
-
    }
 
    public boolean isMoveValid(Board board, Move move) {

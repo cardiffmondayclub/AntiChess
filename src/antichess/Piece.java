@@ -1,55 +1,82 @@
 package antichess;
+
 import java.awt.image.*;
-public abstract class Piece {
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
-   protected int xPosition;
-   protected int yPosition;
-   protected char colour;
-   protected BufferedImage img;
-   private char squareColour;
+public abstract class Piece
+{
 
-   public Piece(int posX, int posY, char newColour) {
-      xPosition = posX;
-      yPosition = posY;
-      colour = newColour;
-   }
+	protected int xPosition;
+	protected int yPosition;
+	protected char colour;
+	protected BufferedImage img;
+	private char squareColour;
 
-   public void setPosition(int posX, int posY) {
-      xPosition = posX;
-      yPosition = posY;
-   }
+	public Piece(int posX, int posY, char newColour, String fileName)
+	{
+		xPosition = posX;
+		yPosition = posY;
+		colour = newColour;
 
-   public char pieceColour() {
-      //Pretty self explanatory.
-      return colour;
-   }
+		String tempColour;
+		if (this.colour == 'b') {
+			tempColour = "Black";
+		} else {
+			tempColour = "White";
+		}
 
-   public boolean isPlayersPiece(char playerColour) {
-      //Pretty self explanatory.
-      return playerColour == colour;
-   }
+		try {
+			img = ImageIO.read(new File("./images/" + tempColour + "_" + fileName + ".png"));
+		} catch (IOException ex) {
+			Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
+			img = null;
+		}
+	}
 
-   // Returns the colour of the square that the piece is on
-   public char getSquareColour() {
-      if ((this.xPosition + this.yPosition) % 2 == 1)
-      {
-           squareColour = 'w';
-      }
-      else
-      {
-           squareColour = 'b';
-      }
-      return squareColour;
-   }
+	public BufferedImage getImage()
+	{
+		return img;
+	}
 
-   //The idea is to return a character that can be used by the current
-   //drawBoard() function. For example the white king might return 'K' and the
-   //black king return 'k'.
-   public abstract char getAppearance();
-   public abstract BufferedImage getImage();
+	public void setPosition(int posX, int posY)
+	{
+		xPosition = posX;
+		yPosition = posY;
+	}
 
-   //Checks if a move is valid. I'm hoping the Board.isPathClear() function
-   //could be used here.
-   public abstract boolean isMoveValid(Board board, Move move);
+	public char pieceColour()
+	{
+		//Pretty self explanatory.
+		return colour;
+	}
 
+	public boolean isPlayersPiece(char playerColour)
+	{
+		//Pretty self explanatory.
+		return playerColour == colour;
+	}
+
+	// Returns the colour of the square that the piece is on
+	public char getSquareColour()
+	{
+		if ((this.xPosition + this.yPosition) % 2 == 1) {
+			squareColour = 'w';
+		} else {
+			squareColour = 'b';
+		}
+		return squareColour;
+	}
+
+	//The idea is to return a character that can be used by the current
+	//drawBoard() function. For example the white king might return 'K' and the
+	//black king return 'k'.
+	public abstract char getAppearance();
+
+	//Checks if a move is valid. I'm hoping the Board.isPathClear() function
+	//could be used here.
+	public abstract boolean isMoveValid(Board board, Move move);
 }
