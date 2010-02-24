@@ -22,7 +22,7 @@ public class Board extends Frame{
    private BufferedImage wTile;
    private BufferedImage bTile;
 
-   //Testing mouse clicking stuff.
+   //Testing mouse clicking stuff. MCS
    public Move mouseClick;
    private int firstX;
    private int firstY;
