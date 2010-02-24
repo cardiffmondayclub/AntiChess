@@ -165,10 +165,10 @@ public class Main {
                } else {
                   System.out.println("You are able capture therefore you must.");
                   for (int i = 0; i < currentBoard.validCaptures.size(); i++) {
-                     System.out.print(((Move) currentBoard.validCaptures.get(i)).oldX + 1);
-                     System.out.print(((Move) currentBoard.validCaptures.get(i)).oldY + 1);
-                     System.out.print(((Move) currentBoard.validCaptures.get(i)).newX + 1);
-                     System.out.print(((Move) currentBoard.validCaptures.get(i)).newY + 1);
+                     System.out.print(currentBoard.validCaptures.get(i).oldX + 1);
+                     System.out.print(currentBoard.validCaptures.get(i).oldY + 1);
+                     System.out.print(currentBoard.validCaptures.get(i).newX + 1);
+                     System.out.print(currentBoard.validCaptures.get(i).newY + 1);
                      System.out.println();
                   }
                }

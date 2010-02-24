@@ -16,9 +16,9 @@ public class Board extends Frame{
 
    private Piece[][] squares;
    private double squareSize;
-   public ArrayList validMoves;
-   public ArrayList validCaptures;
-   private ArrayList remainingPieces;
+   public ArrayList<Move> validMoves;
+   public ArrayList<Move> validCaptures;
+   private ArrayList<Piece> remainingPieces;
    private BufferedImage wTile;
    private BufferedImage bTile;
 
@@ -91,7 +91,7 @@ public class Board extends Frame{
       // initialise the array lists
       validMoves = new ArrayList<Move>();
       validCaptures = new ArrayList<Move>();
-      remainingPieces = new ArrayList();
+      remainingPieces = new ArrayList<Piece>();
       //MA - set square size
 
       squareSize = FRAME_SIZE / 10;
@@ -397,24 +397,24 @@ public class Board extends Frame{
          if(this.validMoves.size() <= 0) continue;
 
 
-         int firstX = ((Move)(this.validMoves.get(0))).oldX;
-         int firstY = ((Move)(this.validMoves.get(0))).oldY;
+         int firstX = this.validMoves.get(0).oldX;
+         int firstY = this.validMoves.get(0).oldY;
 
          // check that player can only move one piece
          for(int j = 1; j < this.validMoves.size(); j++)
          {
-            int nextX = ((Move)(this.validMoves.get(j))).oldX;
-            int nextY = ((Move)(this.validMoves.get(j))).oldY;
+            int nextX = this.validMoves.get(j).oldX;
+            int nextY = this.validMoves.get(j).oldY;
             if( nextX != firstX || nextY != firstY) singleStartSquare = false;
          }
 
 
          // check that all the player's pieces are on the same coloured squares
-         char prevSquareColour = ((Piece)(this.remainingPieces.get(0))).getSquareColour();
+         char prevSquareColour = this.remainingPieces.get(0).getSquareColour();
 
          for(int j = 1; j < this.remainingPieces.size(); j++)
          {
-            char nextSquareColour = ((Piece)(this.remainingPieces.get(j))).getSquareColour();
+            char nextSquareColour = this.remainingPieces.get(j).getSquareColour();
 
             if( nextSquareColour != prevSquareColour ) return false;
 
