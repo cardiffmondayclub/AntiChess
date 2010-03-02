@@ -380,29 +380,11 @@ public class Board extends Frame {
    }
 
    public char isWon() {
-      //Horribly crude function to check if there are zero black or zero white
-      //pieces. Returns ' ' if both players still have pieces, 'w' if white has
-      //no pieces and 'b' if black has no pieces.
-      int whiteCount = 0;
-      int blackCount = 0;
-      for (int i = 0; i < 8; i++) {
-         for (int j = 0; j < 8; j++) {
-            if (squares[i][j] != null) {
-               if (squares[i][j].pieceColour() == 'w') {
-                  whiteCount++;
-               } else {
-                  blackCount++;
-               }
-            }
-         }
-      }
-      if (blackCount == 0) {
-         return 'b';
-      } else if (whiteCount == 0) {
-         return 'w';
-      } else {
-         return ' ';
-      }
+      generateMoves('b');
+      if(remainingPieces.size() == 0) return 'b';
+      generateMoves('w');
+      if(remainingPieces.size() == 0) return 'w';
+      return ' ';
    }
 
    public boolean isStaleMate() {
@@ -484,15 +466,12 @@ public class Board extends Frame {
             blackBishopColour = squares[bBishopX][bBishopY].getSquareColour();
          }
       }
-
       // return false if the opposing bishops are on the same colour square
       if (whiteBishopColour != '0' && blackBishopColour != '0') {
          if (whiteBishopColour == blackBishopColour) {
             return false;
          }
       }
-
-
       return true;
    }
 
