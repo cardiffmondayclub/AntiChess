@@ -12,7 +12,7 @@ import java.io.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Board extends Frame{
+public class Board extends Frame {
 
    private Piece[][] squares;
    private double squareSize;
@@ -21,20 +21,18 @@ public class Board extends Frame{
    private ArrayList<Piece> remainingPieces;
    private BufferedImage wTile;
    private BufferedImage bTile;
-
    //Testing mouse clicking stuff. MCS
    public Move mouseClick;
    private int firstX;
    private int firstY;
    private boolean secondClick;
    private boolean returnMove;
-
+   private boolean refreshBoard;
    // End-game cases
    public static final int LOCKED_STALEMATE = 1;
    public static final int DERIVED_STALEMATE = 2;
    public static final int WHITE_WINS = 3;
    public static final int BLACK_WINS = 4;
-
    // Ints that represent pieces
    private static final int PAWN = 1;
    private static final int KNIGHT = 2;
@@ -45,11 +43,15 @@ public class Board extends Frame{
 
    public Move getMove() throws InterruptedException {
       while (true) {
+         if (refreshBoard == true) {
+            this.repaint();
+            refreshBoard = false;
+         }
          if (returnMove == true) {
             //System.out.println("ready to return");
             break;
          }
-         Thread.sleep(50);
+         Thread.sleep(10);
       }
       returnMove = false;
       return mouseClick;
@@ -59,8 +61,8 @@ public class Board extends Frame{
    private class MouseClickListener extends MouseAdapter {
 
       public void mouseClicked(MouseEvent event) {
-         int x = event.getX()/60-1;
-         int y = 9 - event.getY()/60-1;
+         int x = event.getX() / 60 - 1;
+         int y = 9 - event.getY() / 60 - 1;
          //System.out.println(x);
          //System.out.println(y);
 
@@ -68,14 +70,24 @@ public class Board extends Frame{
             //do stuff if it is the second click
             //System.out.println("Working on the second click");
             secondClick = false;
-            mouseClick = new Move(firstX, firstY, x, y);
-            returnMove = true;
-            //System.out.println("mouseClick should now be non null");
+            if (firstX != x || firstY != y) {
+               //do stuff if the user clicks in the same square twice
+               mouseClick = new Move(firstX, firstY, x, y);
+               firstX = -1;
+               firstY = -1;
+               refreshBoard = true;
+               returnMove = true;
+            } else {
+               firstX = -1;
+               firstY = -1;
+               refreshBoard = true;
+            }
          } else {
             //do stuff if it is the first click
             firstX = x;
             firstY = y;
             secondClick = true;
+            refreshBoard = true;
          }
       }
    }
@@ -85,6 +97,9 @@ public class Board extends Frame{
       mouseClick = null;
       secondClick = false;
       returnMove = false;
+      refreshBoard = false;
+      firstX = -1;
+      firstY = -1;
       MouseClickListener listener = new MouseClickListener();
       addMouseListener(listener);
 
@@ -108,8 +123,8 @@ public class Board extends Frame{
       makePiece(7, 0, ROOK, 'w');
 
       for (int i = 0; i < 8; i++) {
-         makePiece(i, 1, PAWN, 'w' );
-         makePiece(i, 6, PAWN, 'b' );
+         makePiece(i, 1, PAWN, 'w');
+         makePiece(i, 6, PAWN, 'b');
       }
       for (int i = 0; i < 8; i++) {
          for (int j = 2; i < 6; i++) {
@@ -138,53 +153,60 @@ public class Board extends Frame{
       }
    }
 
-   public Board(double frameSize, int testNumber)  {
+   public Board(double frameSize, int testNumber) {
       this(frameSize);  // Inherit code from first Board constructor
 
       // wipe board
-      for(int col = 0; col < 8; col++) {
-         for(int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+         for (int row = 0; row < 8; row++) {
             squares[col][row] = null;
          }
-      }      boolean squaresSameColour = true;
+      }
+      boolean squaresSameColour = true;
 
-      switch(testNumber)
-      {
+      switch (testNumber) {
          case 1:  // Test for locked stalemate
-                  makePiece(0, 1, PAWN, 'w');
-                  makePiece(0, 3, PAWN, 'b');
-                  break;
+            makePiece(0, 1, PAWN, 'w');
+            makePiece(0, 3, PAWN, 'b');
+            break;
          case 2:  // Test for lock for one player
-                  makePiece(0, 5, PAWN, 'w');
-                  makePiece(0, 6, PAWN, 'b');
-                  makePiece(7, 3, PAWN, 'w');
-                  break;
+            makePiece(0, 5, PAWN, 'w');
+            makePiece(0, 6, PAWN, 'b');
+            makePiece(7, 3, PAWN, 'w');
+            break;
          case 3:  // Test for lock with contrasting bishops remaining
-                  makePiece(0, 3, PAWN, 'w');
-                  makePiece(0, 5, PAWN, 'b');
-                  makePiece(2, 3, PAWN, 'w');
-                  makePiece(2, 4, PAWN, 'b');
-                  makePiece(1, 0, BISHOP, 'w');
-                  makePiece(7, 7, BISHOP, 'b');
-                  break;
+            makePiece(0, 3, PAWN, 'w');
+            makePiece(0, 5, PAWN, 'b');
+            makePiece(2, 3, PAWN, 'w');
+            makePiece(2, 4, PAWN, 'b');
+            makePiece(1, 0, BISHOP, 'w');
+            makePiece(7, 7, BISHOP, 'b');
+            break;
       }
    }
 
    public void makePiece(int column, int row, int pieceName, char playerColour) {
       switch (pieceName) {
-         case PAWN: squares[column][row] = new Pawn(column, row, playerColour);
+         case PAWN:
+            squares[column][row] = new Pawn(column, row, playerColour);
             break;
-         case KNIGHT: squares[column][row] = new Knight(column, row, playerColour);
+         case KNIGHT:
+            squares[column][row] = new Knight(column, row, playerColour);
             break;
-         case BISHOP: squares[column][row] = new Bishop(column, row, playerColour);
+         case BISHOP:
+            squares[column][row] = new Bishop(column, row, playerColour);
             break;
-         case ROOK: squares[column][row] = new Rook(column, row, playerColour);
+         case ROOK:
+            squares[column][row] = new Rook(column, row, playerColour);
             break;
-         case QUEEN: squares[column][row] = new Queen(column, row, playerColour);
+         case QUEEN:
+            squares[column][row] = new Queen(column, row, playerColour);
             break;
-         case KING: squares[column][row] = new King(column, row, playerColour);
+         case KING:
+            squares[column][row] = new King(column, row, playerColour);
             break;
-         default : squares[column][row] = null;
+         default:
+            squares[column][row] = null;
             break;
       }
    }
@@ -228,6 +250,11 @@ public class Board extends Frame{
                ga.drawImage(squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
             }
          }
+      }
+      if (firstX != -1) {
+         Rectangle2D.Double highlightedSquare = new Rectangle2D.Double((firstX+1)*60,(8-firstY)*60,60,60);
+         ga.setColor(Color.RED);
+         ga.draw(highlightedSquare);
       }
    }
 
@@ -325,8 +352,8 @@ public class Board extends Frame{
       for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
          for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
 
-            if(squares[sourceCol][sourceRow] != null) {
-               if(squares[sourceCol][sourceRow].pieceColour() == playerColour) {
+            if (squares[sourceCol][sourceRow] != null) {
+               if (squares[sourceCol][sourceRow].pieceColour() == playerColour) {
                   remainingPieces.add(squares[sourceCol][sourceRow]);
                }
             }
@@ -388,64 +415,70 @@ public class Board extends Frame{
       int bBishopX = 0, bBishopY = 0, wBishopX = 0, wBishopY = 0;
 
       // do tests for both players
-      for(int i = 0; i < 2; i++)
-      {
+      for (int i = 0; i < 2; i++) {
          char playerColour = 'w';
-         if (i == 1) playerColour = 'b';
+         if (i == 1) {
+            playerColour = 'b';
+         }
 
          generateMoves(playerColour);
-         if(this.validMoves.size() <= 0) continue;
+         if (this.validMoves.size() <= 0) {
+            continue;
+         }
 
 
          int firstX = this.validMoves.get(0).oldX;
          int firstY = this.validMoves.get(0).oldY;
 
          // check that player can only move one piece
-         for(int j = 1; j < this.validMoves.size(); j++)
-         {
+         for (int j = 1; j < this.validMoves.size(); j++) {
             int nextX = this.validMoves.get(j).oldX;
             int nextY = this.validMoves.get(j).oldY;
-            if( nextX != firstX || nextY != firstY) singleStartSquare = false;
+            if (nextX != firstX || nextY != firstY) {
+               singleStartSquare = false;
+            }
          }
 
 
          // check that all the player's pieces are on the same coloured squares
          char prevSquareColour = this.remainingPieces.get(0).getSquareColour();
 
-         for(int j = 1; j < this.remainingPieces.size(); j++)
-         {
+         for (int j = 1; j < this.remainingPieces.size(); j++) {
             char nextSquareColour = this.remainingPieces.get(j).getSquareColour();
 
-            if( nextSquareColour != prevSquareColour ) return false;
+            if (nextSquareColour != prevSquareColour) {
+               return false;
+            }
 
             prevSquareColour = nextSquareColour;
          }
 
          // check whether movable piece is a bishop
-         if(!(squares[firstX][firstY] instanceof Bishop)) freeBishop = false;
+         if (!(squares[firstX][firstY] instanceof Bishop)) {
+            freeBishop = false;
+         }
 
          // Clumsy bit of code that checks that the bishops aren't blocking the pawns
-         if(playerColour == 'b' && firstY > 0 &&
-                 squares[firstX][firstY-1] instanceof Pawn && squares[firstX][firstY-1].pieceColour() == 'w') {
+         if (playerColour == 'b' && firstY > 0 &&
+                 squares[firstX][firstY - 1] instanceof Pawn && squares[firstX][firstY - 1].pieceColour() == 'w') {
             return false;
          }
-         if(playerColour == 'w' && firstY < 7 &&
-                 squares[firstX][firstY+1] instanceof Pawn && squares[firstX][firstY+1].pieceColour() == 'b') {
+         if (playerColour == 'w' && firstY < 7 &&
+                 squares[firstX][firstY + 1] instanceof Pawn && squares[firstX][firstY + 1].pieceColour() == 'b') {
             return false;
          }
 
          /* If either player can move more than one piece, or the piece
-             they can move isn't a bishop then return false */
-         if(singleStartSquare == false || freeBishop == false) return false;
+         they can move isn't a bishop then return false */
+         if (singleStartSquare == false || freeBishop == false) {
+            return false;
+         }
 
-         if(playerColour == 'w')
-         {
+         if (playerColour == 'w') {
             wBishopX = firstX;
             wBishopY = firstY;
             whiteBishopColour = squares[wBishopX][wBishopY].getSquareColour();
-         }
-         else if(playerColour == 'b')
-         {
+         } else if (playerColour == 'b') {
             bBishopX = firstX;
             bBishopY = firstY;
             blackBishopColour = squares[bBishopX][bBishopY].getSquareColour();
@@ -453,10 +486,12 @@ public class Board extends Frame{
       }
 
       // return false if the opposing bishops are on the same colour square
-      if(whiteBishopColour != '0' && blackBishopColour != '0') {
-         if(whiteBishopColour == blackBishopColour) return false;
+      if (whiteBishopColour != '0' && blackBishopColour != '0') {
+         if (whiteBishopColour == blackBishopColour) {
+            return false;
+         }
       }
-      
+
 
       return true;
    }
