@@ -18,7 +18,7 @@ public class Main {
 
       //Intialises a new board and stores a reference to it in currentBoard.
       //MA - added parameter frame_size because the board is now drawn in a frame as well
-      final Board currentBoard = new Board(FRAME_SIZE, 3);
+      final Board currentBoard = new Board(FRAME_SIZE);
 
       Move nextMove = null;
 
