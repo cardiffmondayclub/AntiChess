@@ -9,7 +9,6 @@ import java.util.logging.Level;
 
 public abstract class Piece
 {
-
 	protected int xPosition;
 	protected int yPosition;
 	protected char colour;
@@ -82,4 +81,6 @@ public abstract class Piece
 	//Checks if a move is valid. I'm hoping the Board.isPathClear() function
 	//could be used here.
 	public abstract boolean isMoveValid(Board board, Move move);
+
+        public abstract String getPieceName();
 }

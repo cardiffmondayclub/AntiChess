@@ -8,14 +8,8 @@ public abstract class Player {
    private int playerColour;
 
    // construct player with variable player colour
-   public Player(boolean starts) {
-      if( starts ) {
-         playerColour = WHITE;
-      }
-      else {
-         playerColour = BLACK;
-      }
-
+   public Player(int colour) {
+      playerColour = colour;
    }
    
    public int getPlayerColour() {

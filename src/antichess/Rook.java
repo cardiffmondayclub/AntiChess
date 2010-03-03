@@ -28,6 +28,9 @@ public class Rook extends Piece {
       } else {
          return false;
       }
+   }
 
+   public String getPieceName() {
+      return "rook";
    }
 }

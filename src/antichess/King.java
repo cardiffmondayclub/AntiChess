@@ -29,4 +29,8 @@ public class King extends Piece {
          return true;
       }
    }
+
+   public String getPieceName() {
+      return "king";
+   }
 }

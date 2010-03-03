@@ -30,4 +30,8 @@ public class Queen extends Piece {
       }
 
    }
+
+   public String getPieceName() {
+      return "queen";
+   }
 }

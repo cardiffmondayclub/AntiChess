@@ -76,4 +76,8 @@ public class Pawn extends Piece
 		return true;
 
 	}
+
+        public String getPieceName() {
+            return "pawn";
+        }
 }
