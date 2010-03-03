@@ -31,8 +31,9 @@ public class Bishop extends Piece {
       } else {
          return false;
       }
+   }
 
-
-
+   public String getPieceName() {
+      return "bishop";
    }
 }

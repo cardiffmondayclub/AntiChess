@@ -32,4 +32,8 @@ public class Knight extends Piece {
       }
 
    }
+
+      public String getPieceName() {
+      return "knight";
+   }
 }
