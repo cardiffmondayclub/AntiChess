@@ -45,6 +45,7 @@ public class Game {
 
    public void runGame() {
       Player currentPlayer = whitePlayer;
+      Player otherPlayer = blackPlayer;
 
       Move nextMove = null;
 
@@ -66,6 +67,7 @@ public class Game {
          if (currentBoard.canMove()) {
             nextMove = currentPlayer.getMove();
             currentBoard.makeMove(nextMove);
+            otherPlayer.sendMove(nextMove);
             currentHumanBoard.repaint();
             currentHumanBoard.setVisible(true);
          }
@@ -94,8 +96,10 @@ public class Game {
 
          if (currentPlayer == whitePlayer) {
             currentPlayer = blackPlayer;
+            otherPlayer = whitePlayer;
          } else {
             currentPlayer = whitePlayer;
+            otherPlayer = blackPlayer;
          }
       }
    }

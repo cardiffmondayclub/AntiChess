@@ -48,4 +48,9 @@ private HumanBoard currentHumanBoard;
          }
       }
    }
+
+   @Override
+   public void sendMove(Move move) {
+      //
+   }
 }

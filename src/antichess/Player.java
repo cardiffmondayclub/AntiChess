@@ -18,4 +18,6 @@ public abstract class Player {
 
    public abstract Move getMove();
 
+   public abstract void sendMove(Move move);
+
 }
