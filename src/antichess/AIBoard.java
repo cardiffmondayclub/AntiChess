@@ -1,5 +1,5 @@
 package antichess;
 
-public class AIBoard {
+public class AIBoard  {
 
 }
