@@ -22,13 +22,13 @@ public class Pawn extends Piece
 
 		// Capture case
 
-		if (this.colour == 'w' && board.isMoveCapture(move)) {
+		if (this.colour == Definitions.WHITE && board.isMoveCapture(move)) {
 			if (xDiffAbs == 1 && yDiff == 1) {
 				return true;
 			} else {
 				return false;
 			}
-		} else if (this.colour == 'b' && board.isMoveCapture(move)) {
+		} else if (this.colour == Definitions.BLACK && board.isMoveCapture(move)) {
 			if (xDiffAbs == 1 && yDiff == -1) {
 				return true;
 			} else {
@@ -37,26 +37,26 @@ public class Pawn extends Piece
 		}
 
 		// First move case
-		if (this.colour == 'w' && oldY == 1) {
+		if (this.colour == Definitions.WHITE && oldY == 1) {
 			if (yDiff <= 2 && yDiff > 0 && xDiff == 0 && board.isPathClear(move)) {
 				return true;
 			} else {
 				return false;
 			}
-		} else if (this.colour == 'b' && oldY == 6) {
+		} else if (this.colour == Definitions.BLACK && oldY == 6) {
 			if (yDiff >= -2 && yDiff < 0 && xDiff == 0 && board.isPathClear(move)) {
 				return true;
 			} else {
 				return false;
 			}
 		} // other case
-		else if (this.colour == 'w') {
+		else if (this.colour == Definitions.WHITE) {
 			if (xDiff == 0 && yDiff == 1) {
 				return true;
 			} else {
 				return false;
 			}
-		} else if (this.colour == 'b') {
+		} else if (this.colour == Definitions.BLACK) {
 			if (xDiff == 0 && yDiff == -1) {
 				return true;
 			} else {
