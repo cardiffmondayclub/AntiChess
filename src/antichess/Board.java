@@ -251,6 +251,7 @@ public class Board extends Frame {
             }
          }
       }
+      
       if (firstX != -1) {
          Rectangle2D.Double highlightedSquare = new Rectangle2D.Double((firstX+1)*60,(8-firstY)*60,60,60);
          ga.setColor(Color.RED);
