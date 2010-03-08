@@ -1,33 +1,17 @@
 package antichess;
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.awt.Font.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.imageio.*;
-import java.io.*;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Font.*;
+
+import java.util.ArrayList;
 
 public class Board extends Frame {
 
-   private Piece[][] squares;
-   private double squareSize;
+   protected Piece[][] squares;
    public ArrayList<Move> validMoves;
    public ArrayList<Move> validCaptures;
    private ArrayList<Piece> remainingPieces;
-   private BufferedImage wTile;
-   private BufferedImage bTile;
-   //Testing mouse clicking stuff. MCS
-   public Move mouseClick;
-   private int firstX;
-   private int firstY;
-   private boolean secondClick;
-   private boolean returnMove;
-   private boolean refreshBoard;
    // End-game cases
    public static final int LOCKED_STALEMATE = 1;
    public static final int DERIVED_STALEMATE = 2;
@@ -41,75 +25,13 @@ public class Board extends Frame {
    private static final int QUEEN = 5;
    private static final int KING = 6;
 
-   public Move getMove() throws InterruptedException {
-      while (true) {
-         if (refreshBoard == true) {
-            this.repaint();
-            refreshBoard = false;
-         }
-         if (returnMove == true) {
-            //System.out.println("ready to return");
-            break;
-         }
-         Thread.sleep(10);
-      }
-      returnMove = false;
-      return mouseClick;
-   }
-
-   //Testing mouse clicking stuff. MCS
-   private class MouseClickListener extends MouseAdapter {
-
-      public void mouseClicked(MouseEvent event) {
-         int x = event.getX() / 60 - 1;
-         int y = 9 - event.getY() / 60 - 1;
-         //System.out.println(x);
-         //System.out.println(y);
-
-         if (secondClick == true) {
-            //do stuff if it is the second click
-            //System.out.println("Working on the second click");
-            secondClick = false;
-            if (firstX != x || firstY != y) {
-               //do stuff if the user clicks in the same square twice
-               mouseClick = new Move(firstX, firstY, x, y);
-               firstX = -1;
-               firstY = -1;
-               refreshBoard = true;
-               returnMove = true;
-            } else {
-               firstX = -1;
-               firstY = -1;
-               refreshBoard = true;
-            }
-         } else {
-            //do stuff if it is the first click
-            firstX = x;
-            firstY = y;
-            secondClick = true;
-            refreshBoard = true;
-         }
-      }
-   }
-
-   public Board(double FRAME_SIZE) {
-      //Testing mouse clicking stuff. MCS
-      mouseClick = null;
-      secondClick = false;
-      returnMove = false;
-      refreshBoard = false;
-      firstX = -1;
-      firstY = -1;
-      MouseClickListener listener = new MouseClickListener();
-      addMouseListener(listener);
-
+   public Board() {
       // initialise the array lists
       validMoves = new ArrayList<Move>();
       validCaptures = new ArrayList<Move>();
       remainingPieces = new ArrayList<Piece>();
-      //MA - set square size
 
-      squareSize = FRAME_SIZE / 10;
+
       //Initialises the board.
       squares = new Piece[8][8];
 
@@ -141,20 +63,11 @@ public class Board extends Frame {
       makePiece(6, 7, KNIGHT, 'b');
       makePiece(7, 7, ROOK, 'b');
 
-      try {
-         wTile = ImageIO.read(new File("./images/tile_white.png"));
-      } catch (IOException ioe) {
-         System.exit(-1);
-      }
-      try {
-         bTile = ImageIO.read(new File("./images/tile_black.png"));
-      } catch (IOException ioe) {
-         System.exit(-1);
-      }
+
    }
 
-   public Board(double frameSize, int testNumber) {
-      this(frameSize);  // Inherit code from first Board constructor
+   public Board(int testNumber) {
+      this();  // Inherit code from first Board constructor
 
       // wipe board
       for (int col = 0; col < 8; col++) {
@@ -208,53 +121,6 @@ public class Board extends Frame {
          default:
             squares[column][row] = null;
             break;
-      }
-   }
-
-   public void drawBoard() {
-      for (int row = 7; row >= 0; row--) {
-         System.out.format("%d ", row + 1);
-         for (int col = 0; col < 8; col++) {
-            if (squares[col][row] != null) {
-               System.out.print(squares[col][row].getAppearance() + " ");
-            } else {
-               System.out.print("  ");
-            }
-         }
-         System.out.println();
-      }
-      System.out.println("  a b c d e f g h ");
-      System.out.println();
-   }
-
-   // MA - this paint method draws the board in a frame and uses the getAppearance method to show
-   // where each piece is on the board as a red character for now so it can be seen on both the
-   // white and black squares - TODO - change appearance of each piece to an image (possibly)
-   @Override
-   public void paint(Graphics g) {
-      Graphics2D ga = (Graphics2D) g;
-      for (int i = 7; i >= 0; i--) {
-         for (int j = 7; j >= 0; j--) {
-            double leftEdge = squareSize * (i + 1);
-            double topEdge = squareSize * (8 - j);
-
-            if ((i + j) % 2 == 1) //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
-            {
-               ga.drawImage(wTile, null, (int) leftEdge, (int) topEdge);
-
-            } else {
-               ga.drawImage(bTile, null, (int) leftEdge, (int) topEdge);
-            }
-
-            if (squares[i][j] != null) {
-               ga.drawImage(squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
-            }
-         }
-      }
-      if (firstX != -1) {
-         Rectangle2D.Double highlightedSquare = new Rectangle2D.Double((firstX+1)*60,(8-firstY)*60,60,60);
-         ga.setColor(Color.RED);
-         ga.draw(highlightedSquare);
       }
    }
 
@@ -381,9 +247,13 @@ public class Board extends Frame {
 
    public char isWon() {
       generateMoves('b');
-      if(remainingPieces.size() == 0) return 'b';
+      if (remainingPieces.size() == 0) {
+         return 'b';
+      }
       generateMoves('w');
-      if(remainingPieces.size() == 0) return 'w';
+      if (remainingPieces.size() == 0) {
+         return 'w';
+      }
       return ' ';
    }
 
@@ -441,12 +311,12 @@ public class Board extends Frame {
          }
 
          // Clumsy bit of code that checks that the bishops aren't blocking the pawns
-         if (playerColour == 'b' && firstY > 0 &&
-                 squares[firstX][firstY - 1] instanceof Pawn && squares[firstX][firstY - 1].pieceColour() == 'w') {
+         if (playerColour == 'b' && firstY > 0
+                 && squares[firstX][firstY - 1] instanceof Pawn && squares[firstX][firstY - 1].pieceColour() == 'w') {
             return false;
          }
-         if (playerColour == 'w' && firstY < 7 &&
-                 squares[firstX][firstY + 1] instanceof Pawn && squares[firstX][firstY + 1].pieceColour() == 'b') {
+         if (playerColour == 'w' && firstY < 7
+                 && squares[firstX][firstY + 1] instanceof Pawn && squares[firstX][firstY + 1].pieceColour() == 'b') {
             return false;
          }
 
