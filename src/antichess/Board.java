@@ -260,8 +260,8 @@ public class Board extends Frame {
    public boolean isStaleMate() {
       boolean singleStartSquare = true;
       boolean freeBishop = true;
-      int whiteBishopColour = '0';
-      int blackBishopColour = '0';
+      int whiteBishopColour = -1;
+      int blackBishopColour = -1;
 
 
       int bBishopX = 0, bBishopY = 0, wBishopX = 0, wBishopY = 0;
@@ -337,7 +337,7 @@ public class Board extends Frame {
          }
       }
       // return false if the opposing bishops are on the same colour square
-      if (whiteBishopColour != '0' && blackBishopColour != '0') {
+      if (whiteBishopColour != -1 && blackBishopColour != -1) {
          if (whiteBishopColour == blackBishopColour) {
             return false;
          }
