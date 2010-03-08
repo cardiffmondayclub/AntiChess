@@ -24,7 +24,7 @@ public class AIPlayer extends Player {
    @Override
    public Move getMove() {
       //do a minimax search and find the best move
-      Move move = new Move(0, 0, 0, 0);
+      Move move = miniMaxStart(4);
 
       //make the move
       currentBoard.makeMove(move);
@@ -38,11 +38,13 @@ public class AIPlayer extends Player {
       currentBoard.makeMove(move);
    }
 
-   public void miniMaxStart(int maxDepth) {
-      miniMax(0, maxDepth, MAX);
+   public Move miniMaxStart(int maxDepth) {
+      Move bestMove = new Move(0,0,0,0);
+      miniMax(0, maxDepth, MAX, bestMove);
+      return bestMove;
    }
 
-   public int miniMax(int currentDepth, int maxDepth, int searchType) {
+   public int miniMax(int currentDepth, int maxDepth, int searchType, Move bestMove) {
 
       if (currentDepth == maxDepth) {
          //If this is the bottom layer
@@ -51,9 +53,9 @@ public class AIPlayer extends Player {
          //Get the list of move (captures if one is possible, valid moves otherwise)
          ArrayList<Move> moveList;
          if (currentBoard.validCaptures.size() > 0) {
-            moveList = currentBoard.validCaptures;
+            moveList = (ArrayList<Move>) currentBoard.validCaptures.clone();
          } else {
-            moveList = currentBoard.validMoves;
+            moveList = (ArrayList<Move>) currentBoard.validMoves.clone();
          }
 
          //Iterate through the list, make each move, find the max of that position
@@ -62,13 +64,18 @@ public class AIPlayer extends Player {
          //(someone has won/some has lost/can hapen in stalemate)
 
          int score = 0;
+         int testScore = 0;
          //switch based on min or max search
          switch (searchType) {
             case MIN:
                score = Integer.MAX_VALUE;
                for (Move move : moveList) {
                   currentBoard.makeMove(move);
-                  score = Math.min(score, miniMax(currentDepth - 1, maxDepth, MAX));
+                  testScore = miniMax(currentDepth - 1, maxDepth, MAX, new Move(0,0,0,0));
+                  if (testScore < score) {
+                     score = testScore;
+                     bestMove = move;
+                  }
                   currentBoard.undoMove();
                }
                break;
@@ -76,7 +83,11 @@ public class AIPlayer extends Player {
                score = Integer.MIN_VALUE;
                for (Move move : moveList) {
                   currentBoard.makeMove(move);
-                  score = Math.max(score, miniMax(currentDepth - 1, maxDepth, MIN));
+                  testScore = miniMax(currentDepth - 1, maxDepth, MIN, new Move(0,0,0,0));
+                  if (testScore > score) {
+                     score = testScore;
+                     bestMove = move;
+                  }
                   currentBoard.undoMove();
                }
                break;

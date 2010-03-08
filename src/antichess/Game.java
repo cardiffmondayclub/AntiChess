@@ -23,7 +23,7 @@ public class Game {
             whitePlayer = new HumanPlayer(currentBoard, currentHumanBoard, Definitions.WHITE);
             break;
          case Definitions.AI_PLAYER:
-            //
+            whitePlayer = new AIPlayer(Definitions.WHITE);
             break;
          case Definitions.NETWORK_PLAYER:
             //
@@ -35,7 +35,7 @@ public class Game {
             blackPlayer = new HumanPlayer(currentBoard, currentHumanBoard, Definitions.BLACK);
             break;
          case Definitions.AI_PLAYER:
-            //
+            blackPlayer = new AIPlayer(Definitions.BLACK);
             break;
          case Definitions.NETWORK_PLAYER:
             //
