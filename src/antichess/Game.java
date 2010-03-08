@@ -7,20 +7,13 @@ package antichess;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- *
- * @author mikeakey
- */
 public class Game {
-
-   private static final int FRAME_SIZE = 600;
    private boolean gameRunning = true;
-   final static int HUMAN_PLAYER = 0;
-   final static int AI_PLAYER = 1;
-   final static int NETWORK_PLAYER = 2;
+   private Player whitePlayer = null;
+   private Player blackPlayer = null;
 
    public Game(int whitePlayerType, int blackPlayerType) {
-      HumanBoard currentBoard = new HumanBoard(FRAME_SIZE);
+      HumanBoard currentBoard = new HumanBoard(Definitions.FRAME_SIZE);
 
       switch (whitePlayerType) {
          case HUMAN_PLAYER:
@@ -48,7 +41,7 @@ public class Game {
    }
 
    public void runGame() {
-      char playerColour = 'w';
+      Player currentPlayer = whitePlayer;
       final HumanBoard currentBoard = new HumanBoard(FRAME_SIZE);
 
       Move nextMove = null;
@@ -64,17 +57,17 @@ public class Game {
       currentBoard.setVisible(true);
 
       while (gameRunning) {
-         currentBoard.isFinished(playerColour);
+         currentBoard.isFinished(currentPlayer.getPlayerColour());
 
-         currentBoard.generateMoves(playerColour);
+         currentBoard.generateMoves(currentPlayer.getPlayerColour());
          if (currentBoard.canMove()) {
-            nextMove = getMove(currentBoard, playerColour);
+            nextMove = currentPlayer.getMove(currentBoard, currentPlayer.getPlayerColour());
             currentBoard.makeMove(nextMove);
             currentBoard.repaint();
             currentBoard.setVisible(true);
          }
 
-         int end = currentBoard.isFinished(playerColour);
+         int end = currentBoard.isFinished(currentPlayer.getPlayerColour());
 
          switch (end) {
             case Board.LOCKED_STALEMATE:
@@ -96,50 +89,13 @@ public class Game {
             default:
          }
 
-         if (playerColour == 'b') {
-            playerColour = 'w';
+         if (currentPlayer == whitePlayer) {
+            currentPlayer = blackPlayer;
          } else {
-            playerColour = 'b';
+            currentPlayer = whitePlayer;
          }
       }
    }
 
-   public static Move getMove(HumanBoard currentBoard, char playerColour) {
-      // Crude code that prints whose go it is
-      System.out.print(playerColour + ": ");
-
-      //Check if a capture is required in the next move.
-      boolean captureRequired = currentBoard.isCapturePossible(playerColour);
-
-      while (true) {
-         Move nextMove = null;
-         try {
-            nextMove = currentBoard.getMove();
-         } catch (InterruptedException e) {
-            System.exit(-1);
-         }
-
-         if (currentBoard.isMoveValid(playerColour, nextMove)) {
-            if (captureRequired) {
-               if (currentBoard.isMoveCapture(nextMove)) {
-                  return nextMove;
-               } else {
-                  System.out.println("You are able capture therefore you must.");
-                  for (int i = 0; i < currentBoard.validCaptures.size(); i++) {
-                     System.out.print(currentBoard.validCaptures.get(i).oldX + 1);
-                     System.out.print(currentBoard.validCaptures.get(i).oldY + 1);
-                     System.out.print(currentBoard.validCaptures.get(i).newX + 1);
-                     System.out.print(currentBoard.validCaptures.get(i).newY + 1);
-                     System.out.println();
-                  }
-               }
-
-            } else {
-               return nextMove;
-            }
-         } else {
-            System.out.println("This move is not valid.");
-         }
-      }
-   }
+  
 }

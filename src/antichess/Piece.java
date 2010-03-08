@@ -11,11 +11,11 @@ public abstract class Piece
 {
 	protected int xPosition;
 	protected int yPosition;
-	protected char colour;
+	protected int colour;
 	protected BufferedImage img;
 	private char squareColour;
 
-	public Piece(int posX, int posY, char newColour, String fileName)
+	public Piece(int posX, int posY, int newColour, String fileName)
 	{
 		xPosition = posX;
 		yPosition = posY;
@@ -25,7 +25,7 @@ public abstract class Piece
 		//creation of the piece. If we rename the image files we could make this
 		//even more concise but I'm not sure if it's worth it. MCS
 		String tempColour;
-		if (this.colour == 'b') {
+		if (this.colour == Definitions.BLACK) {
 			tempColour = "Black";
 		} else {
 			tempColour = "White";
@@ -50,13 +50,13 @@ public abstract class Piece
 		yPosition = posY;
 	}
 
-	public char pieceColour()
+	public int pieceColour()
 	{
 		//Pretty self explanatory.
 		return colour;
 	}
 
-	public boolean isPlayersPiece(char playerColour)
+	public boolean isPlayersPiece(int playerColour)
 	{
 		//Pretty self explanatory.
 		return playerColour == colour;

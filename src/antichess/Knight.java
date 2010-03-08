@@ -2,7 +2,7 @@ package antichess;
 
 public class Knight extends Piece {
 
-   public Knight(int posX, int posY, char newColour) {
+   public Knight(int posX, int posY, int newColour) {
       super(posX, posY, newColour, "knight");
    }
 
