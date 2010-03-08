@@ -2,10 +2,10 @@ package antichess;
 
 public class Move {
 
-   int oldX;
-   int oldY;
-   int newX;
-   int newY;
+   public int oldX;
+   public int oldY;
+   public int newX;
+   public int newY;
 
    public Move(int oldX, int oldY, int newX, int newY) {
       this.oldX = oldX;
