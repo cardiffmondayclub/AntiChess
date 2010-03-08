@@ -140,40 +140,7 @@ public class Board extends Frame {
       System.out.println();
    }
 
-   // MA - this paint method draws the board in a frame and uses the getAppearance method to show
-   // where each piece is on the board as a red character for now so it can be seen on both the
-   // white and black squares - TODO - change appearance of each piece to an image (possibly)
-   @Override
-   public void paint(Graphics g) {
-      Graphics2D ga = (Graphics2D) g;
-      for (int i = 7; i >= 0; i--) {
-         for (int j = 7; j >= 0; j--) {
-            double leftEdge = squareSize * (i + 1);
-            double topEdge = squareSize * (8 - j);
-
-            if ((i + j) % 2 == 1) //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
-            {
-               ga.drawImage(wTile, null, (int) leftEdge, (int) topEdge);
-
-            } else {
-               ga.drawImage(bTile, null, (int) leftEdge, (int) topEdge);
-            }
-
-            if (squares[i][j] != null) {
-               ga.drawImage(squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
-            }
-         }
-      }
-      
-      if (firstX != -1) {
-         Rectangle2D.Double highlightedSquare = new Rectangle2D.Double((firstX+1)*60,(8-firstY)*60,60,60);
-         ga.setColor(Color.RED);
-         ga.draw(highlightedSquare);
-      }
-   }
-
-=======
->>>>>>> b805eac3c8922b437b53ecf609afe42154602520:src/antichess/Board.java
+  
    public boolean isPathClear(Move move) {
       int xDelta = move.newX - move.oldX;
       int yDelta = move.newY - move.oldY;
