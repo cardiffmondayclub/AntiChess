@@ -1,11 +1,13 @@
 package antichess;
 
 public class Human extends Player {
-private HumanBoard currentBoard;
+private Board currentBoard;
+private HumanBoard currentHumanBoard;
 
-   public Human(HumanBoard currentBoard, int colour) {
+   public Human(Board currentBoard, HumanBoard currentHumanBoard, int colour) {
       super(colour);
       this.currentBoard = currentBoard;
+      this.currentHumanBoard = currentHumanBoard;
    }
 
    public Move getMove() {
@@ -18,7 +20,7 @@ private HumanBoard currentBoard;
       while (true) {
          Move nextMove = null;
          try {
-            nextMove = currentBoard.getMove();
+            nextMove = currentHumanBoard.getMove();
          } catch (InterruptedException e) {
             System.exit(-1);
          }

@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package antichess;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.imageio.*;
@@ -15,22 +12,28 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.geom.*;
 
-public class HumanBoard extends Board {
+public class HumanBoard extends Frame {
 
    private double squareSize;
    private BufferedImage wTile;
    private BufferedImage bTile;
    //Testing mouse clicking stuff. MCS
    public Move mouseClick;
-   private int firstX;
-   private int firstY;
-   private boolean secondClick;
-   private boolean returnMove;
-   private boolean refreshBoard;
 
-   public HumanBoard(int frameSize) {
-      super();
-      //Testing mouse clicking stuff. MCS
+   //TEST THING
+   protected int firstX;
+   protected int firstY;
+   protected boolean secondClick;
+   protected boolean returnMove;
+   protected boolean refreshBoard;
+   //
+
+   private Board currentBoard;
+
+
+   public HumanBoard(Board currentBoard, int frameSize) {
+      this.currentBoard = currentBoard;
+      
       mouseClick = null;
       secondClick = false;
       returnMove = false;
@@ -38,7 +41,7 @@ public class HumanBoard extends Board {
       firstX = -1;
       firstY = -1;
       MouseClickListener listener = new MouseClickListener();
-      addMouseListener(listener);
+      this.addMouseListener(listener);
       //MA - set square size
       squareSize = frameSize / 10;
 
@@ -61,7 +64,6 @@ public class HumanBoard extends Board {
             refreshBoard = false;
          }
          if (returnMove == true) {
-            //System.out.println("ready to return");
             break;
          }
          Thread.sleep(10);
@@ -85,7 +87,6 @@ public class HumanBoard extends Board {
             //System.out.println("Working on the second click");
             secondClick = false;
             if (firstX != x || firstY != y) {
-               //do stuff if the user clicks in the same square twice
                mouseClick = new Move(firstX, firstY, x, y);
                firstX = -1;
                firstY = -1;
@@ -122,8 +123,8 @@ public class HumanBoard extends Board {
                ga.drawImage(bTile, null, (int) leftEdge, (int) topEdge);
             }
 
-            if (squares[i][j] != null) {
-               ga.drawImage(squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
+            if (currentBoard.squares[i][j] != null) {
+               ga.drawImage(currentBoard.squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
             }
          }
       }

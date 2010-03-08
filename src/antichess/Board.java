@@ -1,14 +1,10 @@
 package antichess;
 
-import java.awt.*;
-
-import java.awt.Font.*;
-
 import java.util.ArrayList;
 
-public class Board extends Frame {
+public class Board{
 
-   protected Piece[][] squares;
+   public Piece[][] squares;
    public ArrayList<Move> validMoves;
    public ArrayList<Move> validCaptures;
    private ArrayList<Piece> remainingPieces;
