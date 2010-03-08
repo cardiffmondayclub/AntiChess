@@ -35,18 +35,18 @@ public class Board extends Frame {
       //Initialises the board.
       squares = new Piece[8][8];
 
-      makePiece(0, 0, ROOK, 'w');
-      makePiece(1, 0, KNIGHT, 'w');
-      makePiece(2, 0, BISHOP, 'w');
-      makePiece(3, 0, QUEEN, 'w');
-      makePiece(4, 0, KING, 'w');
-      makePiece(5, 0, BISHOP, 'w');
-      makePiece(6, 0, KNIGHT, 'w');
-      makePiece(7, 0, ROOK, 'w');
+      makePiece(0, 0, ROOK, Definitions.WHITE);
+      makePiece(1, 0, KNIGHT, Definitions.WHITE);
+      makePiece(2, 0, BISHOP, Definitions.WHITE);
+      makePiece(3, 0, QUEEN, Definitions.WHITE);
+      makePiece(4, 0, KING, Definitions.WHITE);
+      makePiece(5, 0, BISHOP, Definitions.WHITE);
+      makePiece(6, 0, KNIGHT, Definitions.WHITE);
+      makePiece(7, 0, ROOK, Definitions.WHITE);
 
       for (int i = 0; i < 8; i++) {
-         makePiece(i, 1, PAWN, 'w');
-         makePiece(i, 6, PAWN, 'b');
+         makePiece(i, 1, PAWN, Definitions.WHITE);
+         makePiece(i, 6, PAWN, Definitions.BLACK);
       }
       for (int i = 0; i < 8; i++) {
          for (int j = 2; i < 6; i++) {
@@ -54,14 +54,14 @@ public class Board extends Frame {
          }
       }
 
-      makePiece(0, 7, ROOK, 'b');
-      makePiece(1, 7, KNIGHT, 'b');
-      makePiece(2, 7, BISHOP, 'b');
-      makePiece(3, 7, QUEEN, 'b');
-      makePiece(4, 7, KING, 'b');
-      makePiece(5, 7, BISHOP, 'b');
-      makePiece(6, 7, KNIGHT, 'b');
-      makePiece(7, 7, ROOK, 'b');
+      makePiece(0, 7, ROOK, Definitions.BLACK);
+      makePiece(1, 7, KNIGHT, Definitions.BLACK);
+      makePiece(2, 7, BISHOP, Definitions.BLACK);
+      makePiece(3, 7, QUEEN, Definitions.BLACK);
+      makePiece(4, 7, KING, Definitions.BLACK);
+      makePiece(5, 7, BISHOP, Definitions.BLACK);
+      makePiece(6, 7, KNIGHT, Definitions.BLACK);
+      makePiece(7, 7, ROOK, Definitions.BLACK);
 
 
    }
@@ -79,26 +79,26 @@ public class Board extends Frame {
 
       switch (testNumber) {
          case 1:  // Test for locked stalemate
-            makePiece(0, 1, PAWN, 'w');
-            makePiece(0, 3, PAWN, 'b');
+            makePiece(0, 1, PAWN, Definitions.WHITE);
+            makePiece(0, 3, PAWN, Definitions.BLACK);
             break;
          case 2:  // Test for lock for one player
-            makePiece(0, 5, PAWN, 'w');
-            makePiece(0, 6, PAWN, 'b');
-            makePiece(7, 3, PAWN, 'w');
+            makePiece(0, 5, PAWN, Definitions.WHITE);
+            makePiece(0, 6, PAWN, Definitions.BLACK);
+            makePiece(7, 3, PAWN, Definitions.WHITE);
             break;
          case 3:  // Test for lock with contrasting bishops remaining
-            makePiece(0, 3, PAWN, 'w');
-            makePiece(0, 5, PAWN, 'b');
-            makePiece(2, 3, PAWN, 'w');
-            makePiece(2, 4, PAWN, 'b');
-            makePiece(1, 0, BISHOP, 'w');
-            makePiece(7, 7, BISHOP, 'b');
+            makePiece(0, 3, PAWN, Definitions.WHITE);
+            makePiece(0, 5, PAWN, Definitions.BLACK);
+            makePiece(2, 3, PAWN, Definitions.WHITE);
+            makePiece(2, 4, PAWN, Definitions.BLACK);
+            makePiece(1, 0, BISHOP, Definitions.WHITE);
+            makePiece(7, 7, BISHOP, Definitions.BLACK);
             break;
       }
    }
 
-   public void makePiece(int column, int row, int pieceName, char playerColour) {
+   public void makePiece(int column, int row, int pieceName, int playerColour) {
       switch (pieceName) {
          case PAWN:
             squares[column][row] = new Pawn(column, row, playerColour);
@@ -246,13 +246,13 @@ public class Board extends Frame {
    }
 
    public char isWon() {
-      generateMoves('b');
+      generateMoves(Definitions.BLACK);
       if (remainingPieces.size() == 0) {
-         return 'b';
+         return Definitions.BLACK;
       }
-      generateMoves('w');
+      generateMoves(Definitions.WHITE);
       if (remainingPieces.size() == 0) {
-         return 'w';
+         return Definitions.WHITE;
       }
       return ' ';
    }
@@ -260,17 +260,17 @@ public class Board extends Frame {
    public boolean isStaleMate() {
       boolean singleStartSquare = true;
       boolean freeBishop = true;
-      char whiteBishopColour = '0';
-      char blackBishopColour = '0';
+      int whiteBishopColour = '0';
+      int blackBishopColour = '0';
 
 
       int bBishopX = 0, bBishopY = 0, wBishopX = 0, wBishopY = 0;
 
       // do tests for both players
       for (int i = 0; i < 2; i++) {
-         char playerColour = 'w';
+         int playerColour = Definitions.WHITE;
          if (i == 1) {
-            playerColour = 'b';
+            playerColour = Definitions.BLACK;
          }
 
          generateMoves(playerColour);
@@ -293,10 +293,10 @@ public class Board extends Frame {
 
 
          // check that all the player's pieces are on the same coloured squares
-         char prevSquareColour = this.remainingPieces.get(0).getSquareColour();
+         int prevSquareColour = this.remainingPieces.get(0).getSquareColour();
 
          for (int j = 1; j < this.remainingPieces.size(); j++) {
-            char nextSquareColour = this.remainingPieces.get(j).getSquareColour();
+            int nextSquareColour = this.remainingPieces.get(j).getSquareColour();
 
             if (nextSquareColour != prevSquareColour) {
                return false;
@@ -311,12 +311,12 @@ public class Board extends Frame {
          }
 
          // Clumsy bit of code that checks that the bishops aren't blocking the pawns
-         if (playerColour == 'b' && firstY > 0
-                 && squares[firstX][firstY - 1] instanceof Pawn && squares[firstX][firstY - 1].pieceColour() == 'w') {
+         if (playerColour == Definitions.BLACK && firstY > 0
+                 && squares[firstX][firstY - 1] instanceof Pawn && squares[firstX][firstY - 1].pieceColour() == Definitions.WHITE) {
             return false;
          }
-         if (playerColour == 'w' && firstY < 7
-                 && squares[firstX][firstY + 1] instanceof Pawn && squares[firstX][firstY + 1].pieceColour() == 'b') {
+         if (playerColour == Definitions.WHITE && firstY < 7
+                 && squares[firstX][firstY + 1] instanceof Pawn && squares[firstX][firstY + 1].pieceColour() == Definitions.BLACK) {
             return false;
          }
 
@@ -326,11 +326,11 @@ public class Board extends Frame {
             return false;
          }
 
-         if (playerColour == 'w') {
+         if (playerColour == Definitions.WHITE) {
             wBishopX = firstX;
             wBishopY = firstY;
             whiteBishopColour = squares[wBishopX][wBishopY].getSquareColour();
-         } else if (playerColour == 'b') {
+         } else if (playerColour == Definitions.BLACK) {
             bBishopX = firstX;
             bBishopY = firstY;
             blackBishopColour = squares[bBishopX][bBishopY].getSquareColour();
@@ -352,10 +352,10 @@ public class Board extends Frame {
    public int isFinished(int playerColour) {
       int previousMoves = validMoves.size();
 
-      if (playerColour == 'b') {
-         this.generateMoves('w');
-      } else if (playerColour == 'w') {
-         this.generateMoves('b');
+      if (playerColour == Definitions.BLACK) {
+         this.generateMoves(Definitions.WHITE);
+      } else if (playerColour == Definitions.WHITE) {
+         this.generateMoves(Definitions.BLACK);
       }
       if (validMoves.size() + previousMoves == 0) {
          return LOCKED_STALEMATE;
@@ -364,10 +364,10 @@ public class Board extends Frame {
       if (this.isStaleMate()) {
          return DERIVED_STALEMATE;
       }
-      if (this.isWon() == 'w') {
+      if (this.isWon() == Definitions.WHITE) {
          return WHITE_WINS;
       }
-      if (this.isWon() == 'b') {
+      if (this.isWon() == Definitions.BLACK) {
          return BLACK_WINS;
       }
       return 0;
