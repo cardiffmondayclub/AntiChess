@@ -7,19 +7,12 @@ public class Board{
    public Piece[][] squares;
    public ArrayList<Move> validMoves;
    public ArrayList<Move> validCaptures;
-   private ArrayList<Piece> remainingPieces;
+   public ArrayList<Piece> remainingPieces;
    // End-game cases
    public static final int LOCKED_STALEMATE = 1;
    public static final int DERIVED_STALEMATE = 2;
    public static final int WHITE_WINS = 3;
    public static final int BLACK_WINS = 4;
-   // Ints that represent pieces
-   private static final int PAWN = 1;
-   private static final int KNIGHT = 2;
-   private static final int BISHOP = 3;
-   private static final int ROOK = 4;
-   private static final int QUEEN = 5;
-   private static final int KING = 6;
 
    public Board() {
       // initialise the array lists
@@ -31,18 +24,18 @@ public class Board{
       //Initialises the board.
       squares = new Piece[8][8];
 
-      makePiece(0, 0, ROOK, Definitions.WHITE);
-      makePiece(1, 0, KNIGHT, Definitions.WHITE);
-      makePiece(2, 0, BISHOP, Definitions.WHITE);
-      makePiece(3, 0, QUEEN, Definitions.WHITE);
-      makePiece(4, 0, KING, Definitions.WHITE);
-      makePiece(5, 0, BISHOP, Definitions.WHITE);
-      makePiece(6, 0, KNIGHT, Definitions.WHITE);
-      makePiece(7, 0, ROOK, Definitions.WHITE);
+      makePiece(0, 0, Definitions.ROOK, Definitions.WHITE);
+      makePiece(1, 0, Definitions.KNIGHT, Definitions.WHITE);
+      makePiece(2, 0, Definitions.BISHOP, Definitions.WHITE);
+      makePiece(3, 0, Definitions.QUEEN, Definitions.WHITE);
+      makePiece(4, 0, Definitions.KING, Definitions.WHITE);
+      makePiece(5, 0, Definitions.BISHOP, Definitions.WHITE);
+      makePiece(6, 0, Definitions.KNIGHT, Definitions.WHITE);
+      makePiece(7, 0, Definitions.ROOK, Definitions.WHITE);
 
       for (int i = 0; i < 8; i++) {
-         makePiece(i, 1, PAWN, Definitions.WHITE);
-         makePiece(i, 6, PAWN, Definitions.BLACK);
+         makePiece(i, 1, Definitions.PAWN, Definitions.WHITE);
+         makePiece(i, 6, Definitions.PAWN, Definitions.BLACK);
       }
       for (int i = 0; i < 8; i++) {
          for (int j = 2; i < 6; i++) {
@@ -50,14 +43,14 @@ public class Board{
          }
       }
 
-      makePiece(0, 7, ROOK, Definitions.BLACK);
-      makePiece(1, 7, KNIGHT, Definitions.BLACK);
-      makePiece(2, 7, BISHOP, Definitions.BLACK);
-      makePiece(3, 7, QUEEN, Definitions.BLACK);
-      makePiece(4, 7, KING, Definitions.BLACK);
-      makePiece(5, 7, BISHOP, Definitions.BLACK);
-      makePiece(6, 7, KNIGHT, Definitions.BLACK);
-      makePiece(7, 7, ROOK, Definitions.BLACK);
+      makePiece(0, 7, Definitions.ROOK, Definitions.BLACK);
+      makePiece(1, 7, Definitions.KNIGHT, Definitions.BLACK);
+      makePiece(2, 7, Definitions.BISHOP, Definitions.BLACK);
+      makePiece(3, 7, Definitions.QUEEN, Definitions.BLACK);
+      makePiece(4, 7, Definitions.KING, Definitions.BLACK);
+      makePiece(5, 7, Definitions.BISHOP, Definitions.BLACK);
+      makePiece(6, 7, Definitions.KNIGHT, Definitions.BLACK);
+      makePiece(7, 7, Definitions.ROOK, Definitions.BLACK);
 
 
    }
@@ -75,43 +68,43 @@ public class Board{
 
       switch (testNumber) {
          case 1:  // Test for locked stalemate
-            makePiece(0, 1, PAWN, Definitions.WHITE);
-            makePiece(0, 3, PAWN, Definitions.BLACK);
+            makePiece(0, 1, Definitions.PAWN, Definitions.WHITE);
+            makePiece(0, 3, Definitions.PAWN, Definitions.BLACK);
             break;
          case 2:  // Test for lock for one player
-            makePiece(0, 5, PAWN, Definitions.WHITE);
-            makePiece(0, 6, PAWN, Definitions.BLACK);
-            makePiece(7, 3, PAWN, Definitions.WHITE);
+            makePiece(0, 5, Definitions.PAWN, Definitions.WHITE);
+            makePiece(0, 6, Definitions.PAWN, Definitions.BLACK);
+            makePiece(7, 3, Definitions.PAWN, Definitions.WHITE);
             break;
          case 3:  // Test for lock with contrasting bishops remaining
-            makePiece(0, 3, PAWN, Definitions.WHITE);
-            makePiece(0, 5, PAWN, Definitions.BLACK);
-            makePiece(2, 3, PAWN, Definitions.WHITE);
-            makePiece(2, 4, PAWN, Definitions.BLACK);
-            makePiece(1, 0, BISHOP, Definitions.WHITE);
-            makePiece(7, 7, BISHOP, Definitions.BLACK);
+            makePiece(0, 3, Definitions.PAWN, Definitions.WHITE);
+            makePiece(0, 5, Definitions.PAWN, Definitions.BLACK);
+            makePiece(2, 3, Definitions.PAWN, Definitions.WHITE);
+            makePiece(2, 4, Definitions.PAWN, Definitions.BLACK);
+            makePiece(1, 0, Definitions.BISHOP, Definitions.WHITE);
+            makePiece(7, 7, Definitions.BISHOP, Definitions.BLACK);
             break;
       }
    }
 
    public void makePiece(int column, int row, int pieceName, int playerColour) {
       switch (pieceName) {
-         case PAWN:
+         case Definitions.PAWN:
             squares[column][row] = new Pawn(column, row, playerColour);
             break;
-         case KNIGHT:
+         case Definitions.KNIGHT:
             squares[column][row] = new Knight(column, row, playerColour);
             break;
-         case BISHOP:
+         case Definitions.BISHOP:
             squares[column][row] = new Bishop(column, row, playerColour);
             break;
-         case ROOK:
+         case Definitions.ROOK:
             squares[column][row] = new Rook(column, row, playerColour);
             break;
-         case QUEEN:
+         case Definitions.QUEEN:
             squares[column][row] = new Queen(column, row, playerColour);
             break;
-         case KING:
+         case Definitions.KING:
             squares[column][row] = new King(column, row, playerColour);
             break;
          default:
@@ -241,7 +234,7 @@ public class Board{
       }
    }
 
-   public char isWon() {
+   public int isWon() {
       generateMoves(Definitions.BLACK);
       if (remainingPieces.size() == 0) {
          return Definitions.BLACK;
@@ -250,7 +243,7 @@ public class Board{
       if (remainingPieces.size() == 0) {
          return Definitions.WHITE;
       }
-      return ' ';
+      return Definitions.NO_COLOUR;
    }
 
    public boolean isStaleMate() {

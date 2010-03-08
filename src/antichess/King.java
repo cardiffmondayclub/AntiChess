@@ -25,4 +25,8 @@ public class King extends Piece {
    public String getPieceName() {
       return "king";
    }
+
+   public int getPieceType() {
+      return Definitions.KING;
+   }
 }

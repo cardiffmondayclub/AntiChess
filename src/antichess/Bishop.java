@@ -28,4 +28,8 @@ public class Bishop extends Piece {
    public String getPieceName() {
       return "bishop";
    }
+
+   public int getPieceType() {
+      return Definitions.BISHOP;
+   }
 }

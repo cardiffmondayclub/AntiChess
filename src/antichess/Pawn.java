@@ -71,4 +71,8 @@ public class Pawn extends Piece
         public String getPieceName() {
             return "pawn";
         }
+
+        public int getPieceType() {
+            return Definitions.PAWN;
+        }
 }

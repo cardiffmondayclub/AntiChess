@@ -25,7 +25,11 @@ public class Knight extends Piece {
 
    }
 
-      public String getPieceName() {
+   public String getPieceName() {
       return "knight";
+   }
+
+   public int getPieceType() {
+      return Definitions.KNIGHT;
    }
 }

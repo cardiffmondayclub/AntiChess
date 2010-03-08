@@ -78,4 +78,6 @@ public abstract class Piece
 	public abstract boolean isMoveValid(Board board, Move move);
 
         public abstract String getPieceName();
+
+        public abstract int getPieceType();
 }

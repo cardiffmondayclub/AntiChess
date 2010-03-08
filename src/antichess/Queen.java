@@ -26,4 +26,8 @@ public class Queen extends Piece {
    public String getPieceName() {
       return "queen";
    }
+
+   public int getPieceType() {
+      return Definitions.QUEEN;
+   }
 }

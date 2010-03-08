@@ -30,12 +30,67 @@ public class AIBoard extends Board {
     }
 
     public int staticEval() {
-        generateMoves(playerColour);
-        for(int i = 0; i < remainingPieces.size(); i++) {
-            switch()
+        int evalTotal = 0;
+        int oppositeColour = (playerColour + 1) % 2;
+        
+        if(isWon() == playerColour) {
+            evalTotal = Integer.MAX_VALUE;
+            return evalTotal;
+        }
+        if(isWon() == oppositeColour) {
+            evalTotal = Integer.MIN_VALUE;
+            return evalTotal;
         }
 
-        return 0;
+        generateMoves(playerColour);
+        for(int i = 0; i < remainingPieces.size(); i++) {
+            switch(remainingPieces.get(i).getPieceType()) {
+                case Definitions.PAWN:
+                    evalTotal -= pieceValues[Definitions.PAWN];
+                    break;
+                case Definitions.KNIGHT:
+                    evalTotal -= pieceValues[Definitions.KNIGHT];
+                    break;
+                case Definitions.BISHOP:
+                    evalTotal -= pieceValues[Definitions.BISHOP];
+                    break;
+                case Definitions.ROOK:
+                    evalTotal -= pieceValues[Definitions.ROOK];
+                    break;
+                case Definitions.QUEEN:
+                    evalTotal -= pieceValues[Definitions.QUEEN];
+                    break;
+                case Definitions.KING:
+                    evalTotal -= pieceValues[Definitions.KING];
+                    break;
+            }
+        }
+
+        generateMoves(oppositeColour);
+        for(int i = 0; i < remainingPieces.size(); i++) {
+            switch(remainingPieces.get(i).getPieceType()) {
+                case Definitions.PAWN:
+                    evalTotal += pieceValues[Definitions.PAWN];
+                    break;
+                case Definitions.KNIGHT:
+                    evalTotal += pieceValues[Definitions.KNIGHT];
+                    break;
+                case Definitions.BISHOP:
+                    evalTotal += pieceValues[Definitions.BISHOP];
+                    break;
+                case Definitions.ROOK:
+                    evalTotal += pieceValues[Definitions.ROOK];
+                    break;
+                case Definitions.QUEEN:
+                    evalTotal += pieceValues[Definitions.QUEEN];
+                    break;
+                case Definitions.KING:
+                    evalTotal += pieceValues[Definitions.KING];
+                    break;
+            }
+        }
+
+        return evalTotal;
     }
 
 

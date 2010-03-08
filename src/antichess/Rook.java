@@ -25,4 +25,8 @@ public class Rook extends Piece {
    public String getPieceName() {
       return "rook";
    }
+
+   public int getPieceType() {
+      return Definitions.ROOK;
+   }
 }
