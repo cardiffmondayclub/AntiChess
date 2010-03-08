@@ -1,12 +1,14 @@
 package antichess;
 
 public class Human extends Player {
+private HumanBoard currentBoard;
 
-   public Human(int colour) {
+   public Human(HumanBoard currentBoard, int colour) {
       super(colour);
+      this.currentBoard = currentBoard;
    }
 
-   public static Move getMove(HumanBoard currentBoard, int playerColour) {
+   public Move getMove() {
       // Crude code that prints whose go it is
       System.out.print(playerColour + ": ");
 

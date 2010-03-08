@@ -16,25 +16,25 @@ public class Game {
       HumanBoard currentBoard = new HumanBoard(Definitions.FRAME_SIZE);
 
       switch (whitePlayerType) {
-         case HUMAN_PLAYER:
+         case Definitions.HUMAN_PLAYER:
             //
             break;
-         case AI_PLAYER:
+         case Definitions.AI_PLAYER:
             //
             break;
-         case NETWORK_PLAYER:
+         case Definitions.NETWORK_PLAYER:
             //
             break;
       }
 
       switch (blackPlayerType) {
-         case HUMAN_PLAYER:
+         case Definitions.HUMAN_PLAYER:
             //
             break;
-         case AI_PLAYER:
+         case Definitions.AI_PLAYER:
             //
             break;
-         case NETWORK_PLAYER:
+         case Definitions.NETWORK_PLAYER:
             //
             break;
       }
@@ -42,7 +42,7 @@ public class Game {
 
    public void runGame() {
       Player currentPlayer = whitePlayer;
-      final HumanBoard currentBoard = new HumanBoard(FRAME_SIZE);
+      final HumanBoard currentBoard = new HumanBoard(Definitions.FRAME_SIZE);
 
       Move nextMove = null;
       currentBoard.addWindowListener(new WindowAdapter() {
@@ -53,7 +53,7 @@ public class Game {
          }
       });
 
-      currentBoard.setSize(FRAME_SIZE, FRAME_SIZE);
+      currentBoard.setSize(Definitions.FRAME_SIZE, Definitions.FRAME_SIZE);
       currentBoard.setVisible(true);
 
       while (gameRunning) {
@@ -61,7 +61,7 @@ public class Game {
 
          currentBoard.generateMoves(currentPlayer.getPlayerColour());
          if (currentBoard.canMove()) {
-            nextMove = currentPlayer.getMove(currentBoard, currentPlayer.getPlayerColour());
+            nextMove = currentPlayer.getMove();
             currentBoard.makeMove(nextMove);
             currentBoard.repaint();
             currentBoard.setVisible(true);
