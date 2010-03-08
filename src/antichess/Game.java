@@ -7,10 +7,6 @@ package antichess;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- *
- * @author mikeakey
- */
 public class Game {
 
    private static final int FRAME_SIZE = 600;

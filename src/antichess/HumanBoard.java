@@ -106,25 +106,6 @@ public class HumanBoard extends Board {
       }
    }
 
-   public void drawBoard() {
-      for (int row = 7; row >= 0; row--) {
-         System.out.format("%d ", row + 1);
-         for (int col = 0; col < 8; col++) {
-            if (squares[col][row] != null) {
-               System.out.print(squares[col][row].getAppearance() + " ");
-            } else {
-               System.out.print("  ");
-            }
-         }
-         System.out.println();
-      }
-      System.out.println("  a b c d e f g h ");
-      System.out.println();
-   }
-
-   // MA - this paint method draws the board in a frame and uses the getAppearance method to show
-   // where each piece is on the board as a red character for now so it can be seen on both the
-   // white and black squares - TODO - change appearance of each piece to an image (possibly)
    @Override
    public void paint(Graphics g) {
       Graphics2D ga = (Graphics2D) g;
@@ -133,7 +114,7 @@ public class HumanBoard extends Board {
             double leftEdge = squareSize * (i + 1);
             double topEdge = squareSize * (8 - j);
 
-            if ((i + j) % 2 == 1) //(Changed) - I may have the white and black squares in the wrong places but they are swapped by changing the 0 here to a 1
+            if ((i + j) % 2 == 1) 
             {
                ga.drawImage(wTile, null, (int) leftEdge, (int) topEdge);
 
