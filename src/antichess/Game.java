@@ -17,7 +17,7 @@ public class Game {
 
       switch (whitePlayerType) {
          case Definitions.HUMAN_PLAYER:
-            //
+            whitePlayer = new Human(currentBoard, Definitions.WHITE);
             break;
          case Definitions.AI_PLAYER:
             //
@@ -29,7 +29,7 @@ public class Game {
 
       switch (blackPlayerType) {
          case Definitions.HUMAN_PLAYER:
-            //
+            blackPlayer = new Human(currentBoard, Definitions.BLACK);
             break;
          case Definitions.AI_PLAYER:
             //

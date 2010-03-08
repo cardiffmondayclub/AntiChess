@@ -5,7 +5,7 @@ public abstract class Player {
    public static final int WHITE = 0;
    public static final int BLACK = 1;
 
-   private int playerColour;
+   protected int playerColour;
 
    // construct player with variable player colour
    public Player(int colour) {
@@ -15,4 +15,7 @@ public abstract class Player {
    public int getPlayerColour() {
       return playerColour;
    }
+
+   public abstract Move getMove();
+
 }
