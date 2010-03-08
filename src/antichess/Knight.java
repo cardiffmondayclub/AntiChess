@@ -6,15 +6,7 @@ public class Knight extends Piece {
       super(posX, posY, newColour, "knight");
    }
 
-   public char getAppearance() {
-      if (this.colour == 'b') {
-         return 'n';
-      } else {
-         return 'N';
-      }
-   }
-
-   public boolean isMoveValid(Board board, Move move) {
+  public boolean isMoveValid(Board board, Move move) {
       int newX = move.newX;
       int newY = move.newY;
       int oldX = move.oldX;

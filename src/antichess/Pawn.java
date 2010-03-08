@@ -8,15 +8,6 @@ public class Pawn extends Piece
 		super(posX, posY, newColour, "pawn");
 	}
 
-	public char getAppearance()
-	{
-		if (this.colour == 'b') {
-			return 'p';
-		} else {
-			return 'P';
-		}
-	}
-
 	public boolean isMoveValid(Board board, Move move)
 	{
 		int newX = move.newX;

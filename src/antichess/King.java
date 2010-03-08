@@ -5,15 +5,7 @@ public class King extends Piece {
    public King(int posX, int posY, int newColour) {
       super(posX, posY, newColour, "king");
    }
-
-   public char getAppearance() {
-      if (this.colour == 'b') {
-         return 'k';
-      } else {
-         return 'K';
-      }
-   }
-
+   
    public boolean isMoveValid(Board board, Move move) {
       int newX = move.newX;
       int newY = move.newY;

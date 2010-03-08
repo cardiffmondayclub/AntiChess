@@ -6,14 +6,6 @@ public class Bishop extends Piece {
       super(posX, posY, newColour, "bishop");
    }
 
-   public char getAppearance() {
-      if (this.colour == 'b') {
-         return 'b';
-      } else {
-         return 'B';
-      }
-   }
-
    public boolean isMoveValid(Board board, Move move) {
       int newX = move.newX;
       int newY = move.newY;

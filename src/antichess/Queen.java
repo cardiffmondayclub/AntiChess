@@ -6,14 +6,6 @@ public class Queen extends Piece {
       super(posX, posY, newColour, "queen");
    }
 
-   public char getAppearance() {
-      if (this.colour == 'b') {
-         return 'q';
-      } else {
-         return 'Q';
-      }
-   }
-
    public boolean isMoveValid(Board board, Move move) {
       int newX = move.newX;
       int newY = move.newY;

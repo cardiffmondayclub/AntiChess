@@ -72,12 +72,7 @@ public abstract class Piece
 		}
 		return squareColour;
 	}
-
-	//The idea is to return a character that can be used by the current
-	//drawBoard() function. For example the white king might return 'K' and the
-	//black king return 'k'.
-	public abstract char getAppearance();
-
+	
 	//Checks if a move is valid. I'm hoping the Board.isPathClear() function
 	//could be used here.
 	public abstract boolean isMoveValid(Board board, Move move);

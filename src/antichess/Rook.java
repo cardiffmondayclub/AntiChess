@@ -6,15 +6,7 @@ public class Rook extends Piece {
       super(posX, posY, newColour, "rook");
    }
 
-   public char getAppearance() {
-      if (this.colour == 'b') {
-         return 'r';
-      } else {
-         return 'R';
-      }
-   }
-
-   public boolean isMoveValid(Board board, Move move) {
+  public boolean isMoveValid(Board board, Move move) {
       int newX = move.newX;
       int newY = move.newY;
       int oldX = move.oldX;
