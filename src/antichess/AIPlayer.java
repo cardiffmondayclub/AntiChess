@@ -4,9 +4,18 @@ public class AIPlayer extends Player {
 
    private AIBoard currentBoard;
 
+   final int PAWN_VALUE = 1;
+   final int KNIGHT_VALUE = 2;
+   final int BISHOP_VALUE = 3;
+   final int ROOK_VALUE = 4;
+   final int QUEEN_VALUE = 5;
+   final int KING_VALUE = 6;
+
    public AIPlayer(int colour) {
       super(colour);
-      currentBoard = new AIBoard();
+      int[] evaluationValues = {PAWN_VALUE, KNIGHT_VALUE, BISHOP_VALUE
+              , ROOK_VALUE, QUEEN_VALUE, KING_VALUE};
+      currentBoard = new AIBoard(colour, evaluationValues);
    }
 
    @Override
