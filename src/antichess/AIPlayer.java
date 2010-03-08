@@ -11,11 +11,19 @@ public class AIPlayer extends Player {
 
    @Override
    public Move getMove() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //do a minimax search and find the best move
+      Move move = new Move(0,0,0,0);
+      
+      //make the move
+      currentBoard.makeMove(move);
+
+      //return the move to the game class
+      return move;
+
    }
 
    public void sendMove(Move move) {
-      //do stuff
+      currentBoard.makeMove(move);
    }
 
    public void miniMax() {
