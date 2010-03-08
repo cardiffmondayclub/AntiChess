@@ -3,7 +3,7 @@ package antichess;
 public class Pawn extends Piece
 {
 
-	public Pawn(int posX, int posY, char newColour)
+	public Pawn(int posX, int posY, int newColour)
 	{
 		super(posX, posY, newColour, "pawn");
 	}

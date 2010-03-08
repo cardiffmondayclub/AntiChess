@@ -123,23 +123,6 @@ public class Board extends Frame {
             break;
       }
    }
-
-   public void drawBoard() {
-      for (int row = 7; row >= 0; row--) {
-         System.out.format("%d ", row + 1);
-         for (int col = 0; col < 8; col++) {
-            if (squares[col][row] != null) {
-               System.out.print(squares[col][row].getAppearance() + " ");
-            } else {
-               System.out.print("  ");
-            }
-         }
-         System.out.println();
-      }
-      System.out.println("  a b c d e f g h ");
-      System.out.println();
-   }
-
   
    public boolean isPathClear(Move move) {
       int xDelta = move.newX - move.oldX;
@@ -164,7 +147,7 @@ public class Board extends Frame {
       return true;
    }
 
-   public boolean isMoveValid(char playerColour, Move move) {
+   public boolean isMoveValid(int playerColour, Move move) {
       //check destination isn't the same as origin
       if (move.newX == move.oldX && move.newY == move.oldY) {
          return false;
@@ -211,17 +194,17 @@ public class Board extends Frame {
       //Crude first draft of pawn promotion code
       //Assumes the player wants a queen
       if ((move.newY == 7 || move.newY == 0) && squares[move.newX][move.newY] instanceof Pawn) {
-         char colour = squares[move.newX][move.newY].pieceColour();
+         int colour = squares[move.newX][move.newY].pieceColour();
          squares[move.newX][move.newY] = new Queen(move.newX, move.newY, colour);
       }
    }
 
-   public boolean isCapturePossible(char playerColour) {
+   public boolean isCapturePossible(int playerColour) {
       // check if any captures are listed in capture list
       return (validCaptures.size() > 0);
    }
 
-   public void generateMoves(char playerColour) {
+   public void generateMoves(int playerColour) {
 
       // reset the ArrayLists
       validMoves.clear();
@@ -366,7 +349,7 @@ public class Board extends Frame {
       return (validMoves.size() > 0);
    }
 
-   public int isFinished(char playerColour) {
+   public int isFinished(int playerColour) {
       int previousMoves = validMoves.size();
 
       if (playerColour == 'b') {
