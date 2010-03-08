@@ -63,12 +63,12 @@ public abstract class Piece
 	}
 
 	// Returns the colour of the square that the piece is on
-	public char getSquareColour()
+	public int getSquareColour()
 	{
 		if ((this.xPosition + this.yPosition) % 2 == 1) {
-			squareColour = 'w';
+			squareColour = Definitions.WHITE;
 		} else {
-			squareColour = 'b';
+			squareColour = Definitions.BLACK;
 		}
 		return squareColour;
 	}

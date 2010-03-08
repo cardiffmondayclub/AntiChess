@@ -11,13 +11,16 @@ public class Game {
    private boolean gameRunning = true;
    private Player whitePlayer = null;
    private Player blackPlayer = null;
+   private Board currentBoard;
+   private HumanBoard currentHumanBoard;
 
    public Game(int whitePlayerType, int blackPlayerType) {
-      HumanBoard currentBoard = new HumanBoard(Definitions.FRAME_SIZE);
+      currentBoard = new Board();
+      currentHumanBoard = new HumanBoard(currentBoard, Definitions.FRAME_SIZE);
 
       switch (whitePlayerType) {
          case Definitions.HUMAN_PLAYER:
-            whitePlayer = new Human(currentBoard, Definitions.WHITE);
+            whitePlayer = new Human(currentBoard, currentHumanBoard, Definitions.WHITE);
             break;
          case Definitions.AI_PLAYER:
             //
@@ -29,7 +32,7 @@ public class Game {
 
       switch (blackPlayerType) {
          case Definitions.HUMAN_PLAYER:
-            blackPlayer = new Human(currentBoard, Definitions.BLACK);
+            blackPlayer = new Human(currentBoard, currentHumanBoard, Definitions.BLACK);
             break;
          case Definitions.AI_PLAYER:
             //
@@ -42,19 +45,19 @@ public class Game {
 
    public void runGame() {
       Player currentPlayer = whitePlayer;
-      final HumanBoard currentBoard = new HumanBoard(Definitions.FRAME_SIZE);
 
       Move nextMove = null;
-      currentBoard.addWindowListener(new WindowAdapter() {
+
+      currentHumanBoard.addWindowListener(new WindowAdapter() {
 
          @Override
          public void windowClosing(WindowEvent we) {
-            currentBoard.setVisible(false);
+            currentHumanBoard.setVisible(false);
          }
       });
 
-      currentBoard.setSize(Definitions.FRAME_SIZE, Definitions.FRAME_SIZE);
-      currentBoard.setVisible(true);
+      currentHumanBoard.setSize(Definitions.FRAME_SIZE, Definitions.FRAME_SIZE);
+      currentHumanBoard.setVisible(true);
 
       while (gameRunning) {
          currentBoard.isFinished(currentPlayer.getPlayerColour());
@@ -63,8 +66,8 @@ public class Game {
          if (currentBoard.canMove()) {
             nextMove = currentPlayer.getMove();
             currentBoard.makeMove(nextMove);
-            currentBoard.repaint();
-            currentBoard.setVisible(true);
+            currentHumanBoard.repaint();
+            currentHumanBoard.setVisible(true);
          }
 
          int end = currentBoard.isFinished(currentPlayer.getPlayerColour());
