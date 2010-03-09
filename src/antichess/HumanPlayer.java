@@ -12,7 +12,14 @@ private HumanBoard currentHumanBoard;
 
    public Move getMove() {
       // Crude code that prints whose go it is
-      System.out.print(playerColour + ": ");
+		switch (playerColour) {
+			case Definitions.WHITE:
+				System.out.println("White to move");
+				break;
+			case Definitions.BLACK:
+				System.out.println("Black to move");
+				break;
+		}
 
       //Check if a capture is required in the next move.
       boolean captureRequired = currentBoard.isCapturePossible(playerColour);

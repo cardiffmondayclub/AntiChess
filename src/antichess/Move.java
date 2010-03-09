@@ -13,4 +13,9 @@ public class Move {
       this.newX = newX;
       this.newY = newY;
    }
+
+	@Override
+	public Move clone() {
+		return new Move(oldX, oldY, newX, newY);
+	}
 }

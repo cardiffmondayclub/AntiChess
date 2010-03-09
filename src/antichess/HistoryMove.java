@@ -5,7 +5,7 @@ public class HistoryMove {
     public Piece capturedPiece;
 
     public HistoryMove(Move move, Piece capturedPiece) {
-        this.move = move;
+        this.move = move.clone();
         this.capturedPiece = capturedPiece;
     }
 

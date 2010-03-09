@@ -6,10 +6,17 @@ public abstract class Player {
    public static final int BLACK = 1;
 
    protected int playerColour;
+	protected int otherPlayerColour;
 
    // construct player with variable player colour
    public Player(int colour) {
       playerColour = colour;
+
+		if (playerColour==Definitions.WHITE) {
+			otherPlayerColour = Definitions.BLACK;
+		} else {
+			otherPlayerColour = Definitions.WHITE;
+		}
    }
    
    public int getPlayerColour() {
