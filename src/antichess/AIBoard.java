@@ -15,18 +15,33 @@ public class AIBoard extends Board {
 		this.playerColour = playerColour;
 	}
 
+	public AIBoard(int playerColour, int[] pieceValues, int testCase) {
+		super(testCase);
+		this.pieceValues = pieceValues;
+		this.playerColour = playerColour;
+		historyStack = new Stack<HistoryMove>();
+	}
+
 	@Override
 	public void makeMove(Move move) {
-		HistoryMove tempMove = new HistoryMove(move, squares[move.newX][move.newY]);
-		historyStack.push(tempMove);
+		if (move == null) {
+			historyStack.push(null);
+		} else {
+			HistoryMove tempMove = new HistoryMove(move, squares[move.newX][move.newY]);
+			historyStack.push(tempMove);
+		}
 		super.makeMove(move);
 	}
 
 	public void undoMove() {
 		HistoryMove tempMove = historyStack.pop();
-		tempMove.reverseMove();
-		super.makeMove(tempMove.move);
-		squares[tempMove.move.oldX][tempMove.move.oldY] = tempMove.capturedPiece;
+		if (tempMove == null) {
+			super.makeMove(null);
+		} else {
+			tempMove.reverseMove();
+			super.makeMove(tempMove.move);
+			squares[tempMove.move.oldX][tempMove.move.oldY] = tempMove.capturedPiece;
+		}
 	}
 
 	public int staticEval() {

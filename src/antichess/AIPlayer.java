@@ -147,11 +147,28 @@ public class AIPlayer extends Player {
 						moveList = (ArrayList<Move>) currentBoard.validMoves.clone();
 					}
 
+					//Certain actions should be taken if the move list has no moves in it
+					if (moveList.size() == 0) {
+						int finished = currentBoard.isFinished(playerColour);
+
+						//check for wins
+						if (finished == Definitions.WHITE_WINS || finished == Definitions.BLACK_WINS) {
+							return currentBoard.staticEval();
+						}
+
+						//check for stalemates
+						if (finished == Definitions.LOCKED_STALEMATE || finished == Definitions.DERIVED_STALEMATE) {
+							return 0;
+						}
+
+						//if the player just has no moves add a null move
+						moveList.add(null);
+					}
+
 					//Iterate through the list, make each move, find the max of that position
 					//at the end return the minimum score and update some list of moves
 					//Might need something to check for situations where there are no possible moves
 					//(someone has won/some has lost/can hapen in stalemate)
-
 					int score = 0;
 					int testScore = 0;
 					//switch based on min or max search
@@ -161,7 +178,7 @@ public class AIPlayer extends Player {
 							for (Move move : moveList) {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
-								currentBoard.generateMoves(otherPlayerColour);
+								currentBoard.generateMoves(playerColour);
 								testScore = miniMax(currentDepth + 1, maxDepth, MAX, moves, score);
 								if (testScore < score) {
 									score = testScore;
@@ -179,7 +196,7 @@ public class AIPlayer extends Player {
 							for (Move move : moveList) {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
-								currentBoard.generateMoves(playerColour);
+								currentBoard.generateMoves(otherPlayerColour);
 								testScore = miniMax(currentDepth + 1, maxDepth, MIN, moves, score);
 								if (testScore > score) {
 									score = testScore;

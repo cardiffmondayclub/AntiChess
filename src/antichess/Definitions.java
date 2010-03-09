@@ -17,4 +17,10 @@ public class Definitions {
    final static int QUEEN = 4;
    final static int KING = 5;
 	final static int[] PROMOTION_PIECES = {KNIGHT, BISHOP, ROOK, QUEEN, KING};
+
+	final static int NO_WIN = -1;
+	final static int WHITE_WINS = 0;
+	final static int BLACK_WINS = 1;
+	final static int LOCKED_STALEMATE = 2;
+	final static int DERIVED_STALEMATE = 3;
 }

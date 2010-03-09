@@ -75,19 +75,19 @@ public class Game {
 			int end = currentBoard.isFinished(currentPlayer.getPlayerColour());
 
 			switch (end) {
-				case Board.LOCKED_STALEMATE:
+				case Definitions.LOCKED_STALEMATE:
 					System.out.println("Neither of you can move so its stalemate!");
 					gameRunning = false;
 					break;
-				case Board.DERIVED_STALEMATE:
+				case Definitions.DERIVED_STALEMATE:
 					System.out.println("Neither of you can win so its stalemate!");
 					gameRunning = false;
 					break;
-				case Board.WHITE_WINS:
+				case Definitions.WHITE_WINS:
 					System.out.println("White wins!");
 					gameRunning = false;
 					break;
-				case Board.BLACK_WINS:
+				case Definitions.BLACK_WINS:
 					System.out.println("Black wins!");
 					gameRunning = false;
 					break;

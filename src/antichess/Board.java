@@ -7,11 +7,6 @@ public class Board {
 	public ArrayList<Move> validMoves;
 	public ArrayList<Move> validCaptures;
 	public ArrayList<Piece> remainingPieces;
-	// End-game cases
-	public static final int LOCKED_STALEMATE = 1;
-	public static final int DERIVED_STALEMATE = 2;
-	public static final int WHITE_WINS = 3;
-	public static final int BLACK_WINS = 4;
 
 	public Board() {
 		// initialise the array lists
@@ -168,6 +163,9 @@ public class Board {
 	}
 
 	public void makeMove(Move move) {
+		if (move == null) {
+			return;
+		}
 		/* Assuming that everything has been checked by isMoveValid() and
 		 * isMoveCapture() this function simply replaces the contents of the
 		 * new square with the contents of the old square and wipes the old
@@ -361,19 +359,19 @@ public class Board {
 			this.generateMoves(Definitions.BLACK);
 		}
 		if (validMoves.size() + previousMoves == 0) {
-			return LOCKED_STALEMATE;
+			return Definitions.LOCKED_STALEMATE;
 		}
 
 		if (this.isStaleMate()) {
-			return DERIVED_STALEMATE;
+			return Definitions.DERIVED_STALEMATE;
 		}
 		if (this.isWon() == Definitions.WHITE) {
-			return WHITE_WINS;
+			return Definitions.WHITE_WINS;
 		}
 		if (this.isWon() == Definitions.BLACK) {
-			return BLACK_WINS;
+			return Definitions.BLACK_WINS;
 		}
-		return 0;
+		return Definitions.NO_WIN;
 
 	}
 }
