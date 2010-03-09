@@ -15,16 +15,6 @@ public class AIBoard extends Board {
 		this.playerColour = playerColour;
 	}
 
-//	@Override
-//	public AIBoard clone() {
-//		AIBoard temp = new AIBoard(playerColour, pieceValues.clone());
-//		temp.squares = this.squares.clone();
-//		temp.historyStack = (Stack<HistoryMove>) this.historyStack.clone();
-//		temp.validMoves = (ArrayList<Move>) this.validMoves.clone();
-//		temp.validCaptures = (ArrayList<Move>) this.validCaptures.clone();
-//		temp.remainingPieces = (ArrayList<Piece>) this.remainingPieces.clone();
-//		return temp;
-//}
 	@Override
 	public void makeMove(Move move) {
 		HistoryMove tempMove = new HistoryMove(move, squares[move.newX][move.newY]);

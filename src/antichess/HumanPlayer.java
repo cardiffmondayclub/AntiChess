@@ -48,6 +48,12 @@ private HumanBoard currentHumanBoard;
                }
 
             } else {
+					//Check if the move is a pawn promotion and if so make it promote
+					//to a queen. In future this should display a dialog asking the
+					//user to select the piece they want.
+					if (currentBoard.isMovePawnPromotion(nextMove)) {
+						nextMove = new PromotionMove(nextMove, Definitions.QUEEN);
+					}
                return nextMove;
             }
          } else {

@@ -110,67 +110,6 @@ public class AIPlayer extends Player {
 		currentBoard.makeMove(move);
 	}
 
-	public Move miniMaxStart(int maxDepth) {
-		Move[] moves = new Move[maxDepth];
-		miniMax(0, maxDepth, MAX, moves);
-		return moves[0];
-	}
-
-	public int miniMax(int currentDepth, int maxDepth, int searchType, Move[] moves) {
-
-		if (currentDepth == maxDepth) {
-			//If this is the bottom layer
-			return currentBoard.staticEval();
-		} else {
-			//Get the list of move (captures if one is possible, valid moves otherwise)
-			ArrayList<Move> moveList;
-			if (currentBoard.validCaptures.size() > 0) {
-				moveList = (ArrayList<Move>) currentBoard.validCaptures.clone();
-			} else {
-				moveList = (ArrayList<Move>) currentBoard.validMoves.clone();
-			}
-
-			//Iterate through the list, make each move, find the max of that position
-			//at the end return the minimum score and update some list of moves
-			//Might need something to check for situations where there are no possible moves
-			//(someone has won/some has lost/can hapen in stalemate)
-
-			int score = 0;
-			int testScore = 0;
-			//switch based on min or max search
-			switch (searchType) {
-				case MIN:
-					score = Integer.MAX_VALUE;
-					for (Move move : moveList) {
-						currentBoard.makeMove(move);
-						currentBoard.generateMoves(otherPlayerColour);
-						testScore = miniMax(currentDepth + 1, maxDepth, MAX, moves);
-						if (testScore < score) {
-							score = testScore;
-							moves[currentDepth] = move;
-						}
-						currentBoard.undoMove();
-					}
-					break;
-				case MAX:
-					score = Integer.MIN_VALUE;
-					for (Move move : moveList) {
-						currentBoard.makeMove(move);
-						currentBoard.generateMoves(playerColour);
-						testScore = miniMax(currentDepth + 1, maxDepth, MIN, moves);
-						if (testScore > score) {
-							score = testScore;
-							moves[currentDepth] = move;
-						}
-						currentBoard.undoMove();
-					}
-					break;
-			}
-			//end switch
-			return score;
-		}
-	}
-
 	private class MiniMaxSearch implements Runnable {
 		private AIBoard currentBoard;
 		private int playerColour;
@@ -188,13 +127,13 @@ public class AIPlayer extends Player {
 
 		public void run() {
 			try {
-				miniMax(0, maxDepth, MAX, moves);
+				miniMax(0, maxDepth, MAX, moves, Integer.MAX_VALUE);
 			} catch (InterruptedException exception) {
 				//just exit if interrupted
 			}
 		}
 
-		public int miniMax(int currentDepth, int maxDepth, int searchType, Move[] moves) throws InterruptedException {
+		public int miniMax(int currentDepth, int maxDepth, int searchType, Move[] moves, int parentNodeScore) throws InterruptedException {
 			try {
 				if (currentDepth == maxDepth) {
 					//If this is the bottom layer
@@ -223,12 +162,16 @@ public class AIPlayer extends Player {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
 								currentBoard.generateMoves(otherPlayerColour);
-								testScore = miniMax(currentDepth + 1, maxDepth, MAX, moves);
+								testScore = miniMax(currentDepth + 1, maxDepth, MAX, moves, score);
 								if (testScore < score) {
 									score = testScore;
 									moves[currentDepth] = move;
 								}
 								currentBoard.undoMove();
+								if (score < parentNodeScore) {
+									break;
+								}
+								
 							}
 							break;
 						case MAX:
@@ -237,12 +180,16 @@ public class AIPlayer extends Player {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
 								currentBoard.generateMoves(playerColour);
-								testScore = miniMax(currentDepth + 1, maxDepth, MIN, moves);
+								testScore = miniMax(currentDepth + 1, maxDepth, MIN, moves, score);
 								if (testScore > score) {
 									score = testScore;
 									moves[currentDepth] = move;
 								}
 								currentBoard.undoMove();
+								if (score > parentNodeScore) {
+									break;
+								}
+								
 							}
 							break;
 					}

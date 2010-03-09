@@ -16,6 +16,10 @@ public class HistoryMove {
         move.oldY = move.newY;
         move.newX = tempOldX;
         move.newY = tempOldY;
+
+		  if (move instanceof PromotionMove) {
+			  ((PromotionMove) move).newPiece = Definitions.PAWN;
+		  }
     }
 
 }

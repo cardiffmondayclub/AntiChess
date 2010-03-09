@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package antichess;
 
-/**
- *
- * @author mikeakey
- */
 public class Definitions {
 
    final static int WHITE = 0;
@@ -24,4 +16,5 @@ public class Definitions {
    final static int ROOK = 3;
    final static int QUEEN = 4;
    final static int KING = 5;
+	final static int[] PROMOTION_PIECES = {KNIGHT, BISHOP, ROOK, QUEEN, KING};
 }
