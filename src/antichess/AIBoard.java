@@ -25,155 +25,100 @@ public class AIBoard extends Board {
 //		temp.remainingPieces = (ArrayList<Piece>) this.remainingPieces.clone();
 //		return temp;
 //}
+	@Override
+	public void makeMove(Move move) {
+		HistoryMove tempMove = new HistoryMove(move, squares[move.newX][move.newY]);
+		historyStack.push(tempMove);
+		super.makeMove(move);
+	}
 
-@Override
-    public void
+	public void undoMove() {
+		HistoryMove tempMove = historyStack.pop();
+		tempMove.reverseMove();
+		super.makeMove(tempMove.move);
+		squares[tempMove.move.oldX][tempMove.move.oldY] = tempMove.capturedPiece;
+	}
 
-makeMove(Move move) {
-        HistoryMove tempMove = new HistoryMove(move, squares[move.newX][move.newY]);
-        historyStack.push
+	public int staticEval() {
+		int evalTotal = 0;
+		int oppositeColour = (playerColour + 1) % 2;
 
-(tempMove);
-        super
+		if (isWon() == playerColour) {
+			evalTotal = Integer.MAX_VALUE;
+			return evalTotal;
+		}
 
-.makeMove(move);
-    }
+		if (isWon() == oppositeColour) {
+			evalTotal = Integer.MIN_VALUE;
+			return evalTotal;
+		}
 
-public void
+		generateMoves(playerColour);
+		for (int i = 0; i <
+				  remainingPieces.size(); i++) {
+			switch (remainingPieces.get(i).getPieceType()) {
+				case Definitions.PAWN:
+					evalTotal -= pieceValues[Definitions.PAWN];
+					break;
 
-undoMove() {
-        HistoryMove tempMove = historyStack.pop();
-        tempMove.reverseMove
+				case Definitions.KNIGHT:
+					evalTotal -= pieceValues[Definitions.KNIGHT];
+					break;
 
-();
-        super
+				case Definitions.BISHOP:
+					evalTotal -= pieceValues[Definitions.BISHOP];
+					break;
 
-.makeMove(tempMove.move);
-        squares[tempMove
+				case Definitions.ROOK:
+					evalTotal -= pieceValues[Definitions.ROOK];
+					break;
 
-.move.oldX][tempMove.move.oldY] = tempMove.capturedPiece;
-    }
+				case Definitions.QUEEN:
+					evalTotal -= pieceValues[Definitions.QUEEN];
+					break;
 
-public int
+				case Definitions.KING:
+					evalTotal -= pieceValues[Definitions.KING];
+					break;
 
-staticEval() {
-        int evalTotal = 0;
-        int
-
-oppositeColour = (playerColour + 1) % 2;
-        
-        if
-
-(isWon() == playerColour) {
-            evalTotal = Integer.MAX_VALUE;
-            return
-
-evalTotal;
-        }
-
-if(isWon() == oppositeColour) {
-            evalTotal = Integer.MIN_VALUE;
-            return
-
-evalTotal;
-        }
-
-generateMoves(playerColour);
-        for
-
-(int i = 0; i <
-
-remainingPieces.size(); i++)
-
-{
-            switch(remainingPieces.get(i).getPieceType()) {
-                case Definitions.PAWN:
-                    evalTotal -= pieceValues[Definitions.PAWN];
-                    break;
-
-case
-
-Definitions.KNIGHT:
-                    evalTotal -= pieceValues[Definitions.KNIGHT];
-                    break;
-
-case
-
-Definitions.BISHOP:
-                    evalTotal -= pieceValues[Definitions.BISHOP];
-                    break;
-
-case
-
-Definitions.ROOK:
-                    evalTotal -= pieceValues[Definitions.ROOK];
-                    break;
-
-case
-
-Definitions.QUEEN:
-                    evalTotal -= pieceValues[Definitions.QUEEN];
-                    break;
-
-case
-
-Definitions.KING:
-                    evalTotal -= pieceValues[Definitions.KING];
-                    break;
-
-}
+			}
 
 
-}
+		}
 
-        generateMoves(oppositeColour);
-        for
+		generateMoves(oppositeColour);
+		for (int i = 0; i <
+				  remainingPieces.size(); i++) {
+			switch (remainingPieces.get(i).getPieceType()) {
+				case Definitions.PAWN:
+					evalTotal += pieceValues[Definitions.PAWN];
+					break;
 
-(int i = 0; i <
+				case Definitions.KNIGHT:
+					evalTotal += pieceValues[Definitions.KNIGHT];
+					break;
 
-remainingPieces.size(); i++)
+				case Definitions.BISHOP:
+					evalTotal += pieceValues[Definitions.BISHOP];
+					break;
 
-{
-            switch(remainingPieces.get(i).getPieceType()) {
-                case Definitions.PAWN:
-                    evalTotal += pieceValues[Definitions.PAWN];
-                    break;
+				case Definitions.ROOK:
+					evalTotal += pieceValues[Definitions.ROOK];
+					break;
 
-case
+				case Definitions.QUEEN:
+					evalTotal += pieceValues[Definitions.QUEEN];
+					break;
 
-Definitions.KNIGHT:
-                    evalTotal += pieceValues[Definitions.KNIGHT];
-                    break;
+				case Definitions.KING:
+					evalTotal += pieceValues[Definitions.KING];
+					break;
 
-case
-
-Definitions.BISHOP:
-                    evalTotal += pieceValues[Definitions.BISHOP];
-                    break;
-
-case
-
-Definitions.ROOK:
-                    evalTotal += pieceValues[Definitions.ROOK];
-                    break;
-
-case
-
-Definitions.QUEEN:
-                    evalTotal += pieceValues[Definitions.QUEEN];
-                    break;
-
-case
-
-Definitions.KING:
-                    evalTotal += pieceValues[Definitions.KING];
-                    break;
-
-}
+			}
 
 
-}
+		}
 
-        return evalTotal;
-    }
+		return evalTotal;
+	}
 }
