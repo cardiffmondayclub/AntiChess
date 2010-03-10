@@ -1,8 +1,9 @@
 package antichess;
 
 public class HumanPlayer extends Player {
-private Board currentBoard;
-private HumanBoard currentHumanBoard;
+
+   private Board currentBoard;
+   private HumanBoard currentHumanBoard;
 
    public HumanPlayer(Board currentBoard, HumanBoard currentHumanBoard, int colour) {
       super(colour);
@@ -12,14 +13,14 @@ private HumanBoard currentHumanBoard;
 
    public Move getMove() {
       // Crude code that prints whose go it is
-		switch (playerColour) {
-			case Definitions.WHITE:
-				System.out.println("White to move");
-				break;
-			case Definitions.BLACK:
-				System.out.println("Black to move");
-				break;
-		}
+      switch (playerColour) {
+         case Definitions.WHITE:
+            System.out.println("White to move");
+            break;
+         case Definitions.BLACK:
+            System.out.println("Black to move");
+            break;
+      }
 
       //Check if a capture is required in the next move.
       boolean captureRequired = currentBoard.isCapturePossible(playerColour);
@@ -48,12 +49,12 @@ private HumanBoard currentHumanBoard;
                }
 
             } else {
-					//Check if the move is a pawn promotion and if so make it promote
-					//to a queen. In future this should display a dialog asking the
-					//user to select the piece they want.
-					if (currentBoard.isMovePawnPromotion(nextMove)) {
-						nextMove = new PromotionMove(nextMove, Definitions.QUEEN);
-					}
+               //Check if the move is a pawn promotion and if so make it promote
+               //to a queen. In future this should display a dialog asking the
+               //user to select the piece they want.
+               if (currentBoard.isMovePawnPromotion(nextMove)) {
+                  nextMove = new PromotionMove(nextMove, Definitions.QUEEN);
+               }
                return nextMove;
             }
          } else {
