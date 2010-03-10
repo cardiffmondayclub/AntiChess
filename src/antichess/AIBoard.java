@@ -49,12 +49,12 @@ public class AIBoard extends Board {
 		int oppositeColour = (playerColour + 1) % 2;
 
 		if (isWon() == playerColour) {
-			evalTotal = Integer.MAX_VALUE;
+			evalTotal = Integer.MAX_VALUE -1;
 			return evalTotal;
 		}
 
 		if (isWon() == oppositeColour) {
-			evalTotal = Integer.MIN_VALUE;
+			evalTotal = Integer.MIN_VALUE + 1;
 			return evalTotal;
 		}
 
