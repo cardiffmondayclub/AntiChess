@@ -10,6 +10,7 @@ public class Definitions {
    final static int AI_PLAYER = 1;
    final static int NETWORK_PLAYER = 2;
 
+	final static int NO_PIECE = -1;
    final static int PAWN = 0;
    final static int KNIGHT = 1;
    final static int BISHOP = 2;

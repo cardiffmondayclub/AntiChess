@@ -24,23 +24,29 @@ public class AIBoard extends Board {
 
 	@Override
 	public void makeMove(Move move) {
-		if (move == null) {
-			historyStack.push(null);
-		} else {
+		if (move != null) {
+
 			HistoryMove tempMove = new HistoryMove(move, squares[move.newX][move.newY]);
 			historyStack.push(tempMove);
+			super.makeMove(move);
+
+		} else {
+			historyStack.push(null);
 		}
-		super.makeMove(move);
 	}
 
 	public void undoMove() {
 		HistoryMove tempMove = historyStack.pop();
-		if (tempMove == null) {
-			super.makeMove(null);
-		} else {
+		if (tempMove != null) {
+
 			tempMove.reverseMove();
 			super.makeMove(tempMove.move);
+
 			squares[tempMove.move.oldX][tempMove.move.oldY] = tempMove.capturedPiece;
+
+			if (tempMove.capturedPiece != null) {
+				remainingPieces[tempMove.capturedPiece.colour].add(tempMove.capturedPiece);
+			}
 		}
 	}
 
@@ -58,10 +64,9 @@ public class AIBoard extends Board {
 			return evalTotal;
 		}
 
-		generateMoves(playerColour);
 		for (int i = 0; i <
-				  remainingPieces.size(); i++) {
-			switch (remainingPieces.get(i).getPieceType()) {
+				  remainingPieces[playerColour].size(); i++) {
+			switch (remainingPieces[playerColour].get(i).getPieceType()) {
 				case Definitions.PAWN:
 					evalTotal -= pieceValues[Definitions.PAWN];
 					break;
@@ -91,10 +96,9 @@ public class AIBoard extends Board {
 
 		}
 
-		generateMoves(oppositeColour);
 		for (int i = 0; i <
-				  remainingPieces.size(); i++) {
-			switch (remainingPieces.get(i).getPieceType()) {
+				  remainingPieces[oppositeColour].size(); i++) {
+			switch (remainingPieces[oppositeColour].get(i).getPieceType()) {
 				case Definitions.PAWN:
 					evalTotal += pieceValues[Definitions.PAWN];
 					break;

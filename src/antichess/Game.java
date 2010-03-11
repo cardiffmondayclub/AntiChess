@@ -43,9 +43,11 @@ public class Game {
 		}
 	}
 
-	public void runGame() {
+	public int runGame() {
 		Player currentPlayer = whitePlayer;
 		Player otherPlayer = blackPlayer;
+
+		int end = Definitions.NO_WIN;
 
 		Move nextMove = null;
 
@@ -72,7 +74,7 @@ public class Game {
 				currentHumanBoard.setVisible(true);
 			}
 
-			int end = currentBoard.isFinished(currentPlayer.getPlayerColour());
+			end = currentBoard.isFinished(currentPlayer.getPlayerColour());
 
 			switch (end) {
 				case Definitions.LOCKED_STALEMATE:
@@ -102,5 +104,6 @@ public class Game {
 				otherPlayer = blackPlayer;
 			}
 		}
+		return end;
 	}
 }

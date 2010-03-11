@@ -6,13 +6,15 @@ public class Board {
 	public Piece[][] squares;
 	public ArrayList<Move> validMoves;
 	public ArrayList<Move> validCaptures;
-	public ArrayList<Piece> remainingPieces;
+	public ArrayList<Piece>[] remainingPieces;
 
 	public Board() {
 		// initialise the array lists
 		validMoves = new ArrayList<Move>();
 		validCaptures = new ArrayList<Move>();
-		remainingPieces = new ArrayList<Piece>();
+		remainingPieces = new ArrayList[2];
+		remainingPieces[Definitions.WHITE] = new ArrayList<Piece>();
+		remainingPieces[Definitions.BLACK] = new ArrayList<Piece>();
 
 
 		//Initialises the board.
@@ -105,6 +107,7 @@ public class Board {
 				squares[column][row] = null;
 				break;
 		}
+		remainingPieces[playerColour].add(squares[column][row]);
 	}
 
 	public boolean isPathClear(Move move) {
@@ -171,6 +174,13 @@ public class Board {
 		 * new square with the contents of the old square and wipes the old
 		 * square
 		 */
+
+		//Remove a piece from the remaining pieces list if it is being captured
+		if (squares[move.newX][move.newY] != null) {
+			Piece piece = squares[move.newX][move.newY];
+			remainingPieces[piece.colour].remove(piece);
+		}
+
 		squares[move.newX][move.newY] = squares[move.oldX][move.oldY];
 		squares[move.oldX][move.oldY] = null;
 
@@ -197,64 +207,60 @@ public class Board {
 		// reset the ArrayLists
 		validMoves.clear();
 		validCaptures.clear();
-		remainingPieces.clear();
 
 		// create tempMove that holds each test move
 		Move testMove;
+		int sourceCol;
+		int sourceRow;
 
 		// iterate over all moves
-		for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
-			for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
+		for (Piece piece : remainingPieces[playerColour]) {
 
-				if (squares[sourceCol][sourceRow] != null) {
-					if (squares[sourceCol][sourceRow].pieceColour() == playerColour) {
-						remainingPieces.add(squares[sourceCol][sourceRow]);
-					}
-				}
-				for (int destCol = 0; destCol < 8; destCol++) {
-					for (int destRow = 0; destRow < 8; destRow++) {
-						// initialise testMove
-						testMove = new Move(sourceCol, sourceRow, destCol, destRow);
+			sourceCol = piece.xPosition;
+			sourceRow = piece.yPosition;
+			for (int destCol = 0; destCol < 8; destCol++) {
+				for (int destRow = 0; destRow < 8; destRow++) {
+					// initialise testMove
+					testMove = new Move(sourceCol, sourceRow, destCol, destRow);
 
-						// check move validity
-						if (this.isMoveValid(playerColour, testMove)) {
-							// if valid add to valid move list
+					// check move validity
+					if (this.isMoveValid(playerColour, testMove)) {
+						// if valid add to valid move list
 
-							//Check if the move is pawn promotion and if so add
-							//all possible promotions.
-							if (isMovePawnPromotion(testMove)) {
-								for (int piece : Definitions.PROMOTION_PIECES) {
-									validMoves.add(new PromotionMove(testMove, piece));
-								}
-							} else {
-								validMoves.add(testMove);
+						//Check if the move is pawn promotion and if so add
+						//all possible promotions.
+						if (isMovePawnPromotion(testMove)) {
+							for (int promotionPiece : Definitions.PROMOTION_PIECES) {
+								validMoves.add(new PromotionMove(testMove, promotionPiece));
 							}
-
-							// check if test move is capture
-							if (this.isMoveCapture(testMove)) {
-								if (isMovePawnPromotion(testMove)) {
-									for (int piece : Definitions.PROMOTION_PIECES) {
-										validCaptures.add(new PromotionMove(testMove, piece));
-									}
-								} else {
-									validCaptures.add(testMove);
-								}
-							}
+						} else {
+							validMoves.add(testMove);
 						}
 
+						// check if test move is capture
+						if (this.isMoveCapture(testMove)) {
+							if (isMovePawnPromotion(testMove)) {
+								for (int promotionPiece : Definitions.PROMOTION_PIECES) {
+									validCaptures.add(new PromotionMove(testMove, promotionPiece));
+								}
+							} else {
+								validCaptures.add(testMove);
+							}
+						}
 					}
+
 				}
 			}
 		}
 	}
 
 	public int isWon() {
-		generateMoves(Definitions.BLACK);
-		if (remainingPieces.size() == 0) {
+
+		if (remainingPieces[Definitions.BLACK].size() == 0) {
 			return Definitions.BLACK;
 		}
-		generateMoves(Definitions.WHITE);
-		if (remainingPieces.size() == 0) {
+
+		if (remainingPieces[Definitions.WHITE].size() == 0) {
 			return Definitions.WHITE;
 		}
 		return Definitions.NO_COLOUR;
@@ -296,10 +302,10 @@ public class Board {
 
 
 			// check that all the player's pieces are on the same coloured squares
-			int prevSquareColour = this.remainingPieces.get(0).getSquareColour();
+			int prevSquareColour = this.remainingPieces[playerColour].get(0).getSquareColour();
 
-			for (int j = 1; j < this.remainingPieces.size(); j++) {
-				int nextSquareColour = this.remainingPieces.get(j).getSquareColour();
+			for (int j = 1; j < this.remainingPieces[playerColour].size(); j++) {
+				int nextSquareColour = this.remainingPieces[playerColour].get(j).getSquareColour();
 
 				if (nextSquareColour != prevSquareColour) {
 					return false;
@@ -358,6 +364,7 @@ public class Board {
 		} else if (playerColour == Definitions.WHITE) {
 			this.generateMoves(Definitions.BLACK);
 		}
+
 		if (validMoves.size() + previousMoves == 0) {
 			return Definitions.LOCKED_STALEMATE;
 		}
