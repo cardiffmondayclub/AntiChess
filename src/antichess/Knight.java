@@ -1,5 +1,7 @@
 package antichess;
 
+import java.util.ArrayList;
+
 public class Knight extends Piece {
 
    public Knight(int posX, int posY, int newColour) {
@@ -32,4 +34,8 @@ public class Knight extends Piece {
    public int getPieceType() {
       return Definitions.KNIGHT;
    }
+
+	public void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures) {
+		//do stuff
+	}
 }

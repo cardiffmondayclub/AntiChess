@@ -33,11 +33,6 @@ public class Board {
 			makePiece(i, 1, Definitions.PAWN, Definitions.WHITE);
 			makePiece(i, 6, Definitions.PAWN, Definitions.BLACK);
 		}
-		for (int i = 0; i < 8; i++) {
-			for (int j = 2; i < 6; i++) {
-				squares[i][j] = null;
-			}
-		}
 
 		makePiece(0, 7, Definitions.ROOK, Definitions.BLACK);
 		makePiece(1, 7, Definitions.KNIGHT, Definitions.BLACK);
@@ -60,7 +55,6 @@ public class Board {
 				squares[col][row] = null;
 			}
 		}
-		boolean squaresSameColour = true;
 
 		switch (testNumber) {
 			case 1:  // Test for locked stalemate
@@ -84,33 +78,35 @@ public class Board {
 	}
 
 	public void makePiece(int column, int row, int pieceName, int playerColour) {
+		Piece newPiece = null;
 		switch (pieceName) {
 			case Definitions.PAWN:
-				squares[column][row] = new Pawn(column, row, playerColour);
+				newPiece = new Pawn(column, row, playerColour);
 				break;
 			case Definitions.KNIGHT:
-				squares[column][row] = new Knight(column, row, playerColour);
+				newPiece = new Knight(column, row, playerColour);
 				break;
 			case Definitions.BISHOP:
-				squares[column][row] = new Bishop(column, row, playerColour);
+				newPiece = new Bishop(column, row, playerColour);
 				break;
 			case Definitions.ROOK:
-				squares[column][row] = new Rook(column, row, playerColour);
+				newPiece = new Rook(column, row, playerColour);
 				break;
 			case Definitions.QUEEN:
-				squares[column][row] = new Queen(column, row, playerColour);
+				newPiece = new Queen(column, row, playerColour);
 				break;
 			case Definitions.KING:
-				squares[column][row] = new King(column, row, playerColour);
+				newPiece = new King(column, row, playerColour);
 				break;
 			default:
-				squares[column][row] = null;
 				break;
 		}
+		squares[column][row] = newPiece;
 		remainingPieces[playerColour].add(squares[column][row]);
 	}
 
 	public boolean isPathClear(Move move) {
+		//This could do with some tidying/refactoring. MCS
 		int xDelta = move.newX - move.oldX;
 		int yDelta = move.newY - move.oldY;
 		int absXDelta = Math.abs(xDelta);
@@ -263,6 +259,7 @@ public class Board {
 		if (remainingPieces[Definitions.WHITE].size() == 0) {
 			return Definitions.WHITE;
 		}
+		
 		return Definitions.NO_COLOUR;
 	}
 

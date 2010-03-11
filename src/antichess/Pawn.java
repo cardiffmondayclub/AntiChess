@@ -1,15 +1,13 @@
 package antichess;
 
-public class Pawn extends Piece
-{
+import java.util.ArrayList;
 
-	public Pawn(int posX, int posY, int newColour)
-	{
+public class Pawn extends Piece {
+	public Pawn(int posX, int posY, int newColour) {
 		super(posX, posY, newColour, "pawn");
 	}
 
-	public boolean isMoveValid(Board board, Move move)
-	{
+	public boolean isMoveValid(Board board, Move move) {
 		int newX = move.newX;
 		int newY = move.newY;
 		int oldX = move.oldX;
@@ -68,11 +66,15 @@ public class Pawn extends Piece
 
 	}
 
-        public String getPieceName() {
-            return "pawn";
-        }
+	public String getPieceName() {
+		return "pawn";
+	}
 
-        public int getPieceType() {
-            return Definitions.PAWN;
-        }
+	public int getPieceType() {
+		return Definitions.PAWN;
+	}
+
+	public void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures) {
+		//do stuff
+		}
 }

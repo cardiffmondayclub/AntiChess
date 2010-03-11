@@ -3,6 +3,7 @@ package antichess;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -77,7 +78,9 @@ public abstract class Piece
 	//could be used here.
 	public abstract boolean isMoveValid(Board board, Move move);
 
-        public abstract String getPieceName();
+   public abstract String getPieceName();
 
-        public abstract int getPieceType();
+   public abstract int getPieceType();
+
+	public abstract void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures);
 }

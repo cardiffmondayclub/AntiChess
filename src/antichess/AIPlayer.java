@@ -24,24 +24,6 @@ public class AIPlayer extends Player {
 
 	@Override
 	public Move getMove() {
-		//do a minimax search and find the best move
-
-		//Working version, don't delete
-//		System.out.println("AI Thinking");
-//
-//		long startTime = System.currentTimeMillis();
-//		int depth = 0;
-//		Move move = null;
-//		while (System.currentTimeMillis() - startTime < thinkingTime) {
-//			depth++;
-//			currentBoard.generateMoves(playerColour);
-//			move = miniMaxStart(depth);
-//			System.out.println(System.currentTimeMillis() - startTime);
-//		}
-//		long finishTime = System.currentTimeMillis();
-
-
-		//EXPERIMENTAL AREA START
 
 		int thinkingTime = 20000;
 		System.out.println("AI Thinking (" + thinkingTime/1000.0 + " seconds)");
@@ -97,11 +79,9 @@ public class AIPlayer extends Player {
 		System.out.println("The move to be used is " + move.oldX + move.oldY + move.newX + move.newY);
 		System.out.println("The " + (depth - 1) + " level search took " + (finishTime - startTime) / 1000.0 + " seconds");
 
-		//EXPERIMENTAL AREA END
 
 		currentBoard.makeMove(move);
 
-		//return the move to the game class
 		return move;
 
 	}

@@ -1,5 +1,7 @@
 package antichess;
 
+import java.util.ArrayList;
+
 public class Queen extends Piece {
 
    public Queen(int posX, int posY, int newColour) {
@@ -30,4 +32,8 @@ public class Queen extends Piece {
    public int getPieceType() {
       return Definitions.QUEEN;
    }
+
+	public void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures) {
+		//do stuff
+	}
 }
