@@ -64,9 +64,8 @@ public class AIBoard extends Board {
 			return evalTotal;
 		}
 
-		for (int i = 0; i <
-				  remainingPieces[playerColour].size(); i++) {
-			switch (remainingPieces[playerColour].get(i).getPieceType()) {
+		for (int i = 0; i < remainingPieces[playerColour].size(); i++) {
+			switch (remainingPieces[playerColour].get(i).pieceType) {
 				case Definitions.PAWN:
 					evalTotal -= pieceValues[Definitions.PAWN];
 					break;
@@ -98,7 +97,7 @@ public class AIBoard extends Board {
 
 		for (int i = 0; i <
 				  remainingPieces[oppositeColour].size(); i++) {
-			switch (remainingPieces[oppositeColour].get(i).getPieceType()) {
+			switch (remainingPieces[oppositeColour].get(i).pieceType) {
 				case Definitions.PAWN:
 					evalTotal += pieceValues[Definitions.PAWN];
 					break;

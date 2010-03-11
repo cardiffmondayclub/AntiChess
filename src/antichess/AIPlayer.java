@@ -25,7 +25,7 @@ public class AIPlayer extends Player {
 	@Override
 	public Move getMove() {
 
-		int thinkingTime = 20000;
+		int thinkingTime = 10000;
 		System.out.println("AI Thinking (" + thinkingTime/1000.0 + " seconds)");
 		long startTime = System.currentTimeMillis();
 		long finishTime = System.currentTimeMillis();

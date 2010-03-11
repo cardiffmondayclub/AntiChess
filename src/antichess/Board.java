@@ -50,10 +50,11 @@ public class Board {
 		this();  // Inherit code from first Board constructor
 
 		// wipe board
-		for (int col = 0; col < 8; col++) {
-			for (int row = 0; row < 8; row++) {
-				squares[col][row] = null;
-			}
+		while(remainingPieces[Definitions.WHITE].size() > 0) {
+			removePiece(remainingPieces[Definitions.WHITE].get(0));
+		}
+		while(remainingPieces[Definitions.BLACK].size() > 0) {
+			removePiece(remainingPieces[Definitions.BLACK].get(0));
 		}
 
 		switch (testNumber) {
@@ -64,7 +65,7 @@ public class Board {
 			case 2:  // Test for lock for one player
 				makePiece(0, 5, Definitions.PAWN, Definitions.WHITE);
 				makePiece(0, 6, Definitions.PAWN, Definitions.BLACK);
-				makePiece(7, 3, Definitions.PAWN, Definitions.WHITE);
+				makePiece(7, 6, Definitions.PAWN, Definitions.WHITE);
 				break;
 			case 3:  // Test for lock with contrasting bishops remaining
 				makePiece(0, 3, Definitions.PAWN, Definitions.WHITE);
@@ -103,6 +104,11 @@ public class Board {
 		}
 		squares[column][row] = newPiece;
 		remainingPieces[playerColour].add(squares[column][row]);
+	}
+
+	public void removePiece(Piece piece) {
+		squares[piece.xPosition][piece.yPosition] = null;
+		remainingPieces[piece.colour].remove(piece);
 	}
 
 	public boolean isPathClear(Move move) {
@@ -185,7 +191,9 @@ public class Board {
 
 		//Pawn promotion stuff
 		if (move instanceof PromotionMove) {
-			makePiece(move.newX, move.newY, ((PromotionMove) move).newPiece, squares[move.newX][move.newY].pieceColour());
+			int colour = squares[move.newX][move.newY].pieceColour();
+			removePiece(squares[move.newX][move.newY]);
+			makePiece(move.newX, move.newY, ((PromotionMove) move).newPiece, colour);
 		}
 	}
 
@@ -204,50 +212,20 @@ public class Board {
 		validMoves.clear();
 		validCaptures.clear();
 
-		// create tempMove that holds each test move
-		Move testMove;
-		int sourceCol;
-		int sourceRow;
-
 		// iterate over all moves
 		for (Piece piece : remainingPieces[playerColour]) {
-
-			sourceCol = piece.xPosition;
-			sourceRow = piece.yPosition;
-			for (int destCol = 0; destCol < 8; destCol++) {
-				for (int destRow = 0; destRow < 8; destRow++) {
-					// initialise testMove
-					testMove = new Move(sourceCol, sourceRow, destCol, destRow);
-
-					// check move validity
-					if (this.isMoveValid(playerColour, testMove)) {
-						// if valid add to valid move list
-
-						//Check if the move is pawn promotion and if so add
-						//all possible promotions.
-						if (isMovePawnPromotion(testMove)) {
-							for (int promotionPiece : Definitions.PROMOTION_PIECES) {
-								validMoves.add(new PromotionMove(testMove, promotionPiece));
-							}
-						} else {
-							validMoves.add(testMove);
-						}
-
-						// check if test move is capture
-						if (this.isMoveCapture(testMove)) {
-							if (isMovePawnPromotion(testMove)) {
-								for (int promotionPiece : Definitions.PROMOTION_PIECES) {
-									validCaptures.add(new PromotionMove(testMove, promotionPiece));
-								}
-							} else {
-								validCaptures.add(testMove);
-							}
-						}
-					}
-
-				}
-			}
+			piece.generateMoves(squares, validMoves, validCaptures);
 		}
+
+//		System.out.println("Valid Moves");
+//		for (Move move : validMoves) {
+//			System.out.println("-" + move.oldX + move.oldY + move.newX + move.newY + "-");
+//		}
+//
+//		System.out.println("Valid Captures");
+//		for (Move move : validCaptures) {
+//			System.out.println("-" + move.oldX + move.oldY + move.newX + move.newY + "-");
+//		}
 	}
 
 	public int isWon() {
@@ -259,7 +237,7 @@ public class Board {
 		if (remainingPieces[Definitions.WHITE].size() == 0) {
 			return Definitions.WHITE;
 		}
-		
+
 		return Definitions.NO_COLOUR;
 	}
 
@@ -350,7 +328,7 @@ public class Board {
 	}
 
 	public boolean canMove() {
-		return (validMoves.size() > 0);
+		return (validMoves.size() + validCaptures.size() > 0);
 	}
 
 	public int isFinished(int playerColour) {

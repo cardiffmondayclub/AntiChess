@@ -10,17 +10,19 @@ import java.util.logging.Level;
 
 public abstract class Piece
 {
+	public int pieceType = 0;
 	protected int xPosition;
 	protected int yPosition;
-	protected int colour;
+	public int colour;
 	protected BufferedImage img;
 	private char squareColour;
 
-	public Piece(int posX, int posY, int newColour, String fileName)
+	public Piece(int posX, int posY, int newColour, String fileName, int pieceType)
 	{
 		xPosition = posX;
 		yPosition = posY;
 		colour = newColour;
+		this.pieceType = pieceType;
 
 		//This centralises the image loading and ensures it only happens once on
 		//creation of the piece. If we rename the image files we could make this
