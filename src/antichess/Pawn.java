@@ -74,7 +74,7 @@ public class Pawn extends Piece {
 		return Definitions.PAWN;
 	}
 
-	public void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures) {
+	public final void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures) {
 		//do stuff
 		int yDiff = 0;
 		Move move;
