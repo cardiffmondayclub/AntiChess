@@ -46,7 +46,7 @@ public class Game {
 	public int runGame() {
 		Player currentPlayer = whitePlayer;
 		Player otherPlayer = blackPlayer;
-
+		int moves = 0;
 		int end = Definitions.NO_WIN;
 
 		Move nextMove = null;
@@ -66,6 +66,7 @@ public class Game {
 
 			currentBoard.generateMoves(currentPlayer.getPlayerColour());
 			if (currentBoard.canMove()) {
+				moves++;
 				nextMove = currentPlayer.getMove();
 
 				currentBoard.makeMove(nextMove);
@@ -104,6 +105,7 @@ public class Game {
 				otherPlayer = blackPlayer;
 			}
 		}
+		System.out.println("The game took " + moves + " moves.");
 		return end;
 	}
 }
