@@ -11,10 +11,12 @@ public class Game {
 	private boolean gameRunning = true;
 	private Player whitePlayer = null;
 	private Player blackPlayer = null;
+        private Object whitePlayerOptions;
+        private Object blackPlayerOptions;
 	private Board currentBoard;
 	private HumanBoard currentHumanBoard;
 
-	public Game(int whitePlayerType, int blackPlayerType) {
+	public Game(int whitePlayerType, Object whitePlayerOptions, int blackPlayerType, Object blackPlayerOptions) {
 		currentBoard = new Board();
 		currentHumanBoard = new HumanBoard(currentBoard, Definitions.FRAME_SIZE);
 
@@ -23,7 +25,7 @@ public class Game {
 				whitePlayer = new HumanPlayer(currentBoard, currentHumanBoard, Definitions.WHITE);
 				break;
 			case Definitions.AI_PLAYER:
-				whitePlayer = new AIPlayer(Definitions.WHITE);
+				whitePlayer = new AIPlayer(Definitions.WHITE, whitePlayerOptions);
 				break;
 			case Definitions.NETWORK_PLAYER:
 				//
@@ -35,7 +37,7 @@ public class Game {
 				blackPlayer = new HumanPlayer(currentBoard, currentHumanBoard, Definitions.BLACK);
 				break;
 			case Definitions.AI_PLAYER:
-				blackPlayer = new AIPlayer(Definitions.BLACK);
+				blackPlayer = new AIPlayer(Definitions.BLACK, blackPlayerOptions);
 				break;
 			case Definitions.NETWORK_PLAYER:
 				//

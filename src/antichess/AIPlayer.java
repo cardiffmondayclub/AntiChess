@@ -16,10 +16,10 @@ public class AIPlayer extends Player {
 	final int MIN = 0;
 	final int MAX = 1;
 
-	public AIPlayer(int colour) {
+	public AIPlayer(int colour, Object options) {
 		super(colour);
-		int[] evaluationValues = {PAWN_VALUE, KNIGHT_VALUE, BISHOP_VALUE, ROOK_VALUE, QUEEN_VALUE, KING_VALUE};
-		currentBoard = new AIBoard(colour, evaluationValues);
+//		int[] evaluationValues = {PAWN_VALUE, KNIGHT_VALUE, BISHOP_VALUE, ROOK_VALUE, QUEEN_VALUE, KING_VALUE};
+		currentBoard = new AIBoard(colour, ((AIOptions) options ).pieceValues);
 	}
 
 	@Override
