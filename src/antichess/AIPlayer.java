@@ -26,9 +26,9 @@ public class AIPlayer extends Player {
 	public Move getMove() {
 		int thinkingTime = 0;
 		if (playerColour == Definitions.WHITE) {
-			thinkingTime = 350;
+			thinkingTime = 1000;
 		} else {
-			thinkingTime = 2000;
+			thinkingTime = 1000;
 		}
 		System.out.println("AI Thinking (" + thinkingTime/1000.0 + " seconds)");
 		long startTime = System.currentTimeMillis();
