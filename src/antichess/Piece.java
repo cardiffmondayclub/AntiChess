@@ -3,23 +3,26 @@ package antichess;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public abstract class Piece
 {
+	public int pieceType = 0;
 	protected int xPosition;
 	protected int yPosition;
-	protected int colour;
+	public int colour;
 	protected BufferedImage img;
 	private char squareColour;
 
-	public Piece(int posX, int posY, int newColour, String fileName)
+	public Piece(int posX, int posY, int newColour, String fileName, int pieceType)
 	{
 		xPosition = posX;
 		yPosition = posY;
 		colour = newColour;
+		this.pieceType = pieceType;
 
 		//This centralises the image loading and ensures it only happens once on
 		//creation of the piece. If we rename the image files we could make this
@@ -77,7 +80,9 @@ public abstract class Piece
 	//could be used here.
 	public abstract boolean isMoveValid(Board board, Move move);
 
-        public abstract String getPieceName();
+   public abstract String getPieceName();
 
-        public abstract int getPieceType();
+   public abstract int getPieceType();
+
+	public abstract void generateMoves(Piece[][] squares, ArrayList<Move> validMoves, ArrayList<Move> validCaptures);
 }

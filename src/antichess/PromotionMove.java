@@ -14,6 +14,7 @@ public int newPiece;
 		 this.newPiece = newPiece;
 	 }
 
+	@Override
 	 public PromotionMove clone() {
 		 return new PromotionMove(super.clone() ,newPiece);
 	 }

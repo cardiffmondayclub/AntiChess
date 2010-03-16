@@ -6,13 +6,15 @@ public class Board {
 	public Piece[][] squares;
 	public ArrayList<Move> validMoves;
 	public ArrayList<Move> validCaptures;
-	public ArrayList<Piece> remainingPieces;
+	public ArrayList<Piece>[] remainingPieces;
 
 	public Board() {
 		// initialise the array lists
 		validMoves = new ArrayList<Move>();
 		validCaptures = new ArrayList<Move>();
-		remainingPieces = new ArrayList<Piece>();
+		remainingPieces = new ArrayList[2];
+		remainingPieces[Definitions.WHITE] = new ArrayList<Piece>();
+		remainingPieces[Definitions.BLACK] = new ArrayList<Piece>();
 
 
 		//Initialises the board.
@@ -31,11 +33,6 @@ public class Board {
 			makePiece(i, 1, Definitions.PAWN, Definitions.WHITE);
 			makePiece(i, 6, Definitions.PAWN, Definitions.BLACK);
 		}
-		for (int i = 0; i < 8; i++) {
-			for (int j = 2; i < 6; i++) {
-				squares[i][j] = null;
-			}
-		}
 
 		makePiece(0, 7, Definitions.ROOK, Definitions.BLACK);
 		makePiece(1, 7, Definitions.KNIGHT, Definitions.BLACK);
@@ -53,12 +50,12 @@ public class Board {
 		this();  // Inherit code from first Board constructor
 
 		// wipe board
-		for (int col = 0; col < 8; col++) {
-			for (int row = 0; row < 8; row++) {
-				squares[col][row] = null;
-			}
+		while(remainingPieces[Definitions.WHITE].size() > 0) {
+			removePiece(remainingPieces[Definitions.WHITE].get(0));
 		}
-		boolean squaresSameColour = true;
+		while(remainingPieces[Definitions.BLACK].size() > 0) {
+			removePiece(remainingPieces[Definitions.BLACK].get(0));
+		}
 
 		switch (testNumber) {
 			case 1:  // Test for locked stalemate
@@ -68,7 +65,7 @@ public class Board {
 			case 2:  // Test for lock for one player
 				makePiece(0, 5, Definitions.PAWN, Definitions.WHITE);
 				makePiece(0, 6, Definitions.PAWN, Definitions.BLACK);
-				makePiece(7, 3, Definitions.PAWN, Definitions.WHITE);
+				makePiece(7, 6, Definitions.PAWN, Definitions.WHITE);
 				break;
 			case 3:  // Test for lock with contrasting bishops remaining
 				makePiece(0, 3, Definitions.PAWN, Definitions.WHITE);
@@ -82,32 +79,40 @@ public class Board {
 	}
 
 	public void makePiece(int column, int row, int pieceName, int playerColour) {
+		Piece newPiece = null;
 		switch (pieceName) {
 			case Definitions.PAWN:
-				squares[column][row] = new Pawn(column, row, playerColour);
+				newPiece = new Pawn(column, row, playerColour);
 				break;
 			case Definitions.KNIGHT:
-				squares[column][row] = new Knight(column, row, playerColour);
+				newPiece = new Knight(column, row, playerColour);
 				break;
 			case Definitions.BISHOP:
-				squares[column][row] = new Bishop(column, row, playerColour);
+				newPiece = new Bishop(column, row, playerColour);
 				break;
 			case Definitions.ROOK:
-				squares[column][row] = new Rook(column, row, playerColour);
+				newPiece = new Rook(column, row, playerColour);
 				break;
 			case Definitions.QUEEN:
-				squares[column][row] = new Queen(column, row, playerColour);
+				newPiece = new Queen(column, row, playerColour);
 				break;
 			case Definitions.KING:
-				squares[column][row] = new King(column, row, playerColour);
+				newPiece = new King(column, row, playerColour);
 				break;
 			default:
-				squares[column][row] = null;
 				break;
 		}
+		squares[column][row] = newPiece;
+		remainingPieces[playerColour].add(squares[column][row]);
+	}
+
+	public void removePiece(Piece piece) {
+		squares[piece.xPosition][piece.yPosition] = null;
+		remainingPieces[piece.colour].remove(piece);
 	}
 
 	public boolean isPathClear(Move move) {
+		//This could do with some tidying/refactoring. MCS
 		int xDelta = move.newX - move.oldX;
 		int yDelta = move.newY - move.oldY;
 		int absXDelta = Math.abs(xDelta);
@@ -171,6 +176,13 @@ public class Board {
 		 * new square with the contents of the old square and wipes the old
 		 * square
 		 */
+
+		//Remove a piece from the remaining pieces list if it is being captured
+		if (squares[move.newX][move.newY] != null) {
+			Piece piece = squares[move.newX][move.newY];
+			remainingPieces[piece.colour].remove(piece);
+		}
+
 		squares[move.newX][move.newY] = squares[move.oldX][move.oldY];
 		squares[move.oldX][move.oldY] = null;
 
@@ -179,7 +191,9 @@ public class Board {
 
 		//Pawn promotion stuff
 		if (move instanceof PromotionMove) {
-			makePiece(move.newX, move.newY, ((PromotionMove) move).newPiece, squares[move.newX][move.newY].pieceColour());
+			int colour = squares[move.newX][move.newY].pieceColour();
+			removePiece(squares[move.newX][move.newY]);
+			makePiece(move.newX, move.newY, ((PromotionMove) move).newPiece, colour);
 		}
 	}
 
@@ -197,66 +211,33 @@ public class Board {
 		// reset the ArrayLists
 		validMoves.clear();
 		validCaptures.clear();
-		remainingPieces.clear();
-
-		// create tempMove that holds each test move
-		Move testMove;
 
 		// iterate over all moves
-		for (int sourceCol = 0; sourceCol < 8; sourceCol++) {
-			for (int sourceRow = 0; sourceRow < 8; sourceRow++) {
-
-				if (squares[sourceCol][sourceRow] != null) {
-					if (squares[sourceCol][sourceRow].pieceColour() == playerColour) {
-						remainingPieces.add(squares[sourceCol][sourceRow]);
-					}
-				}
-				for (int destCol = 0; destCol < 8; destCol++) {
-					for (int destRow = 0; destRow < 8; destRow++) {
-						// initialise testMove
-						testMove = new Move(sourceCol, sourceRow, destCol, destRow);
-
-						// check move validity
-						if (this.isMoveValid(playerColour, testMove)) {
-							// if valid add to valid move list
-
-							//Check if the move is pawn promotion and if so add
-							//all possible promotions.
-							if (isMovePawnPromotion(testMove)) {
-								for (int piece : Definitions.PROMOTION_PIECES) {
-									validMoves.add(new PromotionMove(testMove, piece));
-								}
-							} else {
-								validMoves.add(testMove);
-							}
-
-							// check if test move is capture
-							if (this.isMoveCapture(testMove)) {
-								if (isMovePawnPromotion(testMove)) {
-									for (int piece : Definitions.PROMOTION_PIECES) {
-										validCaptures.add(new PromotionMove(testMove, piece));
-									}
-								} else {
-									validCaptures.add(testMove);
-								}
-							}
-						}
-
-					}
-				}
-			}
+		for (Piece piece : remainingPieces[playerColour]) {
+			piece.generateMoves(squares, validMoves, validCaptures);
 		}
+
+//		System.out.println("Valid Moves");
+//		for (Move move : validMoves) {
+//			System.out.println("-" + move.oldX + move.oldY + move.newX + move.newY + "-");
+//		}
+//
+//		System.out.println("Valid Captures");
+//		for (Move move : validCaptures) {
+//			System.out.println("-" + move.oldX + move.oldY + move.newX + move.newY + "-");
+//		}
 	}
 
 	public int isWon() {
-		generateMoves(Definitions.BLACK);
-		if (remainingPieces.size() == 0) {
+
+		if (remainingPieces[Definitions.BLACK].size() == 0) {
 			return Definitions.BLACK;
 		}
-		generateMoves(Definitions.WHITE);
-		if (remainingPieces.size() == 0) {
+
+		if (remainingPieces[Definitions.WHITE].size() == 0) {
 			return Definitions.WHITE;
 		}
+
 		return Definitions.NO_COLOUR;
 	}
 
@@ -296,10 +277,10 @@ public class Board {
 
 
 			// check that all the player's pieces are on the same coloured squares
-			int prevSquareColour = this.remainingPieces.get(0).getSquareColour();
+			int prevSquareColour = this.remainingPieces[playerColour].get(0).getSquareColour();
 
-			for (int j = 1; j < this.remainingPieces.size(); j++) {
-				int nextSquareColour = this.remainingPieces.get(j).getSquareColour();
+			for (int j = 1; j < this.remainingPieces[playerColour].size(); j++) {
+				int nextSquareColour = this.remainingPieces[playerColour].get(j).getSquareColour();
 
 				if (nextSquareColour != prevSquareColour) {
 					return false;
@@ -347,7 +328,7 @@ public class Board {
 	}
 
 	public boolean canMove() {
-		return (validMoves.size() > 0);
+		return (validMoves.size() + validCaptures.size() > 0);
 	}
 
 	public int isFinished(int playerColour) {
@@ -358,6 +339,7 @@ public class Board {
 		} else if (playerColour == Definitions.WHITE) {
 			this.generateMoves(Definitions.BLACK);
 		}
+
 		if (validMoves.size() + previousMoves == 0) {
 			return Definitions.LOCKED_STALEMATE;
 		}

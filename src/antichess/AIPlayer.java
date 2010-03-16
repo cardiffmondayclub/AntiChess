@@ -24,26 +24,12 @@ public class AIPlayer extends Player {
 
 	@Override
 	public Move getMove() {
-		//do a minimax search and find the best move
-
-		//Working version, don't delete
-//		System.out.println("AI Thinking");
-//
-//		long startTime = System.currentTimeMillis();
-//		int depth = 0;
-//		Move move = null;
-//		while (System.currentTimeMillis() - startTime < thinkingTime) {
-//			depth++;
-//			currentBoard.generateMoves(playerColour);
-//			move = miniMaxStart(depth);
-//			System.out.println(System.currentTimeMillis() - startTime);
-//		}
-//		long finishTime = System.currentTimeMillis();
-
-
-		//EXPERIMENTAL AREA START
-
-		int thinkingTime = 20000;
+		int thinkingTime = 0;
+		if (playerColour == Definitions.WHITE) {
+			thinkingTime = 1000;
+		} else {
+			thinkingTime = 1000;
+		}
 		System.out.println("AI Thinking (" + thinkingTime/1000.0 + " seconds)");
 		long startTime = System.currentTimeMillis();
 		long finishTime = System.currentTimeMillis();
@@ -97,11 +83,9 @@ public class AIPlayer extends Player {
 		System.out.println("The move to be used is " + move.oldX + move.oldY + move.newX + move.newY);
 		System.out.println("The " + (depth - 1) + " level search took " + (finishTime - startTime) / 1000.0 + " seconds");
 
-		//EXPERIMENTAL AREA END
 
 		currentBoard.makeMove(move);
 
-		//return the move to the game class
 		return move;
 
 	}
@@ -127,13 +111,13 @@ public class AIPlayer extends Player {
 
 		public void run() {
 			try {
-				miniMax(0, maxDepth, MAX, moves, Integer.MAX_VALUE);
+				miniMax(0, MAX, Integer.MAX_VALUE);
 			} catch (InterruptedException exception) {
 				//just exit if interrupted
 			}
 		}
 
-		public int miniMax(int currentDepth, int maxDepth, int searchType, Move[] moves, int parentNodeScore) throws InterruptedException {
+		public int miniMax(int currentDepth, int searchType, int parentNodeScore) throws InterruptedException {
 			try {
 				if (currentDepth == maxDepth) {
 					//If this is the bottom layer
@@ -146,7 +130,6 @@ public class AIPlayer extends Player {
 					} else {
 						moveList = (ArrayList<Move>) currentBoard.validMoves.clone();
 					}
-
 					//Certain actions should be taken if the move list has no moves in it
 					if (moveList.size() == 0) {
 						int finished = currentBoard.isFinished(playerColour);
@@ -158,6 +141,7 @@ public class AIPlayer extends Player {
 
 						//check for stalemates
 						if (finished == Definitions.LOCKED_STALEMATE || finished == Definitions.DERIVED_STALEMATE) {
+							//THIS SHOULD REALLY BE DISCUSSED. I'm not sure 0 is the appropriate score for stalemate. MCS
 							return 0;
 						}
 
@@ -179,13 +163,13 @@ public class AIPlayer extends Player {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
 								currentBoard.generateMoves(playerColour);
-								testScore = miniMax(currentDepth + 1, maxDepth, MAX, moves, score);
+								testScore = miniMax(currentDepth + 1, MAX, score);
 								if (testScore < score) {
 									score = testScore;
 									moves[currentDepth] = move;
 								}
 								currentBoard.undoMove();
-								if (score < parentNodeScore) {
+								if (score <= parentNodeScore) {
 									break;
 								}
 								
@@ -197,13 +181,13 @@ public class AIPlayer extends Player {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
 								currentBoard.generateMoves(otherPlayerColour);
-								testScore = miniMax(currentDepth + 1, maxDepth, MIN, moves, score);
+								testScore = miniMax(currentDepth + 1, MIN, score);
 								if (testScore > score) {
 									score = testScore;
 									moves[currentDepth] = move;
 								}
 								currentBoard.undoMove();
-								if (score > parentNodeScore) {
+								if (score >= parentNodeScore) {
 									break;
 								}
 								
