@@ -7,7 +7,7 @@ public class King extends Piece {
 	final static int[] yMoves = {0, 1, 1, 1, 0, -1, -1, -1};
 
 	public King(int posX, int posY, int newColour) {
-		super(posX, posY, newColour, "king", Definitions.KING);
+		super(posX, posY, newColour, Definitions.KING);
 	}
 
 	public boolean isMoveValid(Board board, Move move) {

@@ -27,6 +27,8 @@ public class HumanBoard extends Frame {
 	//
 	private Board currentBoard;
 
+	private BufferedImage[][] pieceImages;
+
 	public HumanBoard(Board currentBoard, int frameSize) {
 		this.currentBoard = currentBoard;
 
@@ -48,6 +50,17 @@ public class HumanBoard extends Frame {
 		}
 		try {
 			bTile = ImageIO.read(new File("./images/tile_black.png"));
+		} catch (IOException ioe) {
+			System.exit(-1);
+		}
+
+		pieceImages = new BufferedImage[2][6];
+		try {
+			for (int colour : Definitions.COLOURS) {
+				for (int piece : Definitions.PIECE_NUMBERS) {
+					pieceImages[colour][piece] = ImageIO.read(new File("./images/" + Definitions.COLOUR_FILE_NAMES[colour] + "_" + Definitions.PIECE_FILE_NAMES[piece] + ".png"));
+				}
+			}
 		} catch (IOException ioe) {
 			System.exit(-1);
 		}
@@ -118,7 +131,8 @@ public class HumanBoard extends Frame {
 				}
 
 				if (currentBoard.squares[i][j] != null) {
-					ga.drawImage(currentBoard.squares[i][j].getImage(), null, (int) leftEdge + 10, (int) topEdge + 10);
+					Piece piece = currentBoard.squares[i][j];
+					ga.drawImage(pieceImages[piece.colour][piece.pieceType], null, (int) leftEdge + 10, (int) topEdge + 10);
 				}
 			}
 		}

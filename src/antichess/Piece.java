@@ -14,37 +14,13 @@ public abstract class Piece
 	protected int xPosition;
 	protected int yPosition;
 	public int colour;
-	protected BufferedImage img;
-	private char squareColour;
 
-	public Piece(int posX, int posY, int newColour, String fileName, int pieceType)
+	public Piece(int posX, int posY, int newColour, int pieceType)
 	{
 		xPosition = posX;
 		yPosition = posY;
 		colour = newColour;
 		this.pieceType = pieceType;
-
-		//This centralises the image loading and ensures it only happens once on
-		//creation of the piece. If we rename the image files we could make this
-		//even more concise but I'm not sure if it's worth it. MCS
-		String tempColour;
-		if (this.colour == Definitions.BLACK) {
-			tempColour = "Black";
-		} else {
-			tempColour = "White";
-		}
-
-		try {
-			img = ImageIO.read(new File("./images/" + tempColour + "_" + fileName + ".png"));
-		} catch (IOException ex) {
-			Logger.getLogger(Pawn.class.getName()).log(Level.SEVERE, null, ex);
-			img = null;
-		}
-	}
-
-	public BufferedImage getImage()
-	{
-		return img;
 	}
 
 	public void setPosition(int posX, int posY)
@@ -69,11 +45,10 @@ public abstract class Piece
 	public int getSquareColour()
 	{
 		if ((this.xPosition + this.yPosition) % 2 == 1) {
-			squareColour = Definitions.WHITE;
+			return Definitions.WHITE;
 		} else {
-			squareColour = Definitions.BLACK;
+			return Definitions.BLACK;
 		}
-		return squareColour;
 	}
 	
 	//Checks if a move is valid. I'm hoping the Board.isPathClear() function

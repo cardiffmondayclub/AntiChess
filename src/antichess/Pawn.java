@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
 	public Pawn(int posX, int posY, int newColour) {
-		super(posX, posY, newColour, "pawn", Definitions.PAWN);
+		super(posX, posY, newColour, Definitions.PAWN);
 	}
 
 	public boolean isMoveValid(Board board, Move move) {

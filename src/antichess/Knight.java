@@ -7,7 +7,7 @@ public class Knight extends Piece {
 	final static int[] yMoves = {1,-1,2,2,1,-1,-2,-2};
 
 	public Knight(int posX, int posY, int newColour) {
-		super(posX, posY, newColour, "knight", Definitions.KNIGHT);
+		super(posX, posY, newColour, Definitions.KNIGHT);
 	}
 
 	public boolean isMoveValid(Board board, Move move) {

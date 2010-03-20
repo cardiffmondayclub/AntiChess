@@ -8,7 +8,7 @@ final static int[] xMoves = {-1,0,1,0};
 final static int[] yMoves = {0,1,0,-1};	
 
    public Rook(int posX, int posY, int newColour) {
-      super(posX, posY, newColour, "rook", Definitions.ROOK);
+      super(posX, posY, newColour, Definitions.ROOK);
    }
 
   public boolean isMoveValid(Board board, Move move) {

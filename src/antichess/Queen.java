@@ -8,7 +8,7 @@ final static int[] xMoves = {-1,-1,0,1,1,1,0,-1};
 final static int[] yMoves = {0,1,1,1,0,-1,-1,-1};
 
    public Queen(int posX, int posY, int newColour) {
-      super(posX, posY, newColour, "queen", Definitions.QUEEN);
+      super(posX, posY, newColour, Definitions.QUEEN);
 		pieceType = Definitions.QUEEN;
    }
 

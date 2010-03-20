@@ -8,7 +8,7 @@ final static int[] xMoves = {-1,1,1,-1};
 final static int[] yMoves = {1,1,-1,-1};
    
    public Bishop(int posX, int posY, int newColour) {
-      super(posX, posY, newColour, "bishop", Definitions.BISHOP);
+      super(posX, posY, newColour, Definitions.BISHOP);
    }
 
    public boolean isMoveValid(Board board, Move move) {
