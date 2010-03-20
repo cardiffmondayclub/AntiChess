@@ -1,6 +1,5 @@
 package antichess;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 public class AIBoard extends Board {
@@ -20,6 +19,16 @@ public class AIBoard extends Board {
 		this.pieceValues = pieceValues;
 		this.playerColour = playerColour;
 		historyStack = new Stack<HistoryMove>();
+	}
+
+	public AIBoard Clone() {
+		AIBoard board = new AIBoard(playerColour, pieceValues);
+		for (int colour : Definitions.COLOURS) {
+			for (Piece piece : remainingPieces[colour]) {
+				board.makePiece(piece.xPosition, piece.yPosition, piece.pieceType, colour);
+			}
+		}
+		return board;
 	}
 
 	@Override
@@ -55,7 +64,7 @@ public class AIBoard extends Board {
 		int oppositeColour = (playerColour + 1) % 2;
 
 		if (isWon() == playerColour) {
-			evalTotal = Integer.MAX_VALUE -1;
+			evalTotal = Integer.MAX_VALUE - 1;
 			return evalTotal;
 		}
 

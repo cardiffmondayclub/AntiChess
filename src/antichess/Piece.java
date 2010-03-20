@@ -1,12 +1,6 @@
 package antichess;
 
-import java.awt.image.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public abstract class Piece
 {

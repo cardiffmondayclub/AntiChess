@@ -12,29 +12,35 @@ public class AIPlayer extends Player {
 
 	public AIPlayer(int colour, Object options) {
 		super(colour);
-		currentBoard = new AIBoard(colour, ((AIOptions) options ).pieceValues);
+		currentBoard = new AIBoard(colour, ((AIOptions) options).pieceValues);
 	}
 
 	@Override
 	public Move getMove() {
 		int thinkingTime = 0;
 		if (playerColour == Definitions.WHITE) {
-			thinkingTime = 1000;
+			thinkingTime = 750;
 		} else {
-			thinkingTime = 1000;
+			thinkingTime = 750;
 		}
-		System.out.println("AI Thinking (" + thinkingTime/1000.0 + " seconds)");
+		System.out.println("AI Thinking (" + thinkingTime / 1000.0 + " seconds)");
 		long startTime = System.currentTimeMillis();
 		long finishTime = System.currentTimeMillis();
 
 		int depth = 1;
 		Move move = null;
-		Move[] moves = new Move[depth];
+		Move[][] moves = new Move[depth][depth];
+		Move[] previousMoves = null;
 		currentBoard.generateMoves(playerColour);
 
 		//Create the first thread and start it running.
 		System.out.println("Running depth 1 search");
-		Runnable search = new MiniMaxSearch(currentBoard, playerColour, otherPlayerColour, depth, moves);
+		Runnable search;
+		if (playerColour == Definitions.WHITE) {
+			search = new MiniMaxSearch2(currentBoard, playerColour, otherPlayerColour, depth, previousMoves, moves);
+		} else {
+			search = new MiniMaxSearch(currentBoard, playerColour, otherPlayerColour, depth, previousMoves, moves);
+		}
 		Thread t = new Thread(search);
 		t.start();
 		//Ensure the first thread completes
@@ -48,14 +54,19 @@ public class AIPlayer extends Player {
 			try {
 				//if the thread has finished start another one
 				if (t.getState() == State.TERMINATED) {
-					move = moves[0];
+					move = moves[0][0];
 					finishTime = System.currentTimeMillis();
 					//System.out.println("Current best move is " + move.oldX + move.oldY + move.newX + move.newY);
 					depth++;
 					System.out.println("Trying depth " + depth);
-					moves = new Move[depth];
+					previousMoves = moves[0];
+					moves = new Move[depth][depth];
 					currentBoard.generateMoves(playerColour);
-					search = new MiniMaxSearch(currentBoard, playerColour, otherPlayerColour, depth, moves);
+					if (playerColour == Definitions.WHITE) {
+						search = new MiniMaxSearch2(currentBoard, playerColour, otherPlayerColour, depth, previousMoves, moves);
+					} else {
+						search = new MiniMaxSearch(currentBoard, playerColour, otherPlayerColour, depth, previousMoves, moves);
+					}
 					t = new Thread(search);
 					t.start();
 				}
@@ -92,9 +103,9 @@ public class AIPlayer extends Player {
 		private int playerColour;
 		private int otherPlayerColour;
 		private int maxDepth;
-		private Move[] moves;
+		private Move[][] moves;
 
-		public MiniMaxSearch(AIBoard currentBoard, int playerColour, int otherPlayerColour, int maxDepth, Move[] moves) {
+		public MiniMaxSearch(AIBoard currentBoard, int playerColour, int otherPlayerColour, int maxDepth, Move[] unused, Move[][] moves) {
 			this.currentBoard = currentBoard;
 			this.playerColour = playerColour;
 			this.otherPlayerColour = otherPlayerColour;
@@ -159,13 +170,13 @@ public class AIPlayer extends Player {
 								testScore = miniMax(currentDepth + 1, MAX, score);
 								if (testScore < score) {
 									score = testScore;
-									moves[currentDepth] = move;
+									moves[0][currentDepth] = move;
 								}
 								currentBoard.undoMove();
 								if (score <= parentNodeScore) {
 									break;
 								}
-								
+
 							}
 							break;
 						case MAX:
@@ -177,21 +188,20 @@ public class AIPlayer extends Player {
 								testScore = miniMax(currentDepth + 1, MIN, score);
 								if (testScore > score) {
 									score = testScore;
-									moves[currentDepth] = move;
+									moves[0][currentDepth] = move;
 								}
 								currentBoard.undoMove();
 								if (score >= parentNodeScore) {
 									break;
 								}
-								
+
 							}
 							break;
 					}
 					//end switch
 					return score;
 				}
-			}
-			catch (InterruptedException exception) {
+			} catch (InterruptedException exception) {
 				currentBoard.undoMove();
 				throw exception;
 			}
@@ -204,27 +214,30 @@ public class AIPlayer extends Player {
 		private int otherPlayerColour;
 		private int maxDepth;
 		private Move[] previousMoves;
-		private Move[] futureMoves;
-		private int toMove;
+		private Move[][] futureMoves;
 
-		public MiniMaxSearch2(AIBoard currentBoard, int playerColour, int otherPlayerColour, int toMove, int maxDepth, Move[] previousMoves) {
+		public MiniMaxSearch2(AIBoard currentBoard, int playerColour, int otherPlayerColour, int maxDepth, Move[] previousMoves, Move[][] futureMoves) {
 			this.currentBoard = currentBoard;
 			this.playerColour = playerColour;
 			this.otherPlayerColour = otherPlayerColour;
 			this.maxDepth = maxDepth;
 			this.previousMoves = previousMoves;
-			this.toMove = toMove;
+			this.futureMoves = futureMoves;
 		}
 
 		public void run() {
 			try {
-				miniMax(0, MAX, Integer.MAX_VALUE);
+				if (previousMoves == null) {
+					miniMax(0, MAX, Integer.MAX_VALUE, false);
+				} else {
+					miniMax(0, MAX, Integer.MAX_VALUE, true);
+				}
 			} catch (InterruptedException exception) {
 				//just exit if interrupted
 			}
 		}
 
-		public int miniMax(int currentDepth, int searchType, int parentNodeScore) throws InterruptedException {
+		public int miniMax(int currentDepth, int searchType, int parentNodeScore, boolean bestMove) throws InterruptedException {
 			try {
 				if (currentDepth == maxDepth) {
 					//If this is the bottom layer
@@ -263,6 +276,15 @@ public class AIPlayer extends Player {
 					int score = 0;
 					int testScore = 0;
 					//switch based on min or max search
+
+					//Move the best previous move to the front if one exists.
+					if (bestMove == true) {
+						ArrayList<Move> tempList = new ArrayList<Move>();
+						tempList.add(previousMoves[currentDepth]);
+						tempList.addAll(moveList);
+						moveList = tempList;
+					}
+
 					switch (searchType) {
 						case MIN:
 							score = Integer.MAX_VALUE;
@@ -270,10 +292,22 @@ public class AIPlayer extends Player {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
 								currentBoard.generateMoves(playerColour);
-								testScore = miniMax(currentDepth + 1, MAX, score);
+								if (bestMove == true && move == previousMoves[currentDepth]) {
+									if (previousMoves.length > currentDepth + 1) {
+										testScore = miniMax(currentDepth + 1, MAX, score, true);
+									} else {
+										testScore = miniMax(currentDepth + 1, MAX, score, false);
+									}
+								} else {
+									testScore = miniMax(currentDepth + 1, MAX, score, false);
+								}
 								if (testScore < score) {
 									score = testScore;
-									previousMoves[currentDepth] = move;
+									futureMoves[currentDepth][currentDepth] = move;
+									//copy other moves
+									for (int i = currentDepth + 1; i < maxDepth; i++) {
+										futureMoves[currentDepth][i] = futureMoves[currentDepth + 1][i];
+									}
 								}
 								currentBoard.undoMove();
 								if (score <= parentNodeScore) {
@@ -288,10 +322,22 @@ public class AIPlayer extends Player {
 								currentBoard.makeMove(move);
 								Thread.sleep(0);
 								currentBoard.generateMoves(otherPlayerColour);
-								testScore = miniMax(currentDepth + 1, MIN, score);
+								if (bestMove == true && move == previousMoves[currentDepth]) {
+									if (previousMoves.length > currentDepth + 1) {
+										testScore = miniMax(currentDepth + 1, MIN, score, true);
+									} else {
+										testScore = miniMax(currentDepth + 1, MIN, score, false);
+									}
+								} else {
+									testScore = miniMax(currentDepth + 1, MIN, score, false);
+								}
 								if (testScore > score) {
 									score = testScore;
-									previousMoves[currentDepth] = move;
+									futureMoves[currentDepth][currentDepth] = move;
+									//copy other moves
+									for (int i = currentDepth + 1; i < maxDepth; i++) {
+										futureMoves[currentDepth][i] = futureMoves[currentDepth + 1][i];
+									}
 								}
 								currentBoard.undoMove();
 								if (score >= parentNodeScore) {
@@ -304,8 +350,7 @@ public class AIPlayer extends Player {
 					//end switch
 					return score;
 				}
-			}
-			catch (InterruptedException exception) {
+			} catch (InterruptedException exception) {
 				currentBoard.undoMove();
 				throw exception;
 			}
